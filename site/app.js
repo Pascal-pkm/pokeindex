@@ -97,17 +97,109 @@ function renderChart(container, series, opts) {
 
   const svgEl = container.querySelector("svg");
   const tip = $("#chart-tip");
+  const toSvgX = clientX => {
+    const r = svgEl.getBoundingClientRect();
+    return (clientX - r.left) / r.width * W;
+  };
   svgEl.addEventListener("pointermove", ev => {
+    if (dragging) return;
     const r = svgEl.getBoundingClientRect();
     const t = x0 + ((ev.clientX - r.left) / r.width * W - padL) / (W - padL - padR) * (x1 - x0);
     let best = 0, bd = Infinity;
     xs.forEach((x, i) => { const dd = Math.abs(x - t); if (dd < bd) { bd = dd; best = i; } });
+    tip.classList.remove("multi");
     tip.style.display = "block";
     tip.style.left = (r.left + (X(xs[best]) / W) * r.width + window.scrollX) + "px";
     tip.style.top = (r.top + (Y(ys[best]) / H) * r.height + window.scrollY) + "px";
     tip.textContent = `${fmtDate(series[best][0])} · ${fmtLvl(ys[best])}`;
   });
-  svgEl.addEventListener("pointerleave", () => { tip.style.display = "none"; });
+  svgEl.addEventListener("pointerleave", () => { if (!dragging) tip.style.display = "none"; });
+
+  /* Ziehen zum Zoomen (Drill-down auf Zeitraum) */
+  let dragging = false, startPx = 0;
+  if (opts.onZoom) {
+    const brush = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    brush.setAttribute("y", padT);
+    brush.setAttribute("height", H - padT - padB);
+    brush.setAttribute("fill", "#1f6feb");
+    brush.setAttribute("fill-opacity", "0.18");
+    brush.setAttribute("stroke", "#1f6feb");
+    brush.setAttribute("stroke-width", "1");
+    brush.style.display = "none";
+    svgEl.appendChild(brush);
+    const nearestDate = px => {
+      const t = x0 + (px - padL) / (W - padL - padR) * (x1 - x0);
+      let best = 0, bd = Infinity;
+      xs.forEach((x, i) => { const dd = Math.abs(x - t); if (dd < bd) { bd = dd; best = i; } });
+      return series[best][0];
+    };
+    svgEl.addEventListener("pointerdown", ev => {
+      dragging = true; startPx = toSvgX(ev.clientX);
+      brush.style.display = "block";
+      brush.setAttribute("x", startPx); brush.setAttribute("width", 0);
+      try { svgEl.setPointerCapture(ev.pointerId); } catch (e) {}
+    });
+    svgEl.addEventListener("pointermove", ev => {
+      if (!dragging) return;
+      const cur = toSvgX(ev.clientX);
+      brush.setAttribute("x", Math.min(startPx, cur));
+      brush.setAttribute("width", Math.abs(cur - startPx));
+    });
+    const endDrag = ev => {
+      if (!dragging) return;
+      dragging = false;
+      brush.style.display = "none";
+      const cur = toSvgX(ev.clientX);
+      if (Math.abs(cur - startPx) < 8) return;
+      const d1 = nearestDate(Math.min(startPx, cur));
+      const d2 = nearestDate(Math.max(startPx, cur));
+      if (d1 !== d2) opts.onZoom(d1, d2);
+    };
+    svgEl.addEventListener("pointerup", endDrag);
+    svgEl.addEventListener("pointercancel", endDrag);
+  }
+  if (opts.onDblClick) svgEl.addEventListener("dblclick", opts.onDblClick);
+}
+
+/* ------------------------------------------------- Zoom/Drill-down-Leiste */
+// Baut Range-Buttons + Ziehen-zum-Zoomen für einen einzelnen Chart (Index,
+// EW-Index). Gibt { redraw } zurück, falls der Aufrufer neu zeichnen muss.
+function mountLineChartWithControls(container, fullSeries, rangesObj, defaultKey) {
+  const chartWrap = el("div", "chart-wrap");
+  const bar = el("div", "ranges");
+  container.append(chartWrap, bar);
+  container.append(el("p", "note",
+    "Im Chart klicken und ziehen, um in einen Zeitraum hineinzuzoomen. Doppelklick oder der Button 'Zoom zurücksetzen' springt zurück."));
+  let active = defaultKey, customRange = null;
+  const buildBar = () => {
+    bar.innerHTML = "";
+    Object.keys(rangesObj).forEach(k => {
+      const b = el("button", (!customRange && k === active) ? "active" : null, k);
+      b.addEventListener("click", () => { active = k; customRange = null; buildBar(); draw(); });
+      bar.append(b);
+    });
+    if (customRange) {
+      const rb = el("button", "active", "Zoom zurücksetzen ↺");
+      rb.addEventListener("click", () => { customRange = null; buildBar(); draw(); });
+      bar.append(rb);
+    }
+  };
+  const doZoom = (d1, d2) => { customRange = [d1, d2]; buildBar(); draw(); };
+  const doReset = () => { if (customRange) { customRange = null; buildBar(); draw(); } };
+  const draw = () => {
+    let s;
+    if (customRange) {
+      s = fullSeries.filter(p => p[0] >= customRange[0] && p[0] <= customRange[1]);
+    } else {
+      const days = rangesObj[active];
+      const last = new Date(fullSeries[fullSeries.length - 1][0]).getTime();
+      s = fullSeries.filter(p => (last - new Date(p[0]).getTime()) / 864e5 <= days);
+    }
+    renderChart(chartWrap, s, { onZoom: doZoom, onDblClick: doReset });
+  };
+  buildBar();
+  draw();
+  return { redraw: draw };
 }
 
 /* --------------------------------------------------------- Index-Ansicht */
@@ -143,35 +235,14 @@ function renderIndexView(container, data, kind) {
     `Stand ${fmtDate(data.asof)} · Datenabzug täglich ~20:00 UTC · <a href="#" data-goto="method">Wie diese Preise entstehen</a>`);
   container.append(kicker, h1, lr, asof);
 
-  const chartWrap = el("div", "chart-wrap");
-  const ranges = el("div", "ranges");
-  container.append(chartWrap, ranges);
-  let active = "MAX";
-  const draw = () => {
-    const days = RANGES[active];
-    const last = new Date(data.series[data.series.length - 1][0]).getTime();
-    const s = data.series.filter(p => (last - new Date(p[0]).getTime()) / 864e5 <= days);
-    renderChart(chartWrap, s);
-  };
-  Object.keys(RANGES).forEach(k => {
-    const b = el("button", k === active ? "active" : null, k);
-    b.addEventListener("click", () => {
-      active = k;
-      ranges.querySelectorAll("button").forEach(x => x.classList.toggle("active", x.textContent === k));
-      draw();
-    });
-    ranges.append(b);
-  });
-  draw();
+  mountLineChartWithControls(container, data.series, RANGES, "MAX");
 
   if (data.ew && data.ew.length > 1) {
     container.append(el("h2", null, "Gleichgewichteter Index (Masterarbeits-Methodik)"));
     container.append(el("p", "note",
       "Winsorisiert 1 %/99 %, Seasoning-Filter ≥ 6 Monate. Historie: Steam-Monatsdaten; " +
       "tägliche Fortführung: Skinport (Quellenwechsel Juli 2026, per Verkettung angeschlossen)."));
-    const ewWrap = el("div", "chart-wrap");
-    container.append(ewWrap);
-    renderChart(ewWrap, data.ew);
+    mountLineChartWithControls(container, data.ew, RANGES, "MAX");
   }
 
   container.append(el("h2", null, "Überblick"));
@@ -533,7 +604,8 @@ const MARKET_NAMES = {
 const MARKET_COLORS = ["#6cb2ff", "#f1c40f", "#2ecc71", "#ff5c5c", "#b48cff",
   "#4dd0e1", "#ff9f43", "#e84393", "#4cc38a", "#a3cb38", "#fd79a8"];
 
-function renderMultiChart(container, seriesMap, rangeDays) {
+function renderMultiChart(container, seriesMap, rangeDays, opts) {
+  opts = opts || {};
   const W = 900, H = 360, padL = 46, padR = 12, padT = 12, padB = 28;
   container.innerHTML = "";
   const names = Object.keys(seriesMap);
@@ -581,8 +653,93 @@ function renderMultiChart(container, seriesMap, rangeDays) {
     legend.innerHTML += `<span><span class="sw" style="background:${col}"></span>${esc(MARKET_NAMES[n] || n)} (${Math.round(endVal)})</span>`;
   });
   const div = el("div");
-  div.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${grid}${paths}${labels}</svg>`;
+  div.innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      ${grid}${paths}${labels}
+      <line id="cross" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="#8b95a3" stroke-dasharray="2 3" style="display:none"/>
+      <rect id="hit" x="${padL}" y="${padT}" width="${W - padL - padR}" height="${H - padT - padB}" fill="transparent"/>
+    </svg>`;
   container.append(div.firstElementChild, legend);
+
+  const svgEl = container.querySelector("svg");
+  const cross = svgEl.querySelector("#cross");
+  const tip = $("#chart-tip");
+  const toSvgX = clientX => {
+    const r = svgEl.getBoundingClientRect();
+    return (clientX - r.left) / r.width * W;
+  };
+  svgEl.addEventListener("pointermove", ev => {
+    if (dragging) return;
+    const r = svgEl.getBoundingClientRect();
+    const relX = toSvgX(ev.clientX);
+    const t = x0 + (relX - padL) / (W - padL - padR) * (x1 - x0);
+    let rows = "";
+    keys.forEach((n, i) => {
+      const pts = norm[n];
+      let best = 0, bd = Infinity;
+      pts.forEach((p, j) => { const dd = Math.abs(p[0] - t); if (dd < bd) { bd = dd; best = j; } });
+      const col = MARKET_COLORS[i % MARKET_COLORS.length];
+      rows += `<div><span class="sw" style="background:${col}"></span>${esc(MARKET_NAMES[n] || n)}: ` +
+        `<b>${Math.round(pts[best][1])}</b> (${new Date(pts[best][0]).toLocaleDateString("de-DE")})</div>`;
+    });
+    cross.style.display = "block";
+    cross.setAttribute("x1", relX.toFixed(1));
+    cross.setAttribute("x2", relX.toFixed(1));
+    tip.classList.add("multi");
+    tip.style.display = "block";
+    tip.style.left = (ev.clientX + window.scrollX) + "px";
+    tip.style.top = (r.top + window.scrollY + 10) + "px";
+    tip.innerHTML = rows;
+  });
+  svgEl.addEventListener("pointerleave", () => {
+    if (dragging) return;
+    tip.style.display = "none";
+    tip.classList.remove("multi");
+    cross.style.display = "none";
+  });
+
+  /* Ziehen zum Zoomen */
+  let dragging = false, startPx = 0;
+  if (opts.onZoom) {
+    const brush = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    brush.setAttribute("y", padT);
+    brush.setAttribute("height", H - padT - padB);
+    brush.setAttribute("fill", "#1f6feb");
+    brush.setAttribute("fill-opacity", "0.18");
+    brush.setAttribute("stroke", "#1f6feb");
+    brush.setAttribute("stroke-width", "1");
+    brush.style.display = "none";
+    svgEl.appendChild(brush);
+    const toDate = px => {
+      const t = x0 + (px - padL) / (W - padL - padR) * (x1 - x0);
+      return new Date(t).toISOString().slice(0, 10);
+    };
+    svgEl.addEventListener("pointerdown", ev => {
+      dragging = true; startPx = toSvgX(ev.clientX);
+      brush.style.display = "block";
+      brush.setAttribute("x", startPx); brush.setAttribute("width", 0);
+      try { svgEl.setPointerCapture(ev.pointerId); } catch (e) {}
+    });
+    svgEl.addEventListener("pointermove", ev => {
+      if (!dragging) return;
+      const cur = toSvgX(ev.clientX);
+      brush.setAttribute("x", Math.min(startPx, cur));
+      brush.setAttribute("width", Math.abs(cur - startPx));
+    });
+    const endDrag = ev => {
+      if (!dragging) return;
+      dragging = false;
+      brush.style.display = "none";
+      const cur = toSvgX(ev.clientX);
+      if (Math.abs(cur - startPx) < 8) return;
+      const d1 = toDate(Math.min(startPx, cur));
+      const d2 = toDate(Math.max(startPx, cur));
+      if (d1 !== d2) opts.onZoom(d1, d2);
+    };
+    svgEl.addEventListener("pointerup", endDrag);
+    svgEl.addEventListener("pointercancel", endDrag);
+  }
+  if (opts.onDblClick) svgEl.addEventListener("dblclick", opts.onDblClick);
 }
 
 function setupMarkets() {
@@ -613,22 +770,39 @@ function setupMarkets() {
   const chartWrap = el("div", "chart-wrap");
   const ranges = el("div", "ranges");
   root.append(chartWrap, ranges);
+  root.append(el("p", "note",
+    "Im Chart klicken und ziehen, um in einen Zeitraum hineinzuzoomen. Doppelklick oder der Button 'Zoom zurücksetzen' springt zurück."));
   const R = { "1M": 31, "6M": 186, "1J": 366, "5J": 1830, "MAX": 1e9 };
-  let activeRange = "1J";
-  Object.keys(R).forEach(k => {
-    const b = el("button", k === activeRange ? "active" : null, k);
-    b.addEventListener("click", () => {
-      activeRange = k;
-      ranges.querySelectorAll("button").forEach(x => x.classList.toggle("active", x.textContent === k));
-      draw();
+  let activeRange = "1J", customRange = null;
+  const buildBar = () => {
+    ranges.innerHTML = "";
+    Object.keys(R).forEach(k => {
+      const b = el("button", (!customRange && k === activeRange) ? "active" : null, k);
+      b.addEventListener("click", () => { activeRange = k; customRange = null; buildBar(); draw(); });
+      ranges.append(b);
     });
-    ranges.append(b);
-  });
+    if (customRange) {
+      const rb = el("button", "active", "Zoom zurücksetzen ↺");
+      rb.addEventListener("click", () => { customRange = null; buildBar(); draw(); });
+      ranges.append(rb);
+    }
+  };
+  const doZoom = (d1, d2) => { customRange = [d1, d2]; buildBar(); draw(); };
+  const doReset = () => { if (customRange) { customRange = null; buildBar(); draw(); } };
   const draw = () => {
     const sel = {};
     active.forEach(n => { if (seriesAll[n]) sel[n] = seriesAll[n]; });
-    renderMultiChart(chartWrap, sel, R[activeRange]);
+    if (customRange) {
+      const trimmed = {};
+      Object.entries(sel).forEach(([k, v]) => {
+        trimmed[k] = v.filter(p => p[0] >= customRange[0] && p[0] <= customRange[1]);
+      });
+      renderMultiChart(chartWrap, trimmed, 1e9, { onZoom: doZoom, onDblClick: doReset });
+    } else {
+      renderMultiChart(chartWrap, sel, R[activeRange], { onZoom: doZoom, onDblClick: doReset });
+    }
   };
+  buildBar();
   draw();
 
   root.append(el("h2", null, "Tagesüberblick"));

@@ -63,7 +63,13 @@ h1 { font-size: 26px; margin: 6px 0 2px; }
   position: absolute; pointer-events: none; background: var(--bg-card);
   border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px;
   font-size: 12px; transform: translate(-50%, -130%); white-space: nowrap; display: none;
+  z-index: 30;
 }
+.chart-tip.multi {
+  text-align: left; white-space: normal; transform: translate(-50%, 4px);
+  line-height: 1.7; min-width: 170px;
+}
+.chart-tip .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
 
 h2 { font-size: 17px; margin: 26px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
@@ -153,3 +159,6 @@ footer { border-top: 1px solid var(--border); color: var(--text-dim); font-size:
   th.hide-m, td.hide-m { display: none; }
   nav button { padding: 6px 9px; font-size: 13px; }
 }
+
+.chart-wrap svg, #markets-root svg { cursor: crosshair; touch-action: none; }
+
