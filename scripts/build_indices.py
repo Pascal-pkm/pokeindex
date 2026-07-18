@@ -334,6 +334,18 @@ CS2_HIST_MIN_BREADTH = 50   # Mindestanzahl Items/Monat, sonst kein Indexstart
                             # bis 2013-07, als es nur "Operation Payback Pass"
                             # gab) als degenerierter "Top 500" in die Historie
                             # einfließen und einen künstlichen Einbruch erzeugen.
+CS2_HIST_START_MONTH = "2014-06"
+                            # Die ersten ~10 Monate nach dem Start des Steam-
+                            # Handels (Aug 2013) zeigen einen realen, aber
+                            # extremen Einmal-Ausschlag: sehr wenige Items im
+                            # Umlauf -> Anfangs-Knappheitspreise, die sich mit
+                            # wachsendem Case-Öffnen-Angebot binnen weniger
+                            # Monate stark normalisieren (Median-Rendite Aug->
+                            # Sep 2013 über 395 Items: -28 %, nicht durch
+                            # Ausreißer verursacht). Real, aber nicht
+                            # vergleichbar mit dem gereiften Markt danach;
+                            # Index startet daher erst, wenn Breite UND Zeit
+                            # ausreichen.
 
 
 def cs2_monthly_topn_history(hist, upto_month):
@@ -345,7 +357,8 @@ def cs2_monthly_topn_history(hist, upto_month):
         for p in s:
             if p[0] < upto_month:
                 breadth[p[0]] = breadth.get(p[0], 0) + 1
-    months = sorted(m for m, n in breadth.items() if n >= CS2_HIST_MIN_BREADTH)
+    months = sorted(m for m, n in breadth.items()
+                    if n >= CS2_HIST_MIN_BREADTH and m >= CS2_HIST_START_MONTH)
     if not months:
         return [], BASE_LEVEL
     midx = {m: i for i, m in enumerate(months)}
