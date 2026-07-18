@@ -234,21 +234,32 @@ def main():
 
     absender = os.environ.get("GMAIL_ADDRESS")
     passwort = os.environ.get("GMAIL_APP_PASSWORD")
-    empfaenger = os.environ.get("NEWSLETTER_TO", absender)
+    # Mehrere Empfänger: Komma-getrennt im Secret NEWSLETTER_TO,
+    # z. B. "a@mail.de, b@mail.de, c@mail.de".
+    # Ist das Secret nicht gesetzt ODER leer gespeichert, wird auf den
+    # Absender selbst zurückgefallen statt mit einer leeren Adresse zu senden.
+    raw_to = os.environ.get("NEWSLETTER_TO", "")
+    empfaenger = [e.strip() for e in raw_to.split(",") if e.strip()]
+    if not empfaenger and absender:
+        empfaenger = [absender]
     if not absender or not passwort:
         print("GMAIL_ADDRESS / GMAIL_APP_PASSWORD nicht gesetzt.")
         return 1
+    if not empfaenger:
+        print("Kein gültiger Empfänger (NEWSLETTER_TO leer und kein Absender).")
+        return 1
     msg = MIMEMultipart("alternative")
     chg_txt = f"{c_stat['chg']:+.2f} %" if c_stat["chg"] is not None else "—"
-    msg["Subject"] = f"Pokémon-Index Wochenbericht {heute}: SPK500 {c_stat['level']:,.0f} ({chg_txt})"
+    msg["Subject"] = f"Markt-Wochenbericht {heute}: SPK500 {c_stat['level']:,.0f} ({chg_txt})"
     msg["From"] = absender
-    msg["To"] = empfaenger
+    msg["To"] = absender
+    msg["Bcc"] = ", ".join(empfaenger)   # Empfänger sehen einander nicht
     msg.attach(MIMEText(body, "html", "utf-8"))
     ctx = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as srv:
         srv.login(absender, passwort)
-        srv.sendmail(absender, [empfaenger], msg.as_string())
-    print(f"Newsletter an {empfaenger} versendet.")
+        srv.sendmail(absender, [absender] + empfaenger, msg.as_string())
+    print(f"Newsletter an {len(empfaenger)} Empfänger versendet.")
     return 0
 
 
