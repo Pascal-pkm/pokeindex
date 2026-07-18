@@ -18,9 +18,20 @@ function Fail($msg) {
 
 # 1) Lokale Aenderungen sichern
 git add -A
-git commit -m "$Message" -q
+$commitOutput = git commit -m "$Message" 2>&1
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "(nichts Neues zu committen, mache trotzdem weiter)" -ForegroundColor Yellow
+    if ($commitOutput -match "nothing to commit") {
+        Write-Host "(nichts Neues zu committen, mache trotzdem weiter)" -ForegroundColor Yellow
+    } else {
+        $hint = ""
+        if ($commitOutput -match "Please tell me who you are" -or $commitOutput -match "user\.email") {
+            $hint = "`n`nUrsache: Git kennt deinen Namen/E-Mail auf diesem Rechner noch nicht. Einmalig ausfuehren:`n" +
+                    "  git config --global user.name `"Dein Name`"`n" +
+                    "  git config --global user.email `"deine@mail.de`"`n" +
+                    "und sync.ps1 danach erneut starten."
+        }
+        Fail "'git commit' ist fehlgeschlagen (nicht wegen 'nichts zu committen'). Git-Meldung:`n$commitOutput$hint"
+    }
 }
 
 # 2) Vom Server holen und automatisch mergen

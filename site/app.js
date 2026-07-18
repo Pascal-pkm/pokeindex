@@ -214,38 +214,59 @@ function renderIndexView(container, data, kind) {
     return;
   }
   const o = data.overview;
-  const chg = o.prev ? (o.level / o.prev - 1) * 100 : null;
-  const abs = o.prev ? o.level - o.prev : null;
   container.innerHTML = "";
 
   const isCs2 = kind === "cs2";
+  const hasEw = isCs2 && data.ew && data.ew.length > 1 && data.ew_overview;
+
+  // Bei CS2 ist der gleichgewichtete Index (EW) die Hauptkennzahl: er misst
+  // die tatsaechliche Marktrendite. "Top 500 nach Preis" erfasst dagegen nur
+  // das bereits teure Blue-Chip-Segment (ein Item zaehlt erst mit, sobald es
+  // ohnehin schon eines der 500 teuersten ist) und zeigt daher strukturell
+  // eine viel niedrigere Rendite als der Gesamtmarkt.
+  const head = hasEw
+    ? { level: data.ew_overview.level, prev: data.ew_overview.prev,
+        asof: data.ew_overview.asof, ticker: "CS2-EW" }
+    : { level: o.level, prev: o.prev, asof: data.asof, ticker: data.name };
+  const chg = head.prev ? (head.level / head.prev - 1) * 100 : null;
+  const abs = head.prev ? head.level - head.prev : null;
+
   const kicker = el("div", "kicker",
-    `Marktindex <span class="ticker">${data.name}</span>`);
+    `Marktindex <span class="ticker">${head.ticker}</span>`);
   const h1 = el("h1", null, isCards ? "Pokémon-Karten-Index" :
     isCs2 ? "CS2-Skin-Index" : "Pokémon-Sealed-Index");
   const lr = el("div", "level-row");
-  lr.append(el("span", "level", fmtLvl(o.level)));
+  lr.append(el("span", "level", fmtLvl(head.level)));
   if (chg != null) {
     const cls = chg >= 0 ? "up" : "down";
     lr.append(el("span", `chg ${cls}`,
       `${chg >= 0 ? "▲" : "▼"} ${Math.abs(chg).toFixed(2).replace(".", ",")} % ` +
-      `(${abs >= 0 ? "+" : "−"}${fmtLvl(Math.abs(abs))}) heute`));
+      `(${abs >= 0 ? "+" : "−"}${fmtLvl(Math.abs(abs))}) ${hasEw ? "" : "heute"}`));
   }
   const asof = el("div", "asof",
-    `Stand ${fmtDate(data.asof)} · Datenabzug täglich ~20:00 UTC · <a href="#" data-goto="method">Wie diese Preise entstehen</a>`);
+    `Stand ${fmtDate(head.asof)} · Datenabzug täglich ~20:00 UTC · <a href="#" data-goto="method">Wie diese Preise entstehen</a>`);
   container.append(kicker, h1, lr, asof);
 
-  mountLineChartWithControls(container, data.series, RANGES, "MAX");
-
-  if (data.ew && data.ew.length > 1) {
-    container.append(el("h2", null, "Gleichgewichteter Index (Masterarbeits-Methodik)"));
+  if (hasEw) {
     container.append(el("p", "note",
-      "Winsorisiert 1 %/99 %, Seasoning-Filter ≥ 6 Monate. Historie: Steam-Monatsdaten; " +
-      "tägliche Fortführung: Skinport (Quellenwechsel Juli 2026, per Verkettung angeschlossen)."));
+      "Gleichgewichteter Preisindex über alle erfassten CS2-Items (winsorisiert 1 %/99 %, " +
+      "Seasoning-Filter ≥ 6 Monate) – bildet die tatsächliche Marktrendite ab. Historie: " +
+      "Steam-Monatsdaten; tägliche Fortführung: Skinport (Quellenwechsel Juli 2026, per " +
+      "Verkettung angeschlossen)."));
     mountLineChartWithControls(container, data.ew, RANGES, "MAX");
+
+    container.append(el("h2", null, `Top 500 nach Preis (${data.name}) – Blue-Chip-Segment`));
+    container.append(el("p", "note",
+      "Enthält nur die 500 aktuell teuersten Items. Ein Item zählt erst mit, sobald es ohnehin " +
+      "schon zu den teuersten gehört – das frühe Wachstum günstiger Items zu teuren wird dadurch " +
+      "nicht erfasst. Deshalb liegt diese Kennzahl strukturell weit unter der Marktrendite oben " +
+      "und ist eher ein Preisniveau-Indikator für das obere Marktsegment als eine Renditekennzahl."));
+    mountLineChartWithControls(container, data.series, RANGES, "MAX");
+  } else {
+    mountLineChartWithControls(container, data.series, RANGES, "MAX");
   }
 
-  container.append(el("h2", null, "Überblick"));
+  container.append(el("h2", null, isCs2 ? `Überblick – Top 500 nach Preis (${data.name})` : "Überblick"));
   const tiles = el("div", "tiles");
   const tile = (k, v) => { const t = el("div", "tile"); t.append(el("span", "k", k), el("span", "v", v)); return t; };
   tiles.append(

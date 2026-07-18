@@ -518,6 +518,21 @@ def main():
                 f"Preis, gleiche Methodik wie der Tagesindex); ab {cdates[0]} "
                 f"täglich aus Skinport, nahtlos verkettet.")
             res["ew"] = cs2_ew_series(cdates, craw, citems)
+            # Uebersichtskennzahlen fuer den gleichgewichteten Index (EW) –
+            # das ist die Kennzahl, die die tatsaechliche Marktrendite zeigt
+            # (Top 500 nach Preis erfasst per Konstruktion nur die bereits
+            # teuren Items, nicht das Wachstum guenstiger Items zu teuren).
+            ew = res["ew"]
+            ew_levels = [p[1] for p in ew]
+            ew_level = ew[-1][1] if ew else None
+            ew_prev = ew[-2][1] if len(ew) > 1 else None
+            ew_chg = round((ew_level / ew_prev - 1) * 100, 2) if ew_prev else None
+            res["ew_overview"] = {
+                "level": ew_level, "prev": ew_prev, "chg": ew_chg,
+                "ath": max(ew_levels) if ew_levels else None,
+                "atl": min(ew_levels) if ew_levels else None,
+                "asof": ew[-1][0] if ew else None,
+            }
             with open(os.path.join(SITE_DATA, "idx_CS2.js"), "w",
                       encoding="utf-8") as f:
                 f.write("window.IDX_CS2=")
@@ -527,12 +542,14 @@ def main():
                 "asof": res["asof"], "overview": res["overview"],
                 "series_tail": res["series"][-30:],
                 "ew_tail": res["ew"][-40:],
+                "ew_overview": res["ew_overview"],
                 "weekly_up": res["weekly_up"], "weekly_dn": res["weekly_dn"],
                 "gainers": res["gainers"][:5], "losers": res["losers"][:5],
             }
             o = res["overview"]
             print(f"{CS2_INDEX}: Stand {res['asof']}  Level {o['level']}  "
-                  f"Basket ${o['basket']:,}  {len(res['rows'])} Mitglieder")
+                  f"Basket ${o['basket']:,}  {len(res['rows'])} Mitglieder  "
+                  f"| EW-Index {ew_level}")
 
     # -------------------------------------------------------------- Märkte
     mk = build_markets()
