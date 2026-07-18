@@ -327,11 +327,25 @@ def parse_cs2_hist_shards():
     return out
 
 
+CS2_HIST_MIN_BREADTH = 50   # Mindestanzahl Items/Monat, sonst kein Indexstart
+                            # (gleiche Konvention wie in der Masterarbeit:
+                            # "CS2 >= 50 Items" Mindestbreite). Verhindert, dass
+                            # einzelne Monate mit nur 1-2 Items (z. B. 2013-04
+                            # bis 2013-07, als es nur "Operation Payback Pass"
+                            # gab) als degenerierter "Top 500" in die Historie
+                            # einfließen und einen künstlichen Einbruch erzeugen.
+
+
 def cs2_monthly_topn_history(hist, upto_month):
     """Monatlicher Top-500-Preisindex (gleiche Logik wie compute_index, nur
     auf Monatsbasis) aus den Steam-Monatsdaten, bis (exklusive) upto_month.
     Liefert (series, end_level) zum Verketten mit dem täglichen Skinport-Index."""
-    months = sorted({p[0] for s in hist.values() for p in s if p[0] < upto_month})
+    breadth = {}
+    for s in hist.values():
+        for p in s:
+            if p[0] < upto_month:
+                breadth[p[0]] = breadth.get(p[0], 0) + 1
+    months = sorted(m for m, n in breadth.items() if n >= CS2_HIST_MIN_BREADTH)
     if not months:
         return [], BASE_LEVEL
     midx = {m: i for i, m in enumerate(months)}
