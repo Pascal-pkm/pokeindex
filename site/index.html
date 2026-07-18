@@ -153,17 +153,18 @@
       PriceCharting-Bestände mit monatlicher Historie – bewusst getrennt vom Tagesindex.</p>
 
     <h2>Automatisierung</h2>
-    <p>Ein täglicher GitHub-Actions-Lauf zieht die Preise, berechnet beide Indizes deterministisch über
-      die komplette Historie neu und veröffentlicht die Seite. Jeden Sonntag fasst ein automatischer
-      Newsletter die Woche zusammen (Indexstände, Wochenspanne, größte bestätigte Mover) und wird per
-      E-Mail zugestellt sowie im Archiv abgelegt.</p>
+    <p>Ein täglicher GitHub-Actions-Lauf zieht die Preise, berechnet alle Indizes deterministisch über
+      die komplette Historie neu und veröffentlicht die Seite. Dabei geht auch ein kurzer Tagesbericht
+      per E-Mail raus (Tagesveränderung aller Indizes, ein Chart). Jeden Sonntag folgt zusätzlich ein
+      ausführlicheres Wochenbriefing mit Wochenrückblick je Anlageklasse, größten bestätigten Movern und
+      einem Marktvergleich. Beide Ausgaben werden im Archiv abgelegt.</p>
   </section>
 
   <section class="view" id="view-news">
-    <div class="kicker">Wochenberichte</div>
+    <div class="kicker">Berichte</div>
     <h1>Newsletter-Archiv</h1>
-    <p class="note">Jeden Sonntag automatisch erstellt und per E-Mail zugestellt. Hier liegen alle
-      bisherigen Ausgaben.</p>
+    <p class="note">Täglich ein kurzer Tagesbericht, sonntags ein ausführlicheres Wochenbriefing –
+      beide automatisch erstellt und per E-Mail zugestellt. Hier liegen alle bisherigen Ausgaben.</p>
     <div id="news-list" class="prose"></div>
   </section>
 </main>

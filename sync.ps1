@@ -37,14 +37,24 @@ if ($LASTEXITCODE -eq 0) {
         if ($f -match '^(scripts/|\.github/)') {
             # Code-/Workflow-Dateien: meine lokale Version gewinnt
             git checkout --ours -- "$f"
-            Write-Host "  eigene Version behalten: $f"
+            $label = "eigene Version"
         } else {
             # Generierte Daten/Website-Dateien: Server-Version gewinnt
             # (wird beim naechsten automatischen Lauf ohnehin neu berechnet)
             git checkout --theirs -- "$f"
-            Write-Host "  Server-Version uebernommen: $f"
+            $label = "Server-Version"
+        }
+        if ($LASTEXITCODE -ne 0) {
+            Fail "'git checkout' konnte $f nicht aufloesen (Datei evtl. gesperrt/schreibgeschuetzt). Bitte Screenshot schicken, NICHTS committen."
+        }
+        # Sicherheitsnetz: pruefen, dass wirklich keine Konfliktmarker mehr drin sind,
+        # bevor der Merge-Commit gemacht wird (sonst landet kaputter Inhalt im Repo).
+        $stillBroken = Select-String -Path "$f" -Pattern '^(<{7}|={7}|>{7})' -Quiet -ErrorAction SilentlyContinue
+        if ($stillBroken) {
+            Fail "$f enthaelt nach dem Aufloesen immer noch Konfliktmarker (<<<<<<< / ======= / >>>>>>>). Bitte Screenshot schicken, NICHTS committen."
         }
         git add -- "$f"
+        Write-Host "  $label uebernommen: $f"
     }
     git commit --no-edit -q
     if ($LASTEXITCODE -ne 0) { Fail "Merge-Commit fehlgeschlagen. Bitte Screenshot schicken." }

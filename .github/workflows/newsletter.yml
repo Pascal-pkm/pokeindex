@@ -1,4 +1,4 @@
-name: Sonntags-Newsletter
+name: Sonntags-Wochenbriefing
 
 on:
   schedule:
@@ -22,17 +22,20 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Newsletter erstellen und versenden
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Wochenbriefing erstellen und versenden
         env:
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           NEWSLETTER_TO: ${{ secrets.NEWSLETTER_TO }}
-        run: python scripts/send_newsletter.py
+        run: python scripts/send_newsletter.py --mode weekly
 
       - name: Archiv committen
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add site/newsletter site/data/newsletters.js
-          git commit -m "Newsletter $(date -u +%F)" || echo "nichts zu committen"
+          git commit -m "Wochenbriefing $(date -u +%F)" || echo "nichts zu committen"
           git push

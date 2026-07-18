@@ -820,14 +820,17 @@ function setupMarkets() {
 /* ------------------------------------------------------------- Newsletter */
 function setupNews() {
   const c = $("#news-list");
-  const list = window.NEWSLETTERS || [];
+  const raw = window.NEWSLETTERS || [];
+  // Altformat (Liste von Datumsstrings) weiterhin unterstuetzen
+  const list = raw.map(item => typeof item === "string" ? { d: item, t: "weekly" } : item);
   if (!list.length) {
-    c.append(el("p", "note", "Noch keine Ausgaben – der erste Bericht wird am kommenden Sonntag automatisch erstellt."));
+    c.append(el("p", "note", "Noch keine Ausgaben – der erste Tagesbericht wird automatisch erstellt."));
     return;
   }
+  const LABEL = { daily: "Tagesbericht", weekly: "Wochenbriefing" };
   const ul = el("ul");
-  list.forEach(d => ul.append(el("li", null,
-    `<a href="newsletter/${d}.html">Wochenbericht vom ${fmtDate(d)}</a>`)));
+  list.forEach(({ d, t }) => ul.append(el("li", null,
+    `<a href="newsletter/${d}-${t}.html">${LABEL[t] || t} vom ${fmtDate(d)}</a>`)));
   c.append(ul);
 }
 
