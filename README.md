@@ -1,11 +1,19 @@
-# PokéIndex – privates Pokémon-Markt-Dashboard
+# PokéIndex – privates Multi-Asset-Dashboard
 
-Eigenes Dashboard nach dem Vorbild von „S&Poké 500": ein Karten-Index (SPK500,
-Top 500 Einzelkarten nach TCGplayer Market Price), ein Sealed-Index (SPKS,
-gleiche Regeln für Sealed-Produkte), dazu alle bereits selbst gescrapten
-PriceCharting-Bestände (≈25.000 Karten, ≈1.800 Sealed-Produkte) mit monatlicher
-Historie. Preise werden täglich automatisch abgezogen, die Indizes neu
-berechnet, die Website veröffentlicht und sonntags ein Newsletter verschickt.
+Eigenes Dashboard nach dem Vorbild von „S&Poké 500", erweitert auf alle
+Anlageklassen der Masterarbeit:
+
+- **SPK500** – Top 500 Pokémon-Einzelkarten (TCGplayer Market Price, täglich)
+- **SPKS** – Sealed-Index, gleiche Regeln (täglich)
+- **CS2500** – Top 500 CS2-Skins (Skinport-API, täglich) plus gleichgewichteter
+  Index nach Masterarbeits-Methodik (Steam-Historie seit 2013, täglich fortgeführt)
+- **Märkte** – S&P 500, DAX, NASDAQ 100, EuroStoxx 50, MSCI World, Gold, Silber,
+  Bitcoin (Historie 2013–2026, täglich via Yahoo Finance fortgeschrieben)
+- **Bestände** – PriceCharting-Scrapes (≈25.000 Karten, ≈1.800 Sealed) und
+  Steam-Market-Scrapes (≈13.700 CS2-Items) mit monatlicher Historie
+
+Preise werden täglich automatisch abgezogen, alle Indizes neu berechnet, die
+Website veröffentlicht und sonntags ein Newsletter über alle Klassen verschickt.
 
 ## Ordnerstruktur
 
@@ -20,6 +28,8 @@ Pokemon Index und Website/
 ├── scripts/
 │   ├── common.py              gemeinsame Helfer + Index-Regeln (Parameter)
 │   ├── fetch_prices.py        täglicher Abzug von tcgcsv.com (TCGplayer)
+│   ├── fetch_cs2.py           täglicher CS2-Abzug (Skinport-API, ohne Login)
+│   ├── fetch_markets.py       tägliche Marktdaten (Yahoo Finance)
 │   ├── backfill_archive.py    Historie aus dem tcgcsv-Preisarchiv
 │   ├── build_indices.py       Berechnung SPK500 + SPKS, erzeugt site/data/
 │   ├── export_pricecharting.py  einmaliger Export der PriceCharting-Bestände

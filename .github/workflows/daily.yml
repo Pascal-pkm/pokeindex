@@ -30,6 +30,12 @@ jobs:
       - name: Tagespreise abziehen (tcgcsv)
         run: python scripts/fetch_prices.py
 
+      - name: CS2-Preise abziehen (Skinport)
+        run: python scripts/fetch_cs2.py
+
+      - name: Marktdaten abziehen (Yahoo Finance)
+        run: python scripts/fetch_markets.py
+
       - name: Historie nachladen (Archiv-Backfill, max. 45 Tage pro Lauf)
         run: python scripts/backfill_archive.py --days 45
 

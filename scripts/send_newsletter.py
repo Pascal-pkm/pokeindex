@@ -27,6 +27,10 @@ from email.mime.text import MIMEText
 from common import CARD_INDEX, ROOT, SEALED_INDEX, SITE_DATA
 
 NL_DIR = os.path.join(ROOT, "site", "newsletter")
+CS2_INDEX = "CS2500"
+MARKET_NAMES = {"SP500": "S&P 500", "DAX": "DAX", "NASDAQ100": "NASDAQ 100",
+                "EUROSTOXX50": "EuroStoxx 50", "MSCIWORLD": "MSCI World",
+                "GOLD": "Gold", "SILVER": "Silber", "BITCOIN": "Bitcoin"}
 
 
 def week_stats(block):
@@ -145,13 +149,45 @@ def main():
     with open(os.path.join(SITE_DATA, "summary.json"), encoding="utf-8") as f:
         summary = json.load(f)
     cards, sealed = summary.get(CARD_INDEX), summary.get(SEALED_INDEX)
+    cs2 = summary.get(CS2_INDEX)
+    markets = summary.get("MARKETS") or {}
     if not cards or not sealed:
         print("summary.json unvollständig – zuerst build_indices.py ausführen.")
         return 1
 
     c_stat, s_stat = week_stats(cards), week_stats(sealed)
+    cs_stat = week_stats(cs2) if cs2 and len(cs2.get("series_tail", [])) > 1 else None
     heute = dt.date.today().isoformat()
     komm = kommentar(cards, sealed, c_stat, s_stat)
+    if cs_stat is not None:
+        r = cs_stat["chg"]
+        komm += (f" Der CS2-Skin-Index steht bei {cs_stat['level']:,.2f} Punkten"
+                 f"{f' ({r:+.2f} % zur Vorwoche)' if r is not None else ''}.")
+    sp = markets.get("SP500")
+    if sp and sp.get("w1") is not None:
+        komm += (f" Zum Vergleich: Der S&P 500 bewegte sich in derselben Zeit um "
+                 f"{sp['w1']:+.2f} %, Gold um "
+                 f"{markets.get('GOLD', {}).get('w1', 0) or 0:+.2f} % und Bitcoin um "
+                 f"{markets.get('BITCOIN', {}).get('w1', 0) or 0:+.2f} %.")
+
+    markt_zeilen = ""
+    for key, name in MARKET_NAMES.items():
+        c = markets.get(key)
+        if not c:
+            continue
+        w1 = c.get("w1")
+        farbe = "#1a9850" if (w1 or 0) >= 0 else "#d73027"
+        markt_zeilen += (f"<tr><td style='padding:5px 10px;border-bottom:1px solid #eee'>{name}</td>"
+                         f"<td style='padding:5px 10px;text-align:right;border-bottom:1px solid #eee'>"
+                         f"{c['level']:,.2f}</td>"
+                         f"<td style='padding:5px 10px;text-align:right;color:{farbe};"
+                         f"border-bottom:1px solid #eee'>{f'{w1:+.2f} %' if w1 is not None else '—'}</td></tr>")
+    markt_block = (f"<h3 style='margin:18px 0 6px'>Traditionelle Märkte (Woche)</h3>"
+                   f"<table style='border-collapse:collapse;width:100%;font-size:14px'>"
+                   f"<tr><th style='text-align:left;padding:5px 10px;color:#888'>Markt</th>"
+                   f"<th style='text-align:right;padding:5px 10px;color:#888'>Stand</th>"
+                   f"<th style='text-align:right;padding:5px 10px;color:#888'>Woche</th></tr>"
+                   f"{markt_zeilen}</table>") if markt_zeilen else ""
 
     body = f"""
 <div style="font-family:Segoe UI,Arial,sans-serif;max-width:640px;margin:auto;color:#1c1c1e">
@@ -159,12 +195,16 @@ def main():
   <table style="width:100%;border-spacing:8px 0"><tr>
     {index_block('Karten-Index (SPK500)', c_stat)}
     {index_block('Sealed-Index (SPKS)', s_stat)}
+    {index_block('CS2-Index (CS2500)', cs_stat) if cs_stat else ''}
   </tr></table>
   <p style="line-height:1.55">{komm}</p>
   {mover_tabelle('Karten – Top-Wochengewinner', cards.get('weekly_up'), 'wchg')}
   {mover_tabelle('Karten – Top-Wochenverlierer', cards.get('weekly_dn'), 'wchg')}
   {mover_tabelle('Sealed – Top-Wochengewinner', sealed.get('weekly_up'), 'wchg')}
   {mover_tabelle('Sealed – Top-Wochenverlierer', sealed.get('weekly_dn'), 'wchg')}
+  {mover_tabelle('CS2 – Top-Wochengewinner', (cs2 or {}).get('weekly_up'), 'wchg') if cs2 else ''}
+  {mover_tabelle('CS2 – Top-Wochenverlierer', (cs2 or {}).get('weekly_dn'), 'wchg') if cs2 else ''}
+  {markt_block}
   <p style="color:#888;font-size:12px;margin-top:24px">
     Datenstand: {cards['asof']} · Preise: TCGplayer Market Price (via tcgcsv.com).
     Wochenänderungen nur zwischen bestätigten Preisen.

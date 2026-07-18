@@ -15,8 +15,11 @@
   <nav id="nav">
     <button data-view="cards" class="active">Karten-Index</button>
     <button data-view="sealed">Sealed-Index</button>
+    <button data-view="cs2">CS2-Index</button>
+    <button data-view="markets">Märkte</button>
     <button data-view="pccards">Alle Karten</button>
     <button data-view="pcsealed">Alle Sealed</button>
+    <button data-view="cs2all">Alle CS2-Items</button>
     <button data-view="method">Methodik</button>
     <button data-view="news">Newsletter</button>
   </nav>
@@ -26,6 +29,32 @@
   <!-- Index-Ansichten (Karten + Sealed) werden von app.js in diese Container gerendert -->
   <section class="view visible" id="view-cards"><div class="idx" data-idx="cards"></div></section>
   <section class="view" id="view-sealed"><div class="idx" data-idx="sealed"></div></section>
+
+  <section class="view" id="view-cs2"><div class="idx" data-idx="cs2"></div></section>
+
+  <section class="view" id="view-markets">
+    <div class="kicker">Traditionelle Anlageklassen · täglich (Yahoo Finance)</div>
+    <h1>Märkte &amp; Gesamtvergleich</h1>
+    <p class="note">Historie 2013–2026 aus deinem Bestand, seither täglich per Renditen-Verkettung
+      fortgeschrieben. Reihen lassen sich ein-/ausblenden; alle Reihen werden zum Start des gewählten
+      Zeitraums auf 100 normiert – so sind auch die Sammler-Indizes direkt vergleichbar.</p>
+    <div id="markets-root"></div>
+  </section>
+
+  <section class="view" id="view-cs2all">
+    <div class="kicker">Bestandsdaten · Steam Community Market (monatlich)</div>
+    <h1>Alle CS2-Items</h1>
+    <p class="note">Alle gescrapten Steam-Market-Items mit monatlicher Preis-Historie (Median der
+      Tagespreise) seit 2013. Klick öffnet die Historie; aktuelle Tagespreise stammen von Skinport.</p>
+    <div class="table-head">
+      <h2 id="cs2all-count"></h2>
+      <input type="search" id="cs2all-search" placeholder="Item suchen …">
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Item</th><th class="num hide-m">Monate</th><th class="num">Letzter Steam-Preis</th></tr></thead>
+      <tbody id="cs2all-body"></tbody>
+    </table>
+  </section>
 
   <section class="view" id="view-pccards">
     <div class="kicker">Bestandsdaten · PriceCharting (monatlich)</div>
@@ -99,6 +128,21 @@
         „Advancing/Declining" zählt die Mitglieder mit bestätigt gestiegenem bzw. gefallenem Preis.</li>
     </ul>
 
+    <h2>CS2-Skins</h2>
+    <p>Der <strong>CS2500</strong> wendet exakt dieselben Top-500-Regeln auf CS2-Items an. Tagesquelle
+      ist die öffentliche Skinport-API (Median der aktuellen Angebote, USD, ein Abzug pro Tag). Die
+      lange Historie seit 2013 stammt aus den eigenen Steam-Market-Scrapes (Monatsmediane der
+      Tagesverkäufe) und wird je Item in der Detailansicht gezeigt. Zusätzlich läuft der
+      gleichgewichtete Index nach der Masterarbeits-Methodik weiter (Winsorisierung 1 %/99 %,
+      Seasoning-Filter ≥ 6 Monate, Vormonatspreis ≥ 0,10 USD): historisch aus Steam-Daten, ab Juli 2026
+      täglich aus Skinport-Daten verkettet – der Quellenwechsel ist im Chart als solcher zu verstehen.</p>
+
+    <h2>Traditionelle Märkte</h2>
+    <p>Aktien-Indizes, Gold, Silber und Bitcoin dienen als Vergleichsmaßstab. Historie 2013–2026 aus
+      dem eigenen Bestand; die tägliche Fortschreibung nutzt Yahoo-Finance-Schlusskurse und wird per
+      Renditen-Verkettung angeschlossen (beim MSCI World über den URTH-ETF als Renditeproxy), sodass
+      Niveauunterschiede zwischen Quellen keine Sprünge erzeugen.</p>
+
     <h2>Warum andere Seiten andere Preise zeigen</h2>
     <p>Es gibt keinen einzelnen „wahren" Preis für eine Sammelkarte – jeder Tracker misst einen anderen
       Markt. PriceCharting mittelt eBay-Verkäufe (Auktionen, gemischte Zustände) und liegt bei teuren
@@ -137,6 +181,9 @@
 
 <script src="data/idx_SPK500.js"></script>
 <script src="data/idx_SPKS.js"></script>
+<script src="data/idx_CS2.js"></script>
+<script src="data/cs2_steam_list.js"></script>
+<script src="data/markets.js"></script>
 <script src="data/pc_cards.js"></script>
 <script src="data/pc_sealed.js"></script>
 <script src="data/newsletters.js"></script>

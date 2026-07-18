@@ -126,9 +126,11 @@ function renderIndexView(container, data, kind) {
   const abs = o.prev ? o.level - o.prev : null;
   container.innerHTML = "";
 
+  const isCs2 = kind === "cs2";
   const kicker = el("div", "kicker",
     `Marktindex <span class="ticker">${data.name}</span>`);
-  const h1 = el("h1", null, isCards ? "Pokémon-Karten-Index" : "Pokémon-Sealed-Index");
+  const h1 = el("h1", null, isCards ? "Pokémon-Karten-Index" :
+    isCs2 ? "CS2-Skin-Index" : "Pokémon-Sealed-Index");
   const lr = el("div", "level-row");
   lr.append(el("span", "level", fmtLvl(o.level)));
   if (chg != null) {
@@ -162,6 +164,16 @@ function renderIndexView(container, data, kind) {
   });
   draw();
 
+  if (data.ew && data.ew.length > 1) {
+    container.append(el("h2", null, "Gleichgewichteter Index (Masterarbeits-Methodik)"));
+    container.append(el("p", "note",
+      "Winsorisiert 1 %/99 %, Seasoning-Filter ≥ 6 Monate. Historie: Steam-Monatsdaten; " +
+      "tägliche Fortführung: Skinport (Quellenwechsel Juli 2026, per Verkettung angeschlossen)."));
+    const ewWrap = el("div", "chart-wrap");
+    container.append(ewWrap);
+    renderChart(ewWrap, data.ew);
+  }
+
   container.append(el("h2", null, "Überblick"));
   const tiles = el("div", "tiles");
   const tile = (k, v) => { const t = el("div", "tile"); t.append(el("span", "k", k), el("span", "v", v)); return t; };
@@ -182,10 +194,10 @@ function renderIndexView(container, data, kind) {
     (rows || []).forEach(r => {
       const m = el("div", "mover");
       m.innerHTML =
-        `<img loading="lazy" src="${imgUrl(r.id)}" onerror="this.style.visibility='hidden'">
+        `${isCs2 ? "" : `<img loading="lazy" src="${imgUrl(r.id)}" onerror="this.style.visibility='hidden'">`}
          <div class="m-name"><div class="n">${esc(r.n)}</div><div class="s">${esc(r.s)}</div></div>
          <div class="m-price">${fmtUsd(r.p)}<br>${pctHtml(r.chg)}</div>`;
-      m.addEventListener("click", () => openTcgModal(r, data));
+      m.addEventListener("click", () => isCs2 ? openCs2Modal(r.n, r, data) : openTcgModal(r, data));
       c.append(m);
     });
     return c;
@@ -204,7 +216,7 @@ function renderIndexView(container, data, kind) {
   container.append(th);
 
   const table = el("table");
-  table.innerHTML = `<thead><tr><th>#</th><th>${isCards ? "Karte" : "Produkt"}</th>
+  table.innerHTML = `<thead><tr><th>#</th><th>${isCards ? "Karte" : isCs2 ? "Item" : "Produkt"}</th>
     <th class="hide-m">Set</th><th class="num">Preis</th><th class="num">Änderung</th></tr></thead>`;
   const tbody = el("tbody");
   table.append(tbody);
@@ -229,7 +241,7 @@ function renderIndexView(container, data, kind) {
          <td class="set hide-m">${esc(r.s)}</td>
          <td class="num">${r.p >= 1000 ? fmtUsd0(Math.round(r.p)) : fmtUsd(r.p)}${r.car ? ' <span class="dagger" title="fortgeschrieben">†</span>' : ""}</td>
          <td class="num">${pctHtml(r.car ? null : r.chg, r.car)}</td>`;
-      tr.addEventListener("click", () => openTcgModal(r, data));
+      tr.addEventListener("click", () => isCs2 ? openCs2Modal(r.n, r, data) : openTcgModal(r, data));
       tbody.append(tr);
     });
     if (rows.length > limit) {
@@ -285,6 +297,7 @@ const PC_GRADE_META = {
   p10:{ name: "PSA 10", col: "#2ecc71" },
   n:  { name: "Neu/OVP", col: "#f1c40f" },
   g:  { name: "Graded", col: "#2ecc71" },
+  st: { name: "Steam-Monatsmedian", col: "#6cb2ff" },
 };
 const CAT_NAMES = { booster_box: "Booster-Box", etb: "ETB", bundle: "Bundle",
   pack_blister: "Pack/Blister", tin: "Tin", deck: "Deck",
@@ -423,6 +436,213 @@ function setupPcView(listVar, bodyId, searchId, countId, prefix, chipsId) {
   else if (count) count.textContent = "Noch keine Daten exportiert (export_pricecharting.py ausführen).";
 }
 
+/* ------------------------------------------------------------------- CS2 */
+const CS2_SHARDS = 32;
+function djb2(s) {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+  return h;
+}
+const cs2Loaded = {};
+function loadCs2Shard(shard, cb) {
+  if (window.CS2_HIST && window.CS2_HIST[shard]) { cb(); return; }
+  if (!cs2Loaded[shard]) {
+    cs2Loaded[shard] = true;
+    const s = document.createElement("script");
+    s.src = `data/cs2/hist_${shard}.js`;
+    document.body.append(s);
+  }
+  const onEv = e => {
+    if (e.detail === shard) { document.removeEventListener("cs2shard", onEv); cb(); }
+  };
+  document.addEventListener("cs2shard", onEv);
+}
+
+function openCs2Modal(name, row, data) {
+  const steamUrl = "https://steamcommunity.com/market/listings/730/" + encodeURIComponent(name);
+  modal.innerHTML =
+    `<button class="close" onclick="this.closest('.modal-bg').classList.remove('open')">×</button>
+     <h3>${esc(name)}</h3>
+     <div class="sub">CS2 · Steam-Historie (monatlich) + Skinport (täglich)</div>
+     ${row ? `<div class="price">${fmtUsd(row.p)} <small>${row.car ? "† fortgeschrieben" : pctHtml(row.chg)} · Skinport heute</small></div>` : ""}
+     ${row && row.r ? `<div class="stat-grid">
+        <div><div class="k">Rang</div><div class="v">#${row.r} von 500</div></div>
+        <div><div class="k">Wochenänderung</div><div class="v">${row.wchg != null ? pctHtml(row.wchg) : "—"}</div></div>
+        <div><div class="k">Stand</div><div class="v">${data ? fmtDate(data.asof) : "—"}</div></div>
+      </div>` : ""}
+     <div id="cs2-chart"><p class="note">Lade Steam-Historie …</p></div>
+     <div class="links">
+       ${row && row.u ? `<a href="${esc(row.u)}" target="_blank" rel="noopener">Skinport ↗</a>` : ""}
+       <a href="${steamUrl}" target="_blank" rel="noopener">Steam Market ↗</a>
+     </div>`;
+  modalBg.classList.add("open");
+  loadCs2Shard(djb2(name) % CS2_SHARDS, () => {
+    const series = (window.CS2_HIST[djb2(name) % CS2_SHARDS] || {})[name];
+    const c = $("#cs2-chart");
+    c.innerHTML = "";
+    if (series && series.length > 1) pcChart(c, { st: series });
+    else c.append(el("p", "note", "Keine Steam-Historie zu diesem Item (neu oder nie gescrapt)."));
+  });
+}
+
+function setupCs2All() {
+  const list = window.CS2_STEAM_LIST || [];
+  const body = $("#cs2all-body"), search = $("#cs2all-search"), count = $("#cs2all-count");
+  if (!list.length) {
+    if (count) count.textContent = "Noch keine Steam-Historie exportiert.";
+    return;
+  }
+  let limit = 200;
+  const render = () => {
+    const toks = (search.value || "").trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const rows = list.filter(e => !toks.length ||
+      toks.every(t => e[0].toLowerCase().includes(t)));
+    count.textContent = `${rows.length.toLocaleString("de-DE")} Items`;
+    body.innerHTML = "";
+    const frag = document.createDocumentFragment();
+    rows.slice(0, limit).forEach((e, i) => {
+      const tr = el("tr");
+      tr.innerHTML =
+        `<td class="muted">${i + 1}</td>
+         <td><span class="cardname">${esc(e[0])}</span></td>
+         <td class="num hide-m muted">${e[3]}</td>
+         <td class="num">${fmtUsd(e[2] / 100)} <span class="muted">(${e[1]})</span></td>`;
+      tr.addEventListener("click", () => openCs2Modal(e[0], null, null));
+      frag.append(tr);
+    });
+    if (rows.length > limit) {
+      const tr = el("tr", "more-row");
+      tr.innerHTML = `<td colspan="4">Mehr anzeigen (${(rows.length - limit).toLocaleString("de-DE")} weitere) …</td>`;
+      tr.addEventListener("click", () => { limit += 500; render(); });
+      frag.append(tr);
+    }
+    body.append(frag);
+  };
+  search.addEventListener("input", () => { limit = 200; render(); });
+  render();
+}
+
+/* ---------------------------------------------------------------- Märkte */
+const MARKET_NAMES = {
+  SP500: "S&P 500", DAX: "DAX", NASDAQ100: "NASDAQ 100",
+  EUROSTOXX50: "EuroStoxx 50", MSCIWORLD: "MSCI World (URTH)",
+  GOLD: "Gold", SILVER: "Silber", BITCOIN: "Bitcoin",
+  SPK500: "Pokémon-Karten (SPK500)", SPKS: "Pokémon-Sealed (SPKS)",
+  CS2500: "CS2-Skins (CS2500)",
+};
+const MARKET_COLORS = ["#6cb2ff", "#f1c40f", "#2ecc71", "#ff5c5c", "#b48cff",
+  "#4dd0e1", "#ff9f43", "#e84393", "#4cc38a", "#a3cb38", "#fd79a8"];
+
+function renderMultiChart(container, seriesMap, rangeDays) {
+  const W = 900, H = 360, padL = 46, padR = 12, padT = 12, padB = 28;
+  container.innerHTML = "";
+  const names = Object.keys(seriesMap);
+  const norm = {};
+  let x0 = Infinity, x1 = -Infinity;
+  names.forEach(n => {
+    let s = seriesMap[n];
+    if (!s || s.length < 2) return;
+    const last = new Date(s[s.length - 1][0]).getTime();
+    s = s.filter(p => (last - new Date(p[0]).getTime()) / 864e5 <= rangeDays);
+    if (s.length < 2) return;
+    const base = s[0][1];
+    norm[n] = s.map(p => [new Date(p[0]).getTime(), p[1] / base * 100]);
+    x0 = Math.min(x0, norm[n][0][0]);
+    x1 = Math.max(x1, norm[n][norm[n].length - 1][0]);
+  });
+  const keys = Object.keys(norm);
+  if (!keys.length) {
+    container.append(el("p", "note", "Keine Daten im gewählten Zeitraum."));
+    return;
+  }
+  let y0 = Infinity, y1 = -Infinity;
+  keys.forEach(n => norm[n].forEach(p => { y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); }));
+  const pad = (y1 - y0) * 0.05 || 1;
+  y0 -= pad; y1 += pad;
+  const X = t => padL + (t - x0) / (x1 - x0 || 1) * (W - padL - padR);
+  const Y = v => padT + (y1 - v) / (y1 - y0 || 1) * (H - padT - padB);
+  let grid = "", labels = "", paths = "";
+  for (let i = 0; i <= 4; i++) {
+    const v = y0 + (y1 - y0) * i / 4, y = Y(v);
+    grid += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#232b36" stroke-dasharray="3 4"/>`;
+    labels += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" fill="#8b95a3" font-size="11">${Math.round(v)}</text>`;
+  }
+  for (let i = 0; i < 5; i++) {
+    const t = x0 + (x1 - x0) * i / 4;
+    labels += `<text x="${X(t)}" y="${H - 8}" text-anchor="middle" fill="#8b95a3" font-size="11">${new Date(t).toLocaleDateString("de-DE", { month: "short", year: "2-digit" })}</text>`;
+  }
+  const legend = el("div", "legend");
+  keys.forEach((n, i) => {
+    const col = MARKET_COLORS[i % MARKET_COLORS.length];
+    let d = "";
+    norm[n].forEach((p, j) => { d += (j ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1); });
+    paths += `<path d="${d}" fill="none" stroke="${col}" stroke-width="1.8"/>`;
+    const endVal = norm[n][norm[n].length - 1][1];
+    legend.innerHTML += `<span><span class="sw" style="background:${col}"></span>${esc(MARKET_NAMES[n] || n)} (${Math.round(endVal)})</span>`;
+  });
+  const div = el("div");
+  div.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${grid}${paths}${labels}</svg>`;
+  container.append(div.firstElementChild, legend);
+}
+
+function setupMarkets() {
+  const root = $("#markets-root");
+  const mk = window.MARKETS;
+  if (!root || !mk) {
+    if (root) root.append(el("p", "note", "Noch keine Marktdaten vorhanden."));
+    return;
+  }
+  const seriesAll = Object.assign({}, mk.series);
+  if (window.IDX_CARDS) seriesAll.SPK500 = window.IDX_CARDS.series;
+  if (window.IDX_SEALED) seriesAll.SPKS = window.IDX_SEALED.series;
+  if (window.IDX_CS2 && window.IDX_CS2.ew) seriesAll.CS2500 = window.IDX_CS2.ew;
+
+  const active = new Set(["SP500", "GOLD", "BITCOIN", "SPK500", "CS2500"]);
+  const chips = el("div", "chips");
+  Object.keys(seriesAll).forEach(n => {
+    const b = el("button", active.has(n) ? "active" : null, MARKET_NAMES[n] || n);
+    b.addEventListener("click", () => {
+      if (active.has(n)) active.delete(n); else active.add(n);
+      b.classList.toggle("active");
+      draw();
+    });
+    chips.append(b);
+  });
+  root.append(chips);
+
+  const chartWrap = el("div", "chart-wrap");
+  const ranges = el("div", "ranges");
+  root.append(chartWrap, ranges);
+  const R = { "1M": 31, "6M": 186, "1J": 366, "5J": 1830, "MAX": 1e9 };
+  let activeRange = "1J";
+  Object.keys(R).forEach(k => {
+    const b = el("button", k === activeRange ? "active" : null, k);
+    b.addEventListener("click", () => {
+      activeRange = k;
+      ranges.querySelectorAll("button").forEach(x => x.classList.toggle("active", x.textContent === k));
+      draw();
+    });
+    ranges.append(b);
+  });
+  const draw = () => {
+    const sel = {};
+    active.forEach(n => { if (seriesAll[n]) sel[n] = seriesAll[n]; });
+    renderMultiChart(chartWrap, sel, R[activeRange]);
+  };
+  draw();
+
+  root.append(el("h2", null, "Tagesüberblick"));
+  const tiles = el("div", "tiles");
+  Object.entries(mk.changes).forEach(([n, c]) => {
+    const t = el("div", "tile");
+    t.append(el("span", "k", MARKET_NAMES[n] || n),
+      el("span", "v", `${c.level.toLocaleString("de-DE")} ${pctHtml(c.d1)}`));
+    tiles.append(t);
+  });
+  root.append(tiles);
+  root.append(el("p", "note", "Änderung = letzter vs. vorletzter Schlusskurs der jeweiligen Quelle."));
+}
+
 /* ------------------------------------------------------------- Newsletter */
 function setupNews() {
   const c = $("#news-list");
@@ -440,6 +660,9 @@ function setupNews() {
 /* ------------------------------------------------------------------ Start */
 renderIndexView($('[data-idx="cards"]'), window.IDX_CARDS, "cards");
 renderIndexView($('[data-idx="sealed"]'), window.IDX_SEALED, "sealed");
+renderIndexView($('[data-idx="cs2"]'), window.IDX_CS2, "cs2");
 setupPcView("PC_CARDS", "pccards-body", "pccards-search", "pccards-count", "cards");
 setupPcView("PC_SEALED", "pcsealed-body", "pcsealed-search", "pcsealed-count", "sealed", "pcsealed-chips");
+setupCs2All();
+setupMarkets();
 setupNews();
