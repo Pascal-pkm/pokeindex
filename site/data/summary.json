@@ -1,0 +1,727 @@
+{
+ "built": "2026-07-18T09:02:26Z",
+ "SPK500": {
+  "asof": "2026-07-17",
+  "overview": {
+   "level": 999.71,
+   "prev": 1006.27,
+   "ath": 1013.38,
+   "atl": 998.03,
+   "basket": 242050,
+   "adv": 41,
+   "dec": 27
+  },
+  "series_tail": [
+   [
+    "2026-07-03",
+    1000.0
+   ],
+   [
+    "2026-07-04",
+    998.03
+   ],
+   [
+    "2026-07-05",
+    999.46
+   ],
+   [
+    "2026-07-06",
+    1004.77
+   ],
+   [
+    "2026-07-07",
+    1008.6
+   ],
+   [
+    "2026-07-08",
+    1005.92
+   ],
+   [
+    "2026-07-09",
+    1010.15
+   ],
+   [
+    "2026-07-10",
+    1010.87
+   ],
+   [
+    "2026-07-11",
+    1010.69
+   ],
+   [
+    "2026-07-12",
+    1010.7
+   ],
+   [
+    "2026-07-13",
+    1013.38
+   ],
+   [
+    "2026-07-14",
+    1004.54
+   ],
+   [
+    "2026-07-15",
+    1009.39
+   ],
+   [
+    "2026-07-16",
+    1006.27
+   ],
+   [
+    "2026-07-17",
+    999.71
+   ]
+  ],
+  "weekly_up": [
+   {
+    "id": 86905,
+    "r": 7,
+    "n": "Lugia",
+    "s": "Aquapolis",
+    "num": "149/147",
+    "p": 2225.0,
+    "chg": null,
+    "wchg": 345.0,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/86905/pokemon-aquapolis-lugia"
+   },
+   {
+    "id": 83504,
+    "r": 315,
+    "n": "Alakazam E4 Lv.X",
+    "s": "Rising Rivals",
+    "num": "103/111",
+    "p": 300.0,
+    "chg": null,
+    "wchg": 200.0,
+    "car": 0,
+    "new": 1,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/83504/pokemon-rising-rivals-alakazam-e4-lvx"
+   },
+   {
+    "id": 88074,
+    "r": 246,
+    "n": "Pikachu",
+    "s": "Skyridge",
+    "num": "084/144",
+    "p": 350.0,
+    "chg": null,
+    "wchg": 194.61,
+    "car": 0,
+    "new": 1,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/88074/pokemon-skyridge-pikachu"
+   },
+   {
+    "id": 84762,
+    "r": 450,
+    "n": "Deoxys (Delta Species - Defense Forme)",
+    "s": "Holon Phantoms",
+    "num": "4/110",
+    "p": 240.0,
+    "chg": null,
+    "wchg": 155.73,
+    "car": 0,
+    "new": 1,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/84762/pokemon-holon-phantoms-deoxys-delta-species-defense-forme"
+   },
+   {
+    "id": 88435,
+    "r": 213,
+    "n": "Psyduck",
+    "s": "Aquapolis",
+    "num": "104/147",
+    "p": 391.4,
+    "chg": 0.0,
+    "wchg": 133.67,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/88435/pokemon-aquapolis-psyduck"
+   }
+  ],
+  "weekly_dn": [
+   {
+    "id": 88626,
+    "r": 307,
+    "n": "Rayquaza",
+    "s": "Emerald",
+    "num": "9/106",
+    "p": 307.49,
+    "chg": 0.0,
+    "wchg": -59.0,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/88626/pokemon-emerald-rayquaza"
+   },
+   {
+    "id": 86351,
+    "r": 14,
+    "n": "Jolteon Star",
+    "s": "Power Keepers",
+    "num": "101/108",
+    "p": 1549.97,
+    "chg": 0.0,
+    "wchg": -22.5,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/86351/pokemon-power-keepers-jolteon-star"
+   },
+   {
+    "id": 90137,
+    "r": 209,
+    "n": "Umbreon (13)",
+    "s": "Neo Discovery",
+    "num": "13/75",
+    "p": 395.26,
+    "chg": -20.82,
+    "wchg": -20.82,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/90137/pokemon-neo-discovery-umbreon-13"
+   },
+   {
+    "id": 86002,
+    "r": 344,
+    "n": "Gyarados (Delta Species)",
+    "s": "Holon Phantoms",
+    "num": "8/110",
+    "p": 288.99,
+    "chg": 0.0,
+    "wchg": -17.43,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/86002/pokemon-holon-phantoms-gyarados-delta-species"
+   },
+   {
+    "id": 85278,
+    "r": 457,
+    "n": "Entei ex",
+    "s": "Team Magma vs Team Aqua",
+    "num": "91/95",
+    "p": 236.12,
+    "chg": 0.0,
+    "wchg": -13.32,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/85278/pokemon-team-magma-vs-team-aqua-entei-ex"
+   }
+  ],
+  "gainers": [
+   {
+    "id": 83524,
+    "r": 321,
+    "n": "Altaria ex",
+    "s": "Emerald",
+    "num": "90/106",
+    "p": 299.99,
+    "chg": 81.81,
+    "wchg": 81.81,
+    "car": 0,
+    "new": 1,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/83524/pokemon-emerald-altaria-ex"
+   },
+   {
+    "id": 83857,
+    "r": 69,
+    "n": "Black Kyurem EX (145 Full Art)",
+    "s": "Boundaries Crossed",
+    "num": "145/149",
+    "p": 699.64,
+    "chg": 28.34,
+    "wchg": 28.34,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/83857/pokemon-boundaries-crossed-black-kyurem-ex-145-full-art"
+   },
+   {
+    "id": 87425,
+    "r": 280,
+    "n": "Mewtwo (Delta Species)",
+    "s": "Delta Species",
+    "num": "12/113",
+    "p": 327.99,
+    "chg": 27.85,
+    "wchg": 27.85,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/87425/pokemon-delta-species-mewtwo-delta-species"
+   },
+   {
+    "id": 84834,
+    "r": 403,
+    "n": "Ditto - 037/113 (Charmander)",
+    "s": "Delta Species",
+    "num": "37/113",
+    "p": 252.99,
+    "chg": 24.03,
+    "wchg": 24.03,
+    "car": 0,
+    "new": 1,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/84834/pokemon-delta-species-ditto-037-113-charmander"
+   },
+   {
+    "id": 94688,
+    "r": 119,
+    "n": "M Gengar EX (121 Secret Rare)",
+    "s": "XY - Phantom Forces",
+    "num": "121/119",
+    "p": 524.6,
+    "chg": 23.77,
+    "wchg": 23.77,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/94688/pokemon-xy-phantom-forces-m-gengar-ex-121-secret-rare"
+   }
+  ],
+  "losers": [
+   {
+    "id": 257103,
+    "r": 12,
+    "n": "Pikachu - 227/S-P",
+    "s": "SWSH: Sword & Shield Promo Cards",
+    "num": "227/S-P",
+    "p": 1600.0,
+    "chg": -30.42,
+    "wchg": 0.0,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/257103/pokemon-swsh-sword-and-shield-promo-cards-pikachu-227-s-p"
+   },
+   {
+    "id": 90137,
+    "r": 209,
+    "n": "Umbreon (13)",
+    "s": "Neo Discovery",
+    "num": "13/75",
+    "p": 395.26,
+    "chg": -20.82,
+    "wchg": -20.82,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/90137/pokemon-neo-discovery-umbreon-13"
+   },
+   {
+    "id": 704877,
+    "r": 255,
+    "n": "Mega Darkrai ex - 120/084",
+    "s": "ME05: Pitch Black",
+    "num": "120/084",
+    "p": 343.55,
+    "chg": -5.96,
+    "wchg": null,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/704877/pokemon-me05-pitch-black-mega-darkrai-ex-120-084"
+   },
+   {
+    "id": 42382,
+    "r": 65,
+    "n": "Charizard",
+    "s": "Base Set",
+    "num": "004/102",
+    "p": 729.08,
+    "chg": -5.74,
+    "wchg": 0.11,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/42382/pokemon-base-set-charizard"
+   },
+   {
+    "id": 676106,
+    "r": 103,
+    "n": "Mega Charizard Y ex - 294/217",
+    "s": "ME: Ascended Heroes",
+    "num": "294/217",
+    "p": 555.72,
+    "chg": -3.97,
+    "wchg": -8.1,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/676106/pokemon-me-ascended-heroes-mega-charizard-y-ex-294-217"
+   }
+  ]
+ },
+ "SPKS": {
+  "asof": "2026-07-17",
+  "overview": {
+   "level": 1008.62,
+   "prev": 1008.54,
+   "ath": 1008.62,
+   "atl": 1000.0,
+   "basket": 565214,
+   "adv": 38,
+   "dec": 33
+  },
+  "series_tail": [
+   [
+    "2026-07-03",
+    1000.0
+   ],
+   [
+    "2026-07-04",
+    1000.08
+   ],
+   [
+    "2026-07-05",
+    1004.04
+   ],
+   [
+    "2026-07-06",
+    1004.24
+   ],
+   [
+    "2026-07-07",
+    1004.45
+   ],
+   [
+    "2026-07-08",
+    1004.28
+   ],
+   [
+    "2026-07-09",
+    1004.59
+   ],
+   [
+    "2026-07-10",
+    1005.06
+   ],
+   [
+    "2026-07-11",
+    1006.47
+   ],
+   [
+    "2026-07-12",
+    1006.55
+   ],
+   [
+    "2026-07-13",
+    1007.55
+   ],
+   [
+    "2026-07-14",
+    1007.93
+   ],
+   [
+    "2026-07-15",
+    1007.97
+   ],
+   [
+    "2026-07-16",
+    1008.54
+   ],
+   [
+    "2026-07-17",
+    1008.62
+   ]
+  ],
+  "weekly_up": [
+   {
+    "id": 198523,
+    "r": 251,
+    "n": "Hidden Fates Poke Ball Collection [Shiny Zoroark]",
+    "s": "Hidden Fates",
+    "num": "",
+    "p": 597.97,
+    "chg": 13.04,
+    "wchg": 23.04,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/198523/pokemon-hidden-fates-hidden-fates-poke-ball-collection-shiny-zoroark"
+   },
+   {
+    "id": 175062,
+    "r": 339,
+    "n": "Dragon Majesty Pin Collection [Latias]",
+    "s": "Dragon Majesty",
+    "num": "",
+    "p": 399.0,
+    "chg": 0.0,
+    "wchg": 15.82,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/175062/pokemon-dragon-majesty-dragon-majesty-pin-collection-latias"
+   },
+   {
+    "id": 630432,
+    "r": 45,
+    "n": "Black Bolt Booster Bundle Case",
+    "s": "SV: Black Bolt",
+    "num": "",
+    "p": 2434.0,
+    "chg": 5.28,
+    "wchg": 14.64,
+    "car": 0,
+    "new": 0,
+    "cat": "bundle",
+    "u": "https://www.tcgplayer.com/product/630432/pokemon-sv-black-bolt-black-bolt-booster-bundle-case"
+   },
+   {
+    "id": 199772,
+    "r": 304,
+    "n": "Pikachu GX & Eevee GX Special Collection",
+    "s": "SM - Cosmic Eclipse",
+    "num": "",
+    "p": 473.98,
+    "chg": 0.0,
+    "wchg": 13.94,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/199772/pokemon-sm-cosmic-eclipse-pikachu-gx-and-eevee-gx-special-collection"
+   },
+   {
+    "id": 630447,
+    "r": 201,
+    "n": "Unova Mini Tin Display Case",
+    "s": "SV: Black Bolt",
+    "num": "",
+    "p": 824.9,
+    "chg": 0.0,
+    "wchg": 13.8,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/630447/pokemon-sv-black-bolt-unova-mini-tin-display-case"
+   }
+  ],
+  "weekly_dn": [
+   {
+    "id": 268482,
+    "r": 414,
+    "n": "Shining Fates V Tin Case",
+    "s": "Shining Fates",
+    "num": "",
+    "p": 322.51,
+    "chg": 0.0,
+    "wchg": -22.28,
+    "car": 0,
+    "new": 0,
+    "cat": "tin",
+    "u": "https://www.tcgplayer.com/product/268482/pokemon-shining-fates-shining-fates-v-tin-case"
+   },
+   {
+    "id": 704190,
+    "r": 231,
+    "n": "30th Celebration Ultra-Premium Collection [Day]",
+    "s": "ME: 30th Celebration",
+    "num": "",
+    "p": 684.97,
+    "chg": -1.42,
+    "wchg": -20.81,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/704190/pokemon-me-30th-celebration-30th-celebration-ultra-premium-collection-day"
+   },
+   {
+    "id": 692943,
+    "r": 130,
+    "n": "Pitch Black Booster Bundle Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 1275.09,
+    "chg": -8.48,
+    "wchg": -16.66,
+    "car": 0,
+    "new": 0,
+    "cat": "bundle",
+    "u": "https://www.tcgplayer.com/product/692943/pokemon-me05-pitch-black-pitch-black-booster-bundle-case"
+   },
+   {
+    "id": 692941,
+    "r": 109,
+    "n": "Pitch Black Booster Box Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 1517.52,
+    "chg": -6.28,
+    "wchg": -13.24,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/692941/pokemon-me05-pitch-black-pitch-black-booster-box-case"
+   },
+   {
+    "id": 704169,
+    "r": 484,
+    "n": "30th Celebration Binder Collection",
+    "s": "ME: 30th Celebration",
+    "num": "",
+    "p": 267.72,
+    "chg": 0.0,
+    "wchg": -10.91,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/704169/pokemon-me-30th-celebration-30th-celebration-binder-collection"
+   }
+  ],
+  "gainers": [
+   {
+    "id": 198523,
+    "r": 251,
+    "n": "Hidden Fates Poke Ball Collection [Shiny Zoroark]",
+    "s": "Hidden Fates",
+    "num": "",
+    "p": 597.97,
+    "chg": 13.04,
+    "wchg": 23.04,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/198523/pokemon-hidden-fates-hidden-fates-poke-ball-collection-shiny-zoroark"
+   },
+   {
+    "id": 630432,
+    "r": 45,
+    "n": "Black Bolt Booster Bundle Case",
+    "s": "SV: Black Bolt",
+    "num": "",
+    "p": 2434.0,
+    "chg": 5.28,
+    "wchg": 14.64,
+    "car": 0,
+    "new": 0,
+    "cat": "bundle",
+    "u": "https://www.tcgplayer.com/product/630432/pokemon-sv-black-bolt-black-bolt-booster-bundle-case"
+   },
+   {
+    "id": 244411,
+    "r": 423,
+    "n": "Sword & Shield Elite Trainer Box [Set of 2]",
+    "s": "SWSH01: Sword & Shield Base Set",
+    "num": "",
+    "p": 315.99,
+    "chg": 2.06,
+    "wchg": 2.98,
+    "car": 0,
+    "new": 0,
+    "cat": "etb",
+    "u": "https://www.tcgplayer.com/product/244411/pokemon-swsh01-sword-and-shield-base-set-sword-and-shield-elite-trainer-box-set-of-2"
+   },
+   {
+    "id": 514069,
+    "r": 366,
+    "n": "Paradox Rift Build & Battle Box Display",
+    "s": "SV04: Paradox Rift",
+    "num": "",
+    "p": 374.69,
+    "chg": 2.0,
+    "wchg": 2.0,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/514069/pokemon-sv04-paradox-rift-paradox-rift-build-and-battle-box-display"
+   },
+   {
+    "id": 138133,
+    "r": 237,
+    "n": "Fossil Booster Pack [1st Edition]",
+    "s": "Fossil",
+    "num": "",
+    "p": 627.65,
+    "chg": 1.77,
+    "wchg": 5.05,
+    "car": 0,
+    "new": 0,
+    "cat": "pack_blister",
+    "u": "https://www.tcgplayer.com/product/138133/pokemon-fossil-fossil-booster-pack-1st-edition"
+   }
+  ],
+  "losers": [
+   {
+    "id": 692943,
+    "r": 130,
+    "n": "Pitch Black Booster Bundle Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 1275.09,
+    "chg": -8.48,
+    "wchg": -16.66,
+    "car": 0,
+    "new": 0,
+    "cat": "bundle",
+    "u": "https://www.tcgplayer.com/product/692943/pokemon-me05-pitch-black-pitch-black-booster-bundle-case"
+   },
+   {
+    "id": 692941,
+    "r": 109,
+    "n": "Pitch Black Booster Box Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 1517.52,
+    "chg": -6.28,
+    "wchg": -13.24,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/692941/pokemon-me05-pitch-black-pitch-black-booster-box-case"
+   },
+   {
+    "id": 688716,
+    "r": 437,
+    "n": "First Partner Illustration Collection Case (Series 2)",
+    "s": "First Partner Collection 2026",
+    "num": "",
+    "p": 303.71,
+    "chg": -4.43,
+    "wchg": -5.37,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/688716/pokemon-first-partner-collection-2026-first-partner-illustration-collection-case-series-2"
+   },
+   {
+    "id": 692948,
+    "r": 165,
+    "n": "Pitch Black Elite Trainer Box Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 998.33,
+    "chg": -2.51,
+    "wchg": -6.88,
+    "car": 0,
+    "new": 0,
+    "cat": "etb",
+    "u": "https://www.tcgplayer.com/product/692948/pokemon-me05-pitch-black-pitch-black-elite-trainer-box-case"
+   },
+   {
+    "id": 672395,
+    "r": 134,
+    "n": "Perfect Order Booster Box Case",
+    "s": "ME03: Perfect Order",
+    "num": "",
+    "p": 1252.06,
+    "chg": -2.43,
+    "wchg": -3.82,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/672395/pokemon-me03-perfect-order-perfect-order-booster-box-case"
+   }
+  ]
+ }
+}

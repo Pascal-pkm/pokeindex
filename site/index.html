@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PokéIndex – Pokémon-Markt-Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%234cc38a'/></svg>">
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="dot"></span> PokéIndex <small>privates Dashboard</small></div>
+  <nav id="nav">
+    <button data-view="cards" class="active">Karten-Index</button>
+    <button data-view="sealed">Sealed-Index</button>
+    <button data-view="pccards">Alle Karten</button>
+    <button data-view="pcsealed">Alle Sealed</button>
+    <button data-view="method">Methodik</button>
+    <button data-view="news">Newsletter</button>
+  </nav>
+</header>
+
+<main>
+  <!-- Index-Ansichten (Karten + Sealed) werden von app.js in diese Container gerendert -->
+  <section class="view visible" id="view-cards"><div class="idx" data-idx="cards"></div></section>
+  <section class="view" id="view-sealed"><div class="idx" data-idx="sealed"></div></section>
+
+  <section class="view" id="view-pccards">
+    <div class="kicker">Bestandsdaten · PriceCharting (monatlich)</div>
+    <h1>Alle gescrapten Karten</h1>
+    <p class="note">Vollständiger Bestand deiner PriceCharting-Datenpunkte (Ungraded, Grade 9, PSA 10;
+      monatliche Historie ab ca. 2020). Klick auf eine Karte öffnet die Preishistorie.</p>
+    <div class="table-head">
+      <h2 id="pccards-count"></h2>
+      <input type="search" id="pccards-search" placeholder="Karte oder Set suchen …">
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Karte</th><th class="hide-m">Set</th><th class="num">Preis (Ungraded)</th></tr></thead>
+      <tbody id="pccards-body"></tbody>
+    </table>
+  </section>
+
+  <section class="view" id="view-pcsealed">
+    <div class="kicker">Bestandsdaten · PriceCharting (monatlich)</div>
+    <h1>Alle Sealed-Produkte</h1>
+    <p class="note">Alle gescrapten Sealed-Produkte (Booster-Boxen, ETBs, Collections, Tins, Decks …)
+      mit monatlicher Historie. Klick öffnet die Preishistorie.</p>
+    <div class="chips" id="pcsealed-chips"></div>
+    <div class="table-head">
+      <h2 id="pcsealed-count"></h2>
+      <input type="search" id="pcsealed-search" placeholder="Produkt oder Set suchen …">
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Produkt</th><th class="hide-m">Set</th><th class="num">Preis</th></tr></thead>
+      <tbody id="pcsealed-body"></tbody>
+    </table>
+  </section>
+
+  <section class="view prose" id="view-method">
+    <div class="kicker">Methodik</div>
+    <h1>So funktionieren die Preise und Indizes</h1>
+
+    <h2>Woher die Preise kommen</h2>
+    <p>Jeder Tagespreis auf dieser Seite ist der <strong>TCGplayer Market Price</strong> – der geglättete
+      Durchschnitt tatsächlicher Verkäufe auf dem TCGplayer-Marktplatz (Near Mint, ungraded). Die Preise
+      werden einmal täglich gegen 20:00 UTC über die frei zugänglichen Daten von tcgcsv.com abgezogen und
+      versioniert gespeichert. Je Karte zählt das wertvollste reguläre Printing (z. B. Holofoil);
+      1st-Edition-Printings sind ausgeschlossen, weil sie auf TCGplayer kaum gehandelt werden und ihre
+      Marktpreise dort unzuverlässig sind.</p>
+
+    <h2>Schutz vor Datenfehlern</h2>
+    <ul>
+      <li><strong>Carry-Forward:</strong> Hat eine Karte keinen aktuellen Verkaufspreis, wird der letzte
+        bekannte Preis bis zu 70 Tage fortgeschrieben (in Tabellen mit † markiert), statt einen falschen
+        Absturz auf 0 $ zu zeigen.</li>
+      <li><strong>Ausreißer-Guard:</strong> Weicht ein gemeldeter Preis extrem vom Median der letzten
+        bestätigten Preise ab (mehr als das 2,5-Fache nach oben oder unter das 0,4-Fache), wird er auf dem
+        Median gehalten, bis ein zweiter Tag ihn bestätigt. Ein einzelner Datenfehler kann den Index so
+        nicht bewegen.</li>
+      <li><strong>Bestätigte Änderungen:</strong> Tages- und Wochenänderungen werden nur zwischen zwei
+        bestätigten Preisen ausgewiesen. Karten ohne bestätigten Preis an beiden Tagen zeigen „—" und
+        tauchen nicht in den Mover-Listen auf.</li>
+    </ul>
+
+    <h2>Die Indizes</h2>
+    <p><strong>SPK500 (Karten-Index):</strong> die 500 teuersten Einzelkarten nach aktuellem Marktpreis.
+      <strong>SPKS (Sealed-Index):</strong> dieselben Regeln, angewandt auf das Universum der
+      Sealed-Produkte (Booster-Boxen, ETBs, Collections, Tins, Decks …).</p>
+    <ul>
+      <li>Startniveau 1000 am ersten Datentag der Historie.</li>
+      <li>Der Indexstand entwickelt sich täglich mit der wertgewichteten Preisänderung der Mitglieder
+        (Summe der Preise), vergleichbar einem preisgewichteten Korb.</li>
+      <li>Die Mitgliedschaft wird täglich fortgeschrieben (Top 500 nach Preis). Wechsel in der
+        Zusammensetzung verändern den Indexstand nicht – der Übergang ist über eine Divisor-Logik stetig,
+        wie bei großen Aktienindizes. Neuzugänge sind mit „NEU" markiert.</li>
+      <li>„Basket value" ist der Dollarwert des kompletten Korbs (Summe aller 500 Preise);
+        „Advancing/Declining" zählt die Mitglieder mit bestätigt gestiegenem bzw. gefallenem Preis.</li>
+    </ul>
+
+    <h2>Warum andere Seiten andere Preise zeigen</h2>
+    <p>Es gibt keinen einzelnen „wahren" Preis für eine Sammelkarte – jeder Tracker misst einen anderen
+      Markt. PriceCharting mittelt eBay-Verkäufe (Auktionen, gemischte Zustände) und liegt bei teuren
+      Karten oft niedriger als TCGplayer; eBay-Suchergebnisse sind überwiegend Angebotspreise und damit
+      höher als echte Abschlüsse; Graded-Preise (PSA/BGS/CGC) sind ein eigener Markt. Genau deshalb nutzt
+      der Index eine einzige, verkaufsbasierte Messlatte (TCGplayer Market) über alle Produkte hinweg.
+      Die Ansichten „Alle Karten" und „Alle Sealed" zeigen ergänzend die selbst gescrapten
+      PriceCharting-Bestände mit monatlicher Historie – bewusst getrennt vom Tagesindex.</p>
+
+    <h2>Automatisierung</h2>
+    <p>Ein täglicher GitHub-Actions-Lauf zieht die Preise, berechnet beide Indizes deterministisch über
+      die komplette Historie neu und veröffentlicht die Seite. Jeden Sonntag fasst ein automatischer
+      Newsletter die Woche zusammen (Indexstände, Wochenspanne, größte bestätigte Mover) und wird per
+      E-Mail zugestellt sowie im Archiv abgelegt.</p>
+  </section>
+
+  <section class="view" id="view-news">
+    <div class="kicker">Wochenberichte</div>
+    <h1>Newsletter-Archiv</h1>
+    <p class="note">Jeden Sonntag automatisch erstellt und per E-Mail zugestellt. Hier liegen alle
+      bisherigen Ausgaben.</p>
+    <div id="news-list" class="prose"></div>
+  </section>
+</main>
+
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal"></div>
+</div>
+
+<footer>
+  Privates Dashboard · Tagespreise: TCGplayer Market Price via tcgcsv.com · Historie: eigene
+  PriceCharting-Scrapes · Kein Anlagerat, keine Gewähr.
+</footer>
+
+<div class="chart-tip" id="chart-tip"></div>
+
+<script src="data/idx_SPK500.js"></script>
+<script src="data/idx_SPKS.js"></script>
+<script src="data/pc_cards.js"></script>
+<script src="data/pc_sealed.js"></script>
+<script src="data/newsletters.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

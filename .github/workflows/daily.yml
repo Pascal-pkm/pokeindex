@@ -1,0 +1,53 @@
+name: Täglicher Datenabzug + Deploy
+
+on:
+  schedule:
+    - cron: "30 20 * * *"   # täglich 20:30 UTC (tcgcsv aktualisiert ~20:00 UTC)
+  workflow_dispatch:         # manueller Start über den Actions-Tab
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Tagespreise abziehen (tcgcsv)
+        run: python scripts/fetch_prices.py
+
+      - name: Historie nachladen (Archiv-Backfill, max. 45 Tage pro Lauf)
+        run: python scripts/backfill_archive.py --days 45
+
+      - name: Indizes berechnen + Website-Daten bauen
+        run: python scripts/build_indices.py
+
+      - name: Änderungen committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data site/data
+          git commit -m "Daten-Update $(date -u +%F)" || echo "nichts zu committen"
+          git push
+
+      - name: Website-Artefakt hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Auf GitHub Pages veröffentlichen
+        uses: actions/deploy-pages@v4

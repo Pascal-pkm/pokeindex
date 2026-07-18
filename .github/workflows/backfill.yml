@@ -1,0 +1,54 @@
+name: Historie-Backfill (bis Feb 2024)
+
+# Läuft alle 6 Stunden, bis die komplette Preishistorie seit 2024-02-08
+# nachgeladen ist; danach beendet sich jeder Lauf sofort ("nichts zu tun").
+# Kann im Actions-Tab auch manuell gestartet werden.
+
+on:
+  schedule:
+    - cron: "15 2,8,14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Archivtage nachladen
+        run: python scripts/backfill_archive.py --days 60
+
+      - name: Indizes neu berechnen
+        run: python scripts/build_indices.py
+
+      - name: Änderungen committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data site/data
+          git commit -m "Backfill $(date -u +%FT%H:%M)" || echo "nichts zu committen"
+          git push
+
+      - name: Website-Artefakt hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Auf GitHub Pages veröffentlichen
+        uses: actions/deploy-pages@v4

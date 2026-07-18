@@ -1,0 +1,1 @@
+window.NEWSLETTERS=["2026-07-18"];
