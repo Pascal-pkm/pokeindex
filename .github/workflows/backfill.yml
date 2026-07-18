@@ -32,7 +32,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Archivtage nachladen
-        run: python scripts/backfill_archive.py --days 60
+        run: python scripts/backfill_archive.py --days 150
 
       - name: Indizes neu berechnen
         run: python scripts/build_indices.py

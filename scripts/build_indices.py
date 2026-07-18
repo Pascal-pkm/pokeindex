@@ -9,14 +9,24 @@ zwei Universen:
 Regeln:
   * Preis je Produkt = Market Price des wertvollsten regulären Printings
     (1st Edition ausgeschlossen; passiert schon beim Abzug)
-  * Ausreißer-Guard: weicht ein Tagespreis mehr als 2,5x nach oben oder
-    0,4x nach unten vom Median der letzten 14 bestätigten Preise ab, wird
-    er auf dem Median gehalten, bis ein zweiter Tag ihn bestätigt
-  * Carry-Forward: fehlt ein Preis, wird der letzte bekannte bis zu 70
-    Kalendertage fortgeschrieben (†); danach fällt das Produkt heraus
+  * Ausreißer-Guard (nur für Anzeige/Ranking): weicht ein Tagespreis mehr
+    als 2,5x nach oben oder 0,4x nach unten vom Median der letzten 14
+    bestätigten Preise ab, wird er auf dem Median gehalten, bis ein
+    zweiter Tag ihn bestätigt
+  * Carry-Forward (nur Anzeige/Ranking): fehlt ein Preis, wird der letzte
+    bekannte bis zu 70 Kalendertage fortgeschrieben (†)
   * Tagesänderung nur zwischen zwei bestätigten Preisen ("confirmed")
-  * Mitglieder = Top 500 nach aktuellem Preis, täglich fortgeschrieben;
-    Index-Level bleibt über Mitgliederwechsel hinweg stetig (Divisor-Logik)
+  * Mitglieder = Top 500 nach aktuellem (geglättetem) Preis, täglich
+    fortgeschrieben
+  * Index-Bewegung: winsorisierter (1 %/99 %) GLEICHGEWICHTETER Mittelwert
+    der Tagesrenditen der gestrigen Mitglieder, gemessen an ROHEN
+    (ungeglätteten) Preispaaren — nicht am dollar-gewichteten Preis-
+    Verhältnis. Ein wert-gewichteter Ansatz reagiert überproportional auf
+    einzelne teure Karten mit Datenlücken/Sprüngen (z. B. nach längeren
+    Pausen ohne Verkauf); der cross-sektionale Winsor-Schnitt entschärft
+    einzelne Ausreißer, ohne dass sich stateful Median-Artefakte über
+    Monate aufschaukeln können. Tage mit zu wenigen validen Paaren (<20)
+    lassen das Level unverändert, statt auf Rauschen zu reagieren.
   * Startniveau 1000 am ersten Datentag
 
 Die komplette Historie wird bei jedem Lauf deterministisch neu gerechnet
@@ -90,11 +100,17 @@ def img_url(pid):
     return f"https://tcgplayer-cdn.tcgplayer.com/product/{pid}_in_200x200.jpg"
 
 
-def compute_index(name, dates, universe, products):
-    """universe: {pid: (adj, conf)}. Liefert Ergebnis-Dict für die Website."""
+RETURN_WINSOR = 0.01       # Cross-sektionaler Schnitt der Tagesrenditen
+MIN_RETURN_PAIRS = 20      # Unter dieser Zahl valider Paare: Level halten
+
+
+def compute_index(name, dates, universe, products, start_level=BASE_LEVEL):
+    """universe: {pid: (adj, conf, raw)}. Liefert Ergebnis-Dict für die Website.
+    start_level erlaubt das Verketten an eine vorangehende Historie (z. B.
+    CS2500 an die monatliche Steam-Vorgeschichte)."""
     n = len(dates)
     series = []
-    level = BASE_LEVEL
+    level = start_level
     prev_members = None
     members = None
     adv = dec = 0
@@ -105,18 +121,25 @@ def compute_index(name, dates, universe, products):
         top = sorted(priced.items(), key=lambda kv: (-kv[1], kv[0]))[:INDEX_SIZE]
         members_today = [pid for pid, _ in top]
         if prev_members is not None:
-            common = [pid for pid in prev_members
-                      if universe[pid][0][di] is not None and
-                      universe[pid][0][prev_di] is not None]
-            s_prev = sum(universe[pid][0][prev_di] for pid in common)
-            s_now = sum(universe[pid][0][di] for pid in common)
-            if s_prev > 0:
-                level = level * (s_now / s_prev)
+            # Bewegung = winsorisierter Mittelwert der ROHEN Tagesrenditen
+            # der gestrigen Mitglieder (siehe Modulkopf für die Begründung).
+            rets = []
+            for pid in prev_members:
+                raw_a = universe[pid][2][prev_di]
+                raw_b = universe[pid][2][di]
+                if raw_a and raw_b:
+                    rets.append(raw_b / raw_a - 1)
+            if len(rets) >= MIN_RETURN_PAIRS:
+                rets.sort()
+                lo = rets[int(len(rets) * RETURN_WINSOR)]
+                hi = rets[min(len(rets) - 1, int(len(rets) * (1 - RETURN_WINSOR)))]
+                clipped = [min(max(x, lo), hi) for x in rets]
+                level = level * (1 + sum(clipped) / len(clipped))
         basket = sum(c for _, c in top) / 100.0
         adv = dec = 0
         if prev_members is not None:
             for pid in members_today:
-                a, c = universe[pid]
+                a, c, _raw = universe[pid]
                 if c[di] and c[prev_di] and a[prev_di]:
                     if a[di] > a[prev_di]:
                         adv += 1
@@ -149,7 +172,7 @@ def compute_index(name, dates, universe, products):
 
     rows, movers = [], []
     for rank, (pid, cents) in enumerate(members, 1):
-        a, c = universe[pid]
+        a, c, _raw = universe[pid]
         p = products.get(pid, {})
         chg = None
         if prev_di_glob is not None and c[last_di] and c[prev_di_glob] and a[prev_di_glob]:
@@ -284,6 +307,83 @@ def cs2_ew_series(dates, raw, items):
     return out
 
 
+def parse_cs2_hist_shards():
+    """Liest alle site/data/cs2/hist_*.js (vom Steam-Export erzeugt) und
+    liefert {item_name: [[JJJJ-MM, cents, volumen], ...]}."""
+    import re
+    out = {}
+    cs2dir = os.path.join(SITE_DATA, "cs2")
+    if not os.path.isdir(cs2dir):
+        return out
+    for fn in os.listdir(cs2dir):
+        if not (fn.startswith("hist_") and fn.endswith(".js")):
+            continue
+        with open(os.path.join(cs2dir, fn), encoding="utf-8") as f:
+            txt = f.read()
+        m = re.search(r"CS2_HIST\[\d+\]=(\{.*\});document", txt, re.S)
+        if not m:
+            continue
+        out.update(json.loads(m.group(1)))
+    return out
+
+
+def cs2_monthly_topn_history(hist, upto_month):
+    """Monatlicher Top-500-Preisindex (gleiche Logik wie compute_index, nur
+    auf Monatsbasis) aus den Steam-Monatsdaten, bis (exklusive) upto_month.
+    Liefert (series, end_level) zum Verketten mit dem täglichen Skinport-Index."""
+    months = sorted({p[0] for s in hist.values() for p in s if p[0] < upto_month})
+    if not months:
+        return [], BASE_LEVEL
+    midx = {m: i for i, m in enumerate(months)}
+    per_item = {}
+    for name, s in hist.items():
+        d = {}
+        for m, cents, _vol in s:
+            if m in midx:
+                d[midx[m]] = cents
+        if d:
+            per_item[name] = d
+
+    def mdiff(a, b):
+        return (int(b[:4]) - int(a[:4])) * 12 + (int(b[5:7]) - int(a[5:7]))
+
+    adjusted = {}
+    for name, d in per_item.items():
+        arr = [None] * len(months)
+        last_val, last_mi = None, None
+        for mi in range(len(months)):
+            if mi in d:
+                arr[mi] = d[mi]; last_val, last_mi = d[mi], mi
+            elif last_val is not None and mdiff(months[last_mi], months[mi]) <= 6:
+                arr[mi] = last_val
+        adjusted[name] = arr
+
+    level = BASE_LEVEL
+    series, prev_members, prev_mi = [], None, None
+    for mi in range(len(months)):
+        priced = {name: arr[mi] for name, arr in adjusted.items() if arr[mi] is not None}
+        if not priced:
+            continue
+        top = sorted(priced.items(), key=lambda kv: (-kv[1], kv[0]))[:INDEX_SIZE]
+        members_today = [name for name, _ in top]
+        if prev_members is not None:
+            rets = []
+            for name in prev_members:
+                a = per_item.get(name, {}).get(prev_mi)
+                b = per_item.get(name, {}).get(mi)
+                if a and b:
+                    rets.append(b / a - 1)
+            if len(rets) >= MIN_RETURN_PAIRS:
+                rets.sort()
+                lo = rets[int(len(rets) * RETURN_WINSOR)]
+                hi = rets[min(len(rets) - 1, int(len(rets) * (1 - RETURN_WINSOR)))]
+                clipped = [min(max(x, lo), hi) for x in rets]
+                level *= (1 + sum(clipped) / len(clipped))
+        series.append([months[mi] + "-01", round(level, 2)])
+        prev_members, prev_mi = members_today, mi
+    return series, level
+
+
 def build_markets():
     if not os.path.isfile(MARKETS_HIST):
         return None
@@ -342,7 +442,9 @@ def main():
         if p is None:
             continue
         target = CARD_INDEX if p["is_sealed"] == 0 else SEALED_INDEX
-        universes[target][pid] = adjust(raw, dates)
+        adj, conf = adjust(raw, dates)
+        raw_list = [raw.get(di) for di in range(len(dates))]
+        universes[target][pid] = (adj, conf, raw_list)
 
     os.makedirs(SITE_DATA, exist_ok=True)
     summary = {"built": dt.datetime.utcnow().isoformat(timespec="seconds") + "Z"}
@@ -369,9 +471,25 @@ def main():
     cdates, craw, citems = load_cs2()
     if cdates:
         cprod = cs2_products(citems)
-        cuniv = {iid: adjust(r, cdates) for iid, r in craw.items()}
-        res = compute_index(CS2_INDEX, cdates, cuniv, cprod)
+        cuniv = {}
+        for iid, r in craw.items():
+            adj, conf = adjust(r, cdates)
+            raw_list = [r.get(di) for di in range(len(cdates))]
+            cuniv[iid] = (adj, conf, raw_list)
+        # Monatliche Top-500-Vorgeschichte aus den Steam-Daten (2014-heute)
+        # an den täglichen Skinport-Index verketten, statt bei 1000 zu starten.
+        hist_data = parse_cs2_hist_shards()
+        hist_series, hist_end_level = cs2_monthly_topn_history(hist_data, cdates[0])
+        res = compute_index(CS2_INDEX, cdates, cuniv, cprod, start_level=hist_end_level)
         if res is not None:
+            res["series"] = hist_series + res["series"]
+            levels = [p[1] for p in res["series"]]
+            res["overview"]["ath"] = max(levels)
+            res["overview"]["atl"] = min(levels)
+            res["hist_source_note"] = (
+                f"Historie bis {cdates[0]} aus Steam-Monatsdaten (Top 500 nach "
+                f"Preis, gleiche Methodik wie der Tagesindex); ab {cdates[0]} "
+                f"täglich aus Skinport, nahtlos verkettet.")
             res["ew"] = cs2_ew_series(cdates, craw, citems)
             with open(os.path.join(SITE_DATA, "idx_CS2.js"), "w",
                       encoding="utf-8") as f:
