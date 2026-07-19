@@ -1,1 +1,1 @@
-window.NEWSLETTERS=[{"d": "2026-07-18", "t": "daily"}, {"d": "2026-07-18", "t": "weekly"}];
+window.NEWSLETTERS=[{"d": "2026-07-19", "t": "weekly"}, {"d": "2026-07-18", "t": "daily"}, {"d": "2026-07-18", "t": "weekly"}];
