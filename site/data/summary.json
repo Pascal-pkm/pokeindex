@@ -1,21 +1,17 @@
 {
- "built": "2026-07-22T18:21:43Z",
+ "built": "2026-07-22T23:49:49Z",
  "SPK500": {
-  "asof": "2026-07-21",
+  "asof": "2026-07-22",
   "overview": {
-   "level": 1598.36,
-   "prev": 1597.27,
-   "ath": 1598.36,
+   "level": 1600.53,
+   "prev": 1598.36,
+   "ath": 1600.53,
    "atl": 995.51,
-   "basket": 242604,
-   "adv": 21,
-   "dec": 22
+   "basket": 250014,
+   "adv": 29,
+   "dec": 23
   },
   "series_tail": [
-   [
-    "2026-06-22",
-    1573.26
-   ],
    [
     "2026-06-23",
     1574.35
@@ -131,26 +127,58 @@
    [
     "2026-07-21",
     1598.36
+   ],
+   [
+    "2026-07-22",
+    1600.53
    ]
   ],
   "weekly_up": [
    {
-    "id": 84762,
-    "r": 454,
-    "n": "Deoxys (Delta Species - Defense Forme)",
-    "s": "Holon Phantoms",
-    "num": "4/110",
-    "p": 240.0,
+    "id": 88085,
+    "r": 182,
+    "n": "Pikachu",
+    "s": "POP Series 5",
+    "num": "012/017",
+    "p": 434.85,
+    "chg": 0.0,
+    "wchg": 597.1,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/88085/pokemon-pop-series-5-pikachu"
+   },
+   {
+    "id": 88905,
+    "r": 110,
+    "n": "Salamence ex (Delta Species)",
+    "s": "Dragon Frontiers",
+    "num": "98/101",
+    "p": 572.21,
     "chg": null,
-    "wchg": 155.73,
+    "wchg": 179.13,
     "car": 0,
     "new": 1,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/84762/pokemon-holon-phantoms-deoxys-delta-species-defense-forme"
+    "u": "https://www.tcgplayer.com/product/88905/pokemon-dragon-frontiers-salamence-ex-delta-species"
+   },
+   {
+    "id": 84569,
+    "r": 46,
+    "n": "Dark Blastoise",
+    "s": "Legendary Collection",
+    "num": "004/110",
+    "p": 975.0,
+    "chg": null,
+    "wchg": 174.91,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/84569/pokemon-legendary-collection-dark-blastoise"
    },
    {
     "id": 88435,
-    "r": 214,
+    "r": 220,
     "n": "Psyduck",
     "s": "Aquapolis",
     "num": "104/147",
@@ -163,22 +191,8 @@
     "u": "https://www.tcgplayer.com/product/88435/pokemon-aquapolis-psyduck"
    },
    {
-    "id": 90323,
-    "r": 132,
-    "n": "Venusaur ex",
-    "s": "FireRed & LeafGreen",
-    "num": "112/112",
-    "p": 501.0,
-    "chg": 0.0,
-    "wchg": 89.55,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/90323/pokemon-firered-and-leafgreen-venusaur-ex"
-   },
-   {
     "id": 83524,
-    "r": 318,
+    "r": 323,
     "n": "Altaria ex",
     "s": "Emerald",
     "num": "90/106",
@@ -189,40 +203,12 @@
     "new": 0,
     "cat": "",
     "u": "https://www.tcgplayer.com/product/83524/pokemon-emerald-altaria-ex"
-   },
-   {
-    "id": 85995,
-    "r": 461,
-    "n": "Gyarados (Red)",
-    "s": "HeartGold SoulSilver",
-    "num": "123/123",
-    "p": 234.99,
-    "chg": 0.0,
-    "wchg": 68.65,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/85995/pokemon-heartgold-soulsilver-gyarados-red"
    }
   ],
   "weekly_dn": [
    {
-    "id": 84198,
-    "r": 42,
-    "n": "Charizard Star (Delta Species)",
-    "s": "Dragon Frontiers",
-    "num": "100/101",
-    "p": 970.0,
-    "chg": null,
-    "wchg": -75.75,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/84198/pokemon-dragon-frontiers-charizard-star-delta-species"
-   },
-   {
     "id": 86905,
-    "r": 36,
+    "r": 39,
     "n": "Lugia",
     "s": "Aquapolis",
     "num": "149/147",
@@ -235,14 +221,28 @@
     "u": "https://www.tcgplayer.com/product/86905/pokemon-aquapolis-lugia"
    },
    {
+    "id": 257103,
+    "r": 13,
+    "n": "Pikachu - 227/S-P",
+    "s": "SWSH: Sword & Shield Promo Cards",
+    "num": "227/S-P",
+    "p": 1600.0,
+    "chg": 0.0,
+    "wchg": -30.42,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/257103/pokemon-swsh-sword-and-shield-promo-cards-pikachu-227-s-p"
+   },
+   {
     "id": 704873,
-    "r": 345,
+    "r": 352,
     "n": "Mega Darkrai ex - 116/084",
     "s": "ME05: Pitch Black",
     "num": "116/084",
-    "p": 288.44,
-    "chg": -1.85,
-    "wchg": -28.19,
+    "p": 288.34,
+    "chg": -0.03,
+    "wchg": -27.98,
     "car": 0,
     "new": 0,
     "cat": "",
@@ -250,7 +250,7 @@
    },
    {
     "id": 89171,
-    "r": 128,
+    "r": 135,
     "n": "Shining Tyranitar",
     "s": "Neo Destiny",
     "num": "113/105",
@@ -264,13 +264,13 @@
    },
    {
     "id": 676106,
-    "r": 167,
+    "r": 176,
     "n": "Mega Charizard Y ex - 294/217",
     "s": "ME: Ascended Heroes",
     "num": "294/217",
-    "p": 454.91,
-    "chg": -1.3,
-    "wchg": -24.13,
+    "p": 448.91,
+    "chg": -1.32,
+    "wchg": -23.03,
     "car": 0,
     "new": 0,
     "cat": "",
@@ -279,165 +279,161 @@
   ],
   "gainers": [
    {
-    "id": 88626,
-    "r": 68,
-    "n": "Rayquaza",
-    "s": "Emerald",
-    "num": "9/106",
-    "p": 749.99,
-    "chg": 143.91,
-    "wchg": 0.0,
+    "id": 90723,
+    "r": 388,
+    "n": "Zapdos ex",
+    "s": "FireRed & LeafGreen",
+    "num": "116/112",
+    "p": 269.97,
+    "chg": 81.19,
+    "wchg": 81.19,
     "car": 0,
-    "new": 0,
+    "new": 1,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/88626/pokemon-emerald-rayquaza"
+    "u": "https://www.tcgplayer.com/product/90723/pokemon-firered-and-leafgreen-zapdos-ex"
    },
    {
-    "id": 84202,
-    "r": 327,
-    "n": "Charizard G LV.X - DP45",
-    "s": "Diamond and Pearl Promos",
-    "num": "DP45",
-    "p": 297.68,
-    "chg": 13.99,
-    "wchg": 13.99,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/84202/pokemon-diamond-and-pearl-promos-charizard-g-lvx-dp45"
-   },
-   {
-    "id": 88895,
-    "r": 290,
-    "n": "Salamence - 10/97",
+    "id": 88642,
+    "r": 157,
+    "n": "Rayquaza ex",
     "s": "Dragon",
-    "num": "10/97",
-    "p": 321.06,
-    "chg": 10.79,
-    "wchg": 17.15,
+    "num": "97/97",
+    "p": 484.98,
+    "chg": 24.4,
+    "wchg": 24.4,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/88895/pokemon-dragon-salamence-10-97"
+    "u": "https://www.tcgplayer.com/product/88642/pokemon-dragon-rayquaza-ex"
    },
    {
-    "id": 87428,
-    "r": 254,
-    "n": "Mewtwo ex",
-    "s": "Ruby and Sapphire",
-    "num": "101/109",
-    "p": 340.92,
-    "chg": 9.72,
-    "wchg": 9.72,
+    "id": 84599,
+    "r": 37,
+    "n": "Dark Gengar",
+    "s": "Neo Destiny",
+    "num": "006/105",
+    "p": 999.99,
+    "chg": 17.65,
+    "wchg": 42.86,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/87428/pokemon-ruby-and-sapphire-mewtwo-ex"
+    "u": "https://www.tcgplayer.com/product/84599/pokemon-neo-destiny-dark-gengar"
    },
    {
-    "id": 649232,
-    "r": 432,
-    "n": "Paradise Resort - 224 (World Championships 2025)",
-    "s": "SV: Scarlet & Violet Promo Cards",
-    "num": "224",
-    "p": 246.38,
-    "chg": 2.98,
-    "wchg": 5.56,
+    "id": 83900,
+    "r": 136,
+    "n": "Blastoise ex",
+    "s": "FireRed & LeafGreen",
+    "num": "104/112",
+    "p": 503.48,
+    "chg": 17.09,
+    "wchg": 17.09,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/649232/pokemon-sv-scarlet-and-violet-promo-cards-paradise-resort-224-world-championships-2025"
+    "u": "https://www.tcgplayer.com/product/83900/pokemon-firered-and-leafgreen-blastoise-ex"
+   },
+   {
+    "id": 83537,
+    "r": 246,
+    "n": "Ampharos (H1)",
+    "s": "Aquapolis",
+    "num": "H01/H32",
+    "p": 350.0,
+    "chg": 10.69,
+    "wchg": 10.69,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/83537/pokemon-aquapolis-ampharos-h1"
    }
   ],
   "losers": [
    {
-    "id": 245913,
-    "r": 321,
-    "n": "Dark Houndoom - 37/109 (Prerelease)",
-    "s": "Nintendo Promos",
-    "num": "37/109",
-    "p": 299.95,
-    "chg": -20.01,
-    "wchg": 0.0,
+    "id": 90323,
+    "r": 374,
+    "n": "Venusaur ex",
+    "s": "FireRed & LeafGreen",
+    "num": "112/112",
+    "p": 276.99,
+    "chg": -44.71,
+    "wchg": 4.8,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/245913/pokemon-nintendo-promos-dark-houndoom-37-109-prerelease"
+    "u": "https://www.tcgplayer.com/product/90323/pokemon-firered-and-leafgreen-venusaur-ex"
    },
    {
-    "id": 42360,
-    "r": 492,
-    "n": "Blastoise",
-    "s": "Base Set",
-    "num": "002/102",
-    "p": 224.86,
-    "chg": -2.77,
-    "wchg": -2.93,
+    "id": 662184,
+    "r": 64,
+    "n": "Mega Charizard X ex - 125/094",
+    "s": "ME02: Phantasmal Flames",
+    "num": "125/094",
+    "p": 790.63,
+    "chg": -4.32,
+    "wchg": -7.45,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/42360/pokemon-base-set-blastoise"
+    "u": "https://www.tcgplayer.com/product/662184/pokemon-me02-phantasmal-flames-mega-charizard-x-ex-125-094"
    },
    {
-    "id": 86198,
-    "r": 280,
-    "n": "Houndoom",
-    "s": "Neo Revelation",
-    "num": "08/64",
-    "p": 327.5,
-    "chg": -2.72,
-    "wchg": -2.72,
+    "id": 590027,
+    "r": 265,
+    "n": "Pikachu ex - 238/191",
+    "s": "SV08: Surging Sparks",
+    "num": "238/191",
+    "p": 336.73,
+    "chg": -3.12,
+    "wchg": -5.69,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/86198/pokemon-neo-revelation-houndoom"
+    "u": "https://www.tcgplayer.com/product/590027/pokemon-sv08-surging-sparks-pikachu-ex-238-191"
    },
    {
-    "id": 497606,
-    "r": 188,
-    "n": "Magikarp - 203/193",
-    "s": "SV02: Paldea Evolved",
-    "num": "203/193",
-    "p": 417.4,
-    "chg": -2.12,
-    "wchg": -2.16,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/497606/pokemon-sv02-paldea-evolved-magikarp-203-193"
-   },
-   {
-    "id": 83651,
-    "r": 248,
-    "n": "Articuno (148)",
-    "s": "Supreme Victors",
-    "num": "148",
-    "p": 349.98,
-    "chg": -2.0,
+    "id": 178982,
+    "r": 461,
+    "n": "Lugia GX (Secret)",
+    "s": "SM - Lost Thunder",
+    "num": "227/214",
+    "p": 240.16,
+    "chg": -2.06,
     "wchg": -2.0,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/83651/pokemon-supreme-victors-articuno-148"
+    "u": "https://www.tcgplayer.com/product/178982/pokemon-sm-lost-thunder-lugia-gx-secret"
+   },
+   {
+    "id": 497606,
+    "r": 201,
+    "n": "Magikarp - 203/193",
+    "s": "SV02: Paldea Evolved",
+    "num": "203/193",
+    "p": 408.85,
+    "chg": -2.05,
+    "wchg": -4.17,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/497606/pokemon-sv02-paldea-evolved-magikarp-203-193"
    }
   ]
  },
  "SPKS": {
-  "asof": "2026-07-21",
+  "asof": "2026-07-22",
   "overview": {
-   "level": 2601.47,
-   "prev": 2601.74,
+   "level": 2602.32,
+   "prev": 2601.47,
    "ath": 2603.67,
    "atl": 997.04,
-   "basket": 574565,
-   "adv": 32,
-   "dec": 42
+   "basket": 574535,
+   "adv": 38,
+   "dec": 46
   },
   "series_tail": [
-   [
-    "2026-06-22",
-    2577.2
-   ],
    [
     "2026-06-23",
     2579.85
@@ -553,12 +549,16 @@
    [
     "2026-07-21",
     2601.47
+   ],
+   [
+    "2026-07-22",
+    2602.32
    ]
   ],
   "weekly_up": [
    {
     "id": 98522,
-    "r": 76,
+    "r": 77,
     "n": "Holon Phantoms Booster Pack",
     "s": "Holon Phantoms",
     "num": "",
@@ -577,7 +577,7 @@
     "s": "SWSH: Crown Zenith",
     "num": "",
     "p": 921.88,
-    "chg": 9.41,
+    "chg": 0.0,
     "wchg": 13.39,
     "car": 0,
     "new": 0,
@@ -600,7 +600,7 @@
    },
    {
     "id": 131273,
-    "r": 418,
+    "r": 417,
     "n": "Guardians Rising Prerelease Kit",
     "s": "SM - Guardians Rising",
     "num": "",
@@ -619,7 +619,7 @@
     "s": "Alternate Art Promos",
     "num": "",
     "p": 2503.43,
-    "chg": 10.93,
+    "chg": 0.0,
     "wchg": 10.93,
     "car": 0,
     "new": 0,
@@ -630,13 +630,13 @@
   "weekly_dn": [
    {
     "id": 692941,
-    "r": 136,
+    "r": 142,
     "n": "Pitch Black Booster Box Case",
     "s": "ME05: Pitch Black",
     "num": "",
-    "p": 1248.58,
-    "chg": -2.33,
-    "wchg": -26.27,
+    "p": 1215.53,
+    "chg": -2.65,
+    "wchg": -25.82,
     "car": 0,
     "new": 0,
     "cat": "booster_box",
@@ -649,7 +649,7 @@
     "s": "ME05: Pitch Black",
     "num": "",
     "p": 1055.27,
-    "chg": -3.37,
+    "chg": 0.0,
     "wchg": -24.26,
     "car": 0,
     "new": 0,
@@ -658,13 +658,13 @@
    },
    {
     "id": 692948,
-    "r": 202,
+    "r": 203,
     "n": "Pitch Black Elite Trainer Box Case",
     "s": "ME05: Pitch Black",
     "num": "",
-    "p": 856.66,
-    "chg": -8.9,
-    "wchg": -16.35,
+    "p": 845.5,
+    "chg": -1.3,
+    "wchg": -17.43,
     "car": 0,
     "new": 0,
     "cat": "etb",
@@ -676,9 +676,9 @@
     "n": "Perfect Order Booster Box Case",
     "s": "ME03: Perfect Order",
     "num": "",
-    "p": 1126.33,
-    "chg": -1.72,
-    "wchg": -12.86,
+    "p": 1118.08,
+    "chg": -0.73,
+    "wchg": -12.87,
     "car": 0,
     "new": 0,
     "cat": "booster_box",
@@ -701,165 +701,161 @@
   ],
   "gainers": [
    {
-    "id": 148226,
-    "r": 44,
-    "n": "Premium Trainer's XY Collection",
-    "s": "Alternate Art Promos",
+    "id": 654162,
+    "r": 115,
+    "n": "Phantasmal Flames Booster Bundle Case",
+    "s": "ME02: Phantasmal Flames",
     "num": "",
-    "p": 2503.43,
-    "chg": 10.93,
-    "wchg": 10.93,
+    "p": 1461.11,
+    "chg": 3.05,
+    "wchg": 7.67,
     "car": 0,
     "new": 0,
-    "cat": "collection_box",
-    "u": "https://www.tcgplayer.com/product/148226/pokemon-alternate-art-promos-premium-trainers-xy-collection"
+    "cat": "bundle",
+    "u": "https://www.tcgplayer.com/product/654162/pokemon-me02-phantasmal-flames-phantasmal-flames-booster-bundle-case"
    },
    {
-    "id": 616290,
-    "r": 187,
-    "n": "Crown Zenith Tin Case",
-    "s": "SWSH: Crown Zenith",
+    "id": 528030,
+    "r": 11,
+    "n": "151 Pokemon Center Elite Trainer Box (Exclusive) Case",
+    "s": "SV: Scarlet & Violet 151",
     "num": "",
-    "p": 921.88,
-    "chg": 9.41,
-    "wchg": 13.39,
-    "car": 0,
-    "new": 0,
-    "cat": "tin",
-    "u": "https://www.tcgplayer.com/product/616290/pokemon-swsh-crown-zenith-crown-zenith-tin-case"
-   },
-   {
-    "id": 600514,
-    "r": 366,
-    "n": "Shining Legends Collection: Shiny Darkrai GX",
-    "s": "Shining Legends",
-    "num": "",
-    "p": 382.33,
-    "chg": 7.74,
-    "wchg": 7.74,
-    "car": 0,
-    "new": 0,
-    "cat": "collection_box",
-    "u": "https://www.tcgplayer.com/product/600514/pokemon-shining-legends-shining-legends-collection-shiny-darkrai-gx"
-   },
-   {
-    "id": 117700,
-    "r": 349,
-    "n": "Triple Power Tin [Shiny Gyarados EX]",
-    "s": "XY - BREAKpoint",
-    "num": "",
-    "p": 397.97,
-    "chg": 6.45,
-    "wchg": 6.45,
-    "car": 0,
-    "new": 0,
-    "cat": "tin",
-    "u": "https://www.tcgplayer.com/product/117700/pokemon-xy-breakpoint-triple-power-tin-shiny-gyarados-ex"
-   },
-   {
-    "id": 123741,
-    "r": 35,
-    "n": "Generations Elite Trainer Box",
-    "s": "Generations",
-    "num": "",
-    "p": 2848.99,
-    "chg": 3.91,
-    "wchg": 3.91,
+    "p": 4971.17,
+    "chg": 2.87,
+    "wchg": 5.14,
     "car": 0,
     "new": 0,
     "cat": "etb",
-    "u": "https://www.tcgplayer.com/product/123741/pokemon-generations-generations-elite-trainer-box"
+    "u": "https://www.tcgplayer.com/product/528030/pokemon-sv-scarlet-and-violet-151-151-pokemon-center-elite-trainer-box-exclusive-case"
+   },
+   {
+    "id": 185256,
+    "r": 305,
+    "n": "TAG TEAM Tin [Celebi & Venusaur GX]",
+    "s": "SM - Team Up",
+    "num": "",
+    "p": 486.1,
+    "chg": 2.73,
+    "wchg": 2.73,
+    "car": 0,
+    "new": 0,
+    "cat": "tin",
+    "u": "https://www.tcgplayer.com/product/185256/pokemon-sm-team-up-tag-team-tin-celebi-and-venusaur-gx"
+   },
+   {
+    "id": 488776,
+    "r": 136,
+    "n": "Scarlet & Violet Elite Trainer Box Case",
+    "s": "SV01: Scarlet & Violet Base Set",
+    "num": "",
+    "p": 1261.89,
+    "chg": 2.68,
+    "wchg": 2.68,
+    "car": 0,
+    "new": 0,
+    "cat": "etb",
+    "u": "https://www.tcgplayer.com/product/488776/pokemon-sv01-scarlet-and-violet-base-set-scarlet-and-violet-elite-trainer-box-case"
+   },
+   {
+    "id": 230961,
+    "r": 477,
+    "n": "Shining Fates Mini Tin Display",
+    "s": "Shining Fates",
+    "num": "",
+    "p": 282.9,
+    "chg": 2.2,
+    "wchg": 2.26,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/230961/pokemon-shining-fates-shining-fates-mini-tin-display"
    }
   ],
   "losers": [
    {
+    "id": 704144,
+    "r": 224,
+    "n": "30th Celebration Pokemon Center Elite Trainer Box",
+    "s": "ME: 30th Celebration",
+    "num": "",
+    "p": 730.09,
+    "chg": -2.67,
+    "wchg": null,
+    "car": 0,
+    "new": 0,
+    "cat": "etb",
+    "u": "https://www.tcgplayer.com/product/704144/pokemon-me-30th-celebration-30th-celebration-pokemon-center-elite-trainer-box"
+   },
+   {
+    "id": 692941,
+    "r": 142,
+    "n": "Pitch Black Booster Box Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 1215.53,
+    "chg": -2.65,
+    "wchg": -25.82,
+    "car": 0,
+    "new": 0,
+    "cat": "booster_box",
+    "u": "https://www.tcgplayer.com/product/692941/pokemon-me05-pitch-black-pitch-black-booster-box-case"
+   },
+   {
+    "id": 644282,
+    "r": 484,
+    "n": "Mega Evolution Pokemon Center Elite Trainer Box (Exclusive) [Mega Lucario]",
+    "s": "ME01: Mega Evolution",
+    "num": "",
+    "p": 276.47,
+    "chg": -1.68,
+    "wchg": -5.21,
+    "car": 0,
+    "new": 0,
+    "cat": "etb",
+    "u": "https://www.tcgplayer.com/product/644282/pokemon-me01-mega-evolution-mega-evolution-pokemon-center-elite-trainer-box-exclusive-mega-lucario"
+   },
+   {
+    "id": 158254,
+    "r": 403,
+    "n": "Ultra Prism Prerelease Kit",
+    "s": "SM - Ultra Prism",
+    "num": "",
+    "p": 344.99,
+    "chg": -1.43,
+    "wchg": -1.43,
+    "car": 0,
+    "new": 0,
+    "cat": "sonstiges",
+    "u": "https://www.tcgplayer.com/product/158254/pokemon-sm-ultra-prism-ultra-prism-prerelease-kit"
+   },
+   {
     "id": 692948,
-    "r": 202,
+    "r": 203,
     "n": "Pitch Black Elite Trainer Box Case",
     "s": "ME05: Pitch Black",
     "num": "",
-    "p": 856.66,
-    "chg": -8.9,
-    "wchg": -16.35,
+    "p": 845.5,
+    "chg": -1.3,
+    "wchg": -17.43,
     "car": 0,
     "new": 0,
     "cat": "etb",
     "u": "https://www.tcgplayer.com/product/692948/pokemon-me05-pitch-black-pitch-black-elite-trainer-box-case"
-   },
-   {
-    "id": 193052,
-    "r": 95,
-    "n": "Unified Minds Elite Trainer Box",
-    "s": "SM - Unified Minds",
-    "num": "",
-    "p": 1719.9,
-    "chg": -5.5,
-    "wchg": -5.5,
-    "car": 0,
-    "new": 0,
-    "cat": "etb",
-    "u": "https://www.tcgplayer.com/product/193052/pokemon-sm-unified-minds-unified-minds-elite-trainer-box"
-   },
-   {
-    "id": 155663,
-    "r": 219,
-    "n": "Ultra Prism Elite Trainer Box [Dawn Wings Necrozma]",
-    "s": "SM - Ultra Prism",
-    "num": "",
-    "p": 755.99,
-    "chg": -5.5,
-    "wchg": -5.5,
-    "car": 0,
-    "new": 0,
-    "cat": "etb",
-    "u": "https://www.tcgplayer.com/product/155663/pokemon-sm-ultra-prism-ultra-prism-elite-trainer-box-dawn-wings-necrozma"
-   },
-   {
-    "id": 175511,
-    "r": 240,
-    "n": "Lost Thunder Elite Trainer Box",
-    "s": "SM - Lost Thunder",
-    "num": "",
-    "p": 663.25,
-    "chg": -3.67,
-    "wchg": -3.67,
-    "car": 0,
-    "new": 0,
-    "cat": "etb",
-    "u": "https://www.tcgplayer.com/product/175511/pokemon-sm-lost-thunder-lost-thunder-elite-trainer-box"
-   },
-   {
-    "id": 692943,
-    "r": 159,
-    "n": "Pitch Black Booster Bundle Case",
-    "s": "ME05: Pitch Black",
-    "num": "",
-    "p": 1055.27,
-    "chg": -3.37,
-    "wchg": -24.26,
-    "car": 0,
-    "new": 0,
-    "cat": "bundle",
-    "u": "https://www.tcgplayer.com/product/692943/pokemon-me05-pitch-black-pitch-black-booster-bundle-case"
    }
   ]
  },
  "CS2500": {
-  "asof": "2026-07-21",
+  "asof": "2026-07-22",
   "overview": {
-   "level": 1369.24,
-   "prev": 1367.92,
+   "level": 1362.07,
+   "prev": 1369.24,
    "ath": 1787.44,
    "atl": 495.35,
-   "basket": 1446514,
-   "adv": 87,
-   "dec": 368
+   "basket": 1446836,
+   "adv": 101,
+   "dec": 359
   },
   "series_tail": [
-   [
-    "2024-05-01",
-    1386.64
-   ],
    [
     "2024-06-01",
     1354.87
@@ -975,13 +971,13 @@
    [
     "2026-07-21",
     1369.24
+   ],
+   [
+    "2026-07-22",
+    1362.07
    ]
   ],
   "ew_tail": [
-   [
-    "2023-07-01",
-    1914.74
-   ],
    [
     "2023-08-01",
     1930.56
@@ -1124,7 +1120,7 @@
    ],
    [
     "2026-07-18",
-    5277.32
+    5268.04
    ],
    [
     "2026-07-19",
@@ -1137,211 +1133,215 @@
    [
     "2026-07-21",
     5277.32
+   ],
+   [
+    "2026-07-22",
+    5268.04
    ]
   ],
   "ew_overview": {
-   "level": 5277.32,
-   "prev": 5290.85,
-   "chg": -0.26,
+   "level": 5268.04,
+   "prev": 5277.32,
+   "chg": -0.18,
    "ath": 5770.52,
    "atl": 109.85,
-   "asof": "2026-07-21"
+   "asof": "2026-07-22"
   },
   "weekly_up": [],
   "weekly_dn": [],
   "gainers": [
    {
-    "id": 3479,
-    "r": 198,
-    "n": "★ Karambit | Urban Masked (Field-Tested)",
-    "s": "★ Karambit",
+    "id": 12441,
+    "r": 62,
+    "n": "★ StatTrak™ Karambit | Doppler (Factory New)",
+    "s": "★ StatTrak™ Karambit",
     "num": null,
-    "p": 1732.57,
-    "chg": 274.28,
-    "wchg": null,
-    "car": 0,
-    "new": 1,
-    "cat": null,
-    "u": "https://skinport.com/item/karambit-urban-masked-field-tested"
-   },
-   {
-    "id": 14543,
-    "r": 56,
-    "n": "★ StatTrak™ Talon Knife | Slaughter (Minimal Wear)",
-    "s": "★ StatTrak™ Talon Knife",
-    "num": null,
-    "p": 4632.88,
-    "chg": 78.37,
+    "p": 4248.8,
+    "chg": 110.2,
     "wchg": null,
     "car": 0,
     "new": 0,
     "cat": null,
-    "u": "https://skinport.com/item/stattrak-talon-knife-slaughter-minimal-wear"
+    "u": "https://skinport.com/item/stattrak-karambit-doppler-factory-new+phase-1"
    },
    {
-    "id": 422,
-    "r": 325,
-    "n": "Glock-18 | Gamma Doppler (Minimal Wear)",
-    "s": "Glock-18",
+    "id": 11458,
+    "r": 146,
+    "n": "★ StatTrak™ Butterfly Knife | Autotronic (Minimal Wear)",
+    "s": "★ StatTrak™ Butterfly Knife",
     "num": null,
-    "p": 1153.89,
-    "chg": 74.0,
-    "wchg": null,
-    "car": 0,
-    "new": 1,
-    "cat": null,
-    "u": "https://skinport.com/item/glock-18-gamma-doppler-minimal-wear+emerald"
-   },
-   {
-    "id": 2720,
-    "r": 9,
-    "n": "AWP | Dragon Lore (Factory New)",
-    "s": "AWP",
-    "num": null,
-    "p": 19289.27,
-    "chg": 64.04,
+    "p": 2300.1,
+    "chg": 38.51,
     "wchg": null,
     "car": 0,
     "new": 0,
     "cat": null,
-    "u": "https://skinport.com/item/awp-dragon-lore-factory-new"
+    "u": "https://skinport.com/item/stattrak-butterfly-knife-autotronic-minimal-wear"
    },
    {
-    "id": 13453,
-    "r": 321,
-    "n": "★ StatTrak™ Nomad Knife | Case Hardened (Factory New)",
-    "s": "★ StatTrak™ Nomad Knife",
+    "id": 12839,
+    "r": 411,
+    "n": "★ StatTrak™ M9 Bayonet | Tiger Tooth (Factory New)",
+    "s": "★ StatTrak™ M9 Bayonet",
     "num": null,
-    "p": 1155.05,
-    "chg": 40.79,
+    "p": 1002.53,
+    "chg": 30.89,
     "wchg": null,
     "car": 0,
     "new": 1,
     "cat": null,
-    "u": "https://skinport.com/item/stattrak-nomad-knife-case-hardened-factory-new"
+    "u": "https://skinport.com/item/stattrak-m9-bayonet-tiger-tooth-factory-new"
+   },
+   {
+    "id": 4147,
+    "r": 476,
+    "n": "★ M9 Bayonet | Case Hardened (Well-Worn)",
+    "s": "★ M9 Bayonet",
+    "num": null,
+    "p": 911.26,
+    "chg": 26.21,
+    "wchg": null,
+    "car": 0,
+    "new": 1,
+    "cat": null,
+    "u": "https://skinport.com/item/m9-bayonet-case-hardened-well-worn"
+   },
+   {
+    "id": 11350,
+    "r": 496,
+    "n": "StatTrak™ AWP | Printstream (Factory New)",
+    "s": "StatTrak™ AWP",
+    "num": null,
+    "p": 877.22,
+    "chg": 22.27,
+    "wchg": null,
+    "car": 0,
+    "new": 1,
+    "cat": null,
+    "u": "https://skinport.com/item/stattrak-awp-printstream-factory-new"
    }
   ],
   "losers": [
    {
-    "id": 4167,
-    "r": 473,
-    "n": "★ M9 Bayonet | Lore (Minimal Wear)",
+    "id": 84,
+    "r": 72,
+    "n": "★ Huntsman Knife | Case Hardened (Factory New)",
+    "s": "★ Huntsman Knife",
+    "num": null,
+    "p": 3597.66,
+    "chg": -46.07,
+    "wchg": null,
+    "car": 0,
+    "new": 0,
+    "cat": null,
+    "u": "https://skinport.com/item/huntsman-knife-case-hardened-factory-new"
+   },
+   {
+    "id": 4144,
+    "r": 194,
+    "n": "★ M9 Bayonet | Case Hardened (Battle-Scarred)",
     "s": "★ M9 Bayonet",
     "num": null,
-    "p": 917.38,
-    "chg": -19.03,
+    "p": 1796.28,
+    "chg": -39.05,
     "wchg": null,
     "car": 0,
     "new": 0,
     "cat": null,
-    "u": "https://skinport.com/item/m9-bayonet-lore-minimal-wear"
+    "u": "https://skinport.com/item/m9-bayonet-case-hardened-battle-scarred"
    },
    {
-    "id": 2287,
-    "r": 193,
-    "n": "★ Butterfly Knife | Blue Steel (Factory New)",
-    "s": "★ Butterfly Knife",
+    "id": 3893,
+    "r": 498,
+    "n": "M4A1-S | Welcome to the Jungle (Field-Tested)",
+    "s": "M4A1-S",
     "num": null,
-    "p": 1781.9,
-    "chg": -13.77,
+    "p": 875.93,
+    "chg": -24.17,
     "wchg": null,
     "car": 0,
     "new": 0,
     "cat": null,
-    "u": "https://skinport.com/item/butterfly-knife-blue-steel-factory-new"
+    "u": "https://skinport.com/item/m4a1-s-welcome-to-the-jungle-field-tested"
    },
    {
-    "id": 2723,
-    "r": 233,
-    "n": "AWP | Desert Hydra (Field-Tested)",
-    "s": "AWP",
+    "id": 11033,
+    "r": 319,
+    "n": "StatTrak™ AK-47 | Case Hardened (Factory New)",
+    "s": "StatTrak™ AK-47",
     "num": null,
-    "p": 1445.08,
-    "chg": -13.54,
+    "p": 1154.14,
+    "chg": -10.84,
     "wchg": null,
     "car": 0,
     "new": 0,
     "cat": null,
-    "u": "https://skinport.com/item/awp-desert-hydra-field-tested"
+    "u": "https://skinport.com/item/stattrak-ak-47-case-hardened-factory-new"
    },
    {
-    "id": 1628,
-    "r": 247,
-    "n": "★ Driver Gloves | Imperial Plaid (Factory New)",
+    "id": 1651,
+    "r": 391,
+    "n": "★ Driver Gloves | Convoy (Minimal Wear)",
     "s": "★ Driver Gloves",
     "num": null,
-    "p": 1380.28,
-    "chg": -8.25,
+    "p": 1024.42,
+    "chg": -10.12,
     "wchg": null,
     "car": 0,
     "new": 0,
     "cat": null,
-    "u": "https://skinport.com/item/driver-gloves-imperial-plaid-factory-new"
-   },
-   {
-    "id": 3081,
-    "r": 276,
-    "n": "AUG | Akihabara Accept (Minimal Wear)",
-    "s": "AUG",
-    "num": null,
-    "p": 1262.25,
-    "chg": -6.89,
-    "wchg": null,
-    "car": 0,
-    "new": 0,
-    "cat": null,
-    "u": "https://skinport.com/item/aug-akihabara-accept-minimal-wear"
+    "u": "https://skinport.com/item/driver-gloves-convoy-minimal-wear"
    }
   ]
  },
  "MARKETS": {
   "SP500": {
-   "level": 7403.0,
-   "asof": "2026-07-21",
-   "d1": 0.89,
-   "w1": -0.46
+   "level": 7392.9,
+   "asof": "2026-07-22",
+   "d1": -0.14,
+   "w1": -0.97
   },
   "DAX": {
-   "level": 28273.66,
-   "asof": "2026-07-20",
-   "d1": 0.06,
-   "w1": -1.07
+   "level": 28461.03,
+   "asof": "2026-07-21",
+   "d1": 0.66,
+   "w1": -0.54
   },
   "NASDAQ100": {
-   "level": 28189.54,
-   "asof": "2026-07-21",
-   "d1": 1.93,
-   "w1": -1.46
+   "level": 28037.67,
+   "asof": "2026-07-22",
+   "d1": -0.54,
+   "w1": -1.71
   },
   "EUROSTOXX50": {
-   "level": 7039.19,
-   "asof": "2026-07-20",
-   "d1": -0.06,
-   "w1": -0.7
+   "level": 7105.01,
+   "asof": "2026-07-21",
+   "d1": 0.94,
+   "w1": 0.09
   },
   "MSCIWORLD": {
-   "level": 201.91,
-   "asof": "2026-07-21",
-   "d1": 1.01,
-   "w1": -0.42
+   "level": 201.88,
+   "asof": "2026-07-22",
+   "d1": -0.01,
+   "w1": -0.81
   },
   "GOLD": {
-   "level": 4066.23,
-   "asof": "2026-07-21",
-   "d1": 1.82,
-   "w1": 0.58
+   "level": 4105.75,
+   "asof": "2026-07-22",
+   "d1": 0.97,
+   "w1": 1.99
   },
   "SILVER": {
-   "level": 59.41,
-   "asof": "2026-07-21",
-   "d1": 4.43,
-   "w1": 0.57
+   "level": 60.17,
+   "asof": "2026-07-22",
+   "d1": 1.28,
+   "w1": 4.82
   },
   "BITCOIN": {
-   "level": 66980.52,
-   "asof": "2026-07-21",
-   "d1": 1.86,
-   "w1": 2.22
+   "level": 66576.98,
+   "asof": "2026-07-22",
+   "d1": -0.6,
+   "w1": 1.98
   }
  }
 }
