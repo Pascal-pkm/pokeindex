@@ -1,12 +1,26 @@
 {
- "built": "2026-07-26T09:38:04Z",
+ "built": "2026-07-26T16:18:18+00:00",
+ "method_version": "2026-07-26",
+ "rules": {
+  "size": 500,
+  "carry_max_days": 70,
+  "outlier_hi": 2.5,
+  "outlier_lo": 0.4,
+  "outlier_window": 14,
+  "outlier_min_history": 5,
+  "return_winsor": 0.01,
+  "min_return_pairs": 100,
+  "printing_guard": true,
+  "base_level": 1000.0,
+  "label": "spk-2026-07"
+ },
  "SPK500": {
   "asof": "2026-07-25",
   "overview": {
-   "level": 1602.3,
-   "prev": 1602.35,
-   "ath": 1602.35,
-   "atl": 995.51,
+   "level": 1608.34,
+   "prev": 1608.39,
+   "ath": 1608.39,
+   "atl": 994.98,
    "basket": 253126,
    "adv": 21,
    "dec": 23
@@ -14,123 +28,123 @@
   "series_tail": [
    [
     "2026-06-26",
-    1570.44
+    1582.88
    ],
    [
     "2026-06-27",
-    1571.5
+    1584.04
    ],
    [
     "2026-06-28",
-    1572.42
+    1584.97
    ],
    [
     "2026-06-29",
-    1578.98
+    1591.58
    ],
    [
     "2026-06-30",
-    1580.14
+    1592.98
    ],
    [
     "2026-07-01",
-    1579.84
+    1593.01
    ],
    [
     "2026-07-02",
-    1582.13
+    1594.09
    ],
    [
     "2026-07-03",
-    1582.01
+    1593.97
    ],
    [
     "2026-07-04",
-    1580.36
+    1592.56
    ],
    [
     "2026-07-05",
-    1580.9
+    1592.99
    ],
    [
     "2026-07-06",
-    1585.53
+    1597.86
    ],
    [
     "2026-07-07",
-    1586.66
+    1599.0
    ],
    [
     "2026-07-08",
-    1586.21
+    1598.55
    ],
    [
     "2026-07-09",
-    1587.07
+    1599.24
    ],
    [
     "2026-07-10",
-    1587.58
+    1599.79
    ],
    [
     "2026-07-11",
-    1588.35
+    1600.56
    ],
    [
     "2026-07-12",
-    1587.04
+    1599.24
    ],
    [
     "2026-07-13",
-    1587.69
+    1599.9
    ],
    [
     "2026-07-14",
-    1587.54
+    1599.74
    ],
    [
     "2026-07-15",
-    1590.82
+    1600.86
    ],
    [
     "2026-07-16",
-    1591.81
+    1601.72
    ],
    [
     "2026-07-17",
-    1596.24
+    1603.64
    ],
    [
     "2026-07-18",
-    1596.62
+    1604.02
    ],
    [
     "2026-07-19",
-    1596.39
+    1603.79
    ],
    [
     "2026-07-20",
-    1597.27
+    1604.67
    ],
    [
     "2026-07-21",
-    1598.36
+    1604.59
    ],
    [
     "2026-07-22",
-    1600.53
+    1606.77
    ],
    [
     "2026-07-23",
-    1600.94
+    1606.98
    ],
    [
     "2026-07-24",
-    1602.35
+    1608.39
    ],
    [
     "2026-07-25",
-    1602.3
+    1608.34
    ]
   ],
   "weekly_up": [
@@ -420,7 +434,14 @@
     "cat": "",
     "u": "https://www.tcgplayer.com/product/633031/pokemon-sv10-destined-rivals-team-rockets-mewtwo-ex-231-182"
    }
-  ]
+  ],
+  "diagnostics": {
+   "variant_pairs_dropped": 429,
+   "days_without_breadth": 0,
+   "pairs_min": 465,
+   "pairs_max": 500,
+   "carried_share_last": 0.022
+  }
  },
  "SPKS": {
   "asof": "2026-07-25",
@@ -842,7 +863,14 @@
     "cat": "booster_box",
     "u": "https://www.tcgplayer.com/product/672395/pokemon-me03-perfect-order-perfect-order-booster-box-case"
    }
-  ]
+  ],
+  "diagnostics": {
+   "variant_pairs_dropped": 0,
+   "days_without_breadth": 0,
+   "pairs_min": 452,
+   "pairs_max": 500,
+   "carried_share_last": 0.024
+  }
  },
  "CS2500": {
   "asof": "2026-07-25",
@@ -1112,7 +1140,7 @@
    ],
    [
     "2026-07-18",
-    5254.36
+    5318.0
    ],
    [
     "2026-07-19",
@@ -1434,7 +1462,28 @@
     "cat": null,
     "u": "https://skinport.com/item/stattrak-butterfly-knife"
    }
-  ]
+  ],
+  "splice": {
+   "topn": {
+    "letzter_monatspunkt": "2026-06-01",
+    "erster_tagespunkt": "2026-07-18",
+    "luecke_tage": 47
+   },
+   "ew": {
+    "letzter_monatspunkt": "2026-06-01",
+    "erster_tagespunkt": "2026-07-18",
+    "luecke_tage": 47,
+    "quellenwechsel": "Steam-Verkaufspreise -> Skinport-Angebote (Ask)",
+    "hinweis": "Niveau stetig verkettet; Preisart und Erhebung wechseln an dieser Stelle."
+   }
+  },
+  "diagnostics": {
+   "variant_pairs_dropped": 0,
+   "days_without_breadth": 0,
+   "pairs_min": 486,
+   "pairs_max": 499,
+   "carried_share_last": 0.026
+  }
  },
  "MARKETS": {
   "SP500": {
