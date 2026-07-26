@@ -1,34 +1,36 @@
 # -*- coding: utf-8 -*-
-"""
-Täglicher CS2-Preisabzug über die öffentliche Skinport-API (ohne Login).
+"""Täglicher CS2-Preisabzug über die öffentliche Skinport-API (ohne Login).
 
-  GET https://api.skinport.com/v1/items?app_id=730&currency=USD
-  (Antwort ist Brotli-komprimiert -> Paket 'brotli' nötig; Cache 5 Min.)
+Preisdefinition und ihre Grenze: `median_price` ist der Median der AKTUELLEN
+ANGEBOTE (Ask), kein Verkaufspreis. Er liegt strukturell über dem
+realisierbaren Preis. Die Steam-Vorgeschichte des Index besteht dagegen aus
+tatsächlichen Verkäufen – der Quellenbruch wird beim Verketten ausdrücklich
+markiert (siehe build_indices.py, Feld `splice`).
 
-Preisdefinition: median_price der aktuellen Angebote (Fallback min_price).
-Gespeichert werden ALLE Items (für EW-Index), inkl. Menge (Liquidität) und
-created_at (Seasoning-Filter wie in der Masterarbeit).
+Datum = Serverzeit der Antwort (HTTP-Date), nicht die lokale Uhr des Runners.
 
 Dateien:
-  data/cs2_items.csv.gz          item_id <-> market_hash_name, URL, created_at
+  data/cs2_items.csv.gz              item_id <-> market_hash_name, URL, created_at
   data/cs2_daily/JJJJ-MM-TT.csv.gz   item_id,cents,quantity
 
 Aufruf:  python scripts/fetch_cs2.py
 """
+from __future__ import annotations
+
 import csv
-import datetime as dt
 import gzip
-import io
 import os
 import sys
 
-import requests
+from common import DATA_DIR
 
-from common import ROOT, USER_AGENT
+from pokedata import quality
+from pokedata.atomicio import write_gzip_csv, write_gzip_dictcsv
+from pokedata.sources import skinport
 
-CS2_ITEMS = os.path.join(ROOT, "data", "cs2_items.csv.gz")
-CS2_DAILY = os.path.join(ROOT, "data", "cs2_daily")
-API = "https://api.skinport.com/v1/items?app_id=730&currency=USD"
+CS2_ITEMS = os.path.join(DATA_DIR, "cs2_items.csv.gz")
+CS2_DAILY = os.path.join(DATA_DIR, "cs2_daily")
+ITEM_FIELDS = ["item_id", "name", "url", "created"]
 
 
 def read_items():
@@ -44,53 +46,51 @@ def read_items():
     return out, mx
 
 
-def write_items(items):
-    os.makedirs(os.path.dirname(CS2_ITEMS), exist_ok=True)
-    buf = io.StringIO()
-    w = csv.DictWriter(buf, fieldnames=["item_id", "name", "url", "created"])
-    w.writeheader()
-    for it in sorted(items.values(), key=lambda x: x["item_id"]):
-        w.writerow(it)
-    with gzip.open(CS2_ITEMS, "wt", encoding="utf-8", newline="") as f:
-        f.write(buf.getvalue())
-
-
-def main():
-    r = requests.get(API, headers={"User-Agent": USER_AGENT,
-                                   "Accept-Encoding": "br, gzip"}, timeout=120)
-    r.raise_for_status()
-    data = r.json()
-    if not isinstance(data, list) or not data:
-        print("Unerwartete Skinport-Antwort")
+def main() -> int:
+    data, datum = skinport.fetch_items()
+    normalized = skinport.normalize(data)
+    if not normalized:
+        print("FEHLER: keine verwertbaren Items in der Skinport-Antwort")
         return 1
 
     items, next_id = read_items()
-    datum = dt.datetime.utcnow().date().isoformat()
     rows = []
-    for it in data:
-        name = it.get("market_hash_name")
-        price = it.get("median_price") or it.get("min_price")
-        if not name or price is None:
-            continue
+    for name, cents, qty, created in normalized:
         rec = items.get(name)
         if rec is None:
             next_id += 1
-            rec = {"item_id": next_id, "name": name,
-                   "url": it.get("item_page") or "",
-                   "created": str(it.get("created_at") or "")}
+            rec = {"item_id": next_id, "name": name, "url": "",
+                   "created": created}
             items[name] = rec
-        rows.append((rec["item_id"], round(price * 100), it.get("quantity") or 0))
+        elif created and not rec.get("created"):
+            rec["created"] = created
+        rows.append((rec["item_id"], cents, qty))
 
-    os.makedirs(CS2_DAILY, exist_ok=True)
-    with gzip.open(os.path.join(CS2_DAILY, f"{datum}.csv.gz"), "wt",
-                   encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["item_id", "cents", "quantity"])
-        for row in sorted(rows):
-            w.writerow(row)
-    write_items(items)
+    rep = quality.Report()
+    quality.check_prices([(a, b, "") for a, b, _q in rows], rep, label=f"CS2 {datum}")
+    existing = sorted(f[:-7] for f in os.listdir(CS2_DAILY)) \
+        if os.path.isdir(CS2_DAILY) else []
+    counts = {}
+    for d in existing[-10:]:
+        try:
+            with gzip.open(os.path.join(CS2_DAILY, f"{d}.csv.gz"), "rt") as f:
+                counts[d] = sum(1 for _ in f) - 1
+        except OSError:
+            continue
+    counts[datum] = len(rows)
+    quality.check_rowcount(counts, rep, label="CS2-Tagesdatei")
+    print("Validierung:")
+    print(rep.render())
+    if rep.failed:
+        print("Abbruch: CS2-Tag wird NICHT geschrieben.")
+        return 1
+
+    write_gzip_csv(os.path.join(CS2_DAILY, f"{datum}.csv.gz"),
+                   ["item_id", "cents", "quantity"], sorted(rows))
+    write_gzip_dictcsv(CS2_ITEMS, ITEM_FIELDS,
+                       sorted(items.values(), key=lambda x: x["item_id"]))
     print(f"CS2: {len(rows)} Item-Preise für {datum} gespeichert "
-          f"({len(items)} Items bekannt).")
+          f"({len(items)} Items bekannt, Preisart '{skinport.PRICE_KIND}').")
     return 0
 
 

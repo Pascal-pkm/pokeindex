@@ -855,6 +855,209 @@ function setupNews() {
   c.append(ul);
 }
 
+/* ------------------------------------------------------------------ Risiko */
+function setupRisk() {
+  const root = $("#risk-root");
+  const R = window.RISK;
+  if (!root) return;
+  if (!R) {
+    root.append(el("p", "note", "Noch keine Risikodaten – build_risk.py ausführen."));
+    return;
+  }
+  const L = R.labels || {};
+  const order = ["SPK500", "SPKS", "CS2500", "CS2_EW", "SP500", "NASDAQ100",
+                 "DAX", "EUROSTOXX50", "MSCIWORLD", "GOLD", "SILVER", "BITCOIN"];
+  const names = order.filter(n => R.kennzahlen && R.kennzahlen[n]);
+
+  // Kennzahlentabelle (Gesamtzeitraum)
+  const t = el("table");
+  t.innerHTML = `<thead><tr><th>Reihe</th><th class="num">Rendite ges.</th>
+    <th class="num">p. a. (CAGR)</th><th class="num">Vola p. a.</th>
+    <th class="num">Max. Rückgang</th><th class="num">Sharpe</th>
+    <th class="num">Sortino</th><th class="num">Positive Tage</th>
+    <th class="num">Zeitraum</th></tr></thead>`;
+  const tb = el("tbody");
+  names.forEach(n => {
+    const m = (R.kennzahlen[n].fenster || {})["Gesamt"] || {};
+    const tr = el("tr");
+    tr.innerHTML = `<td>${esc(L[n] || n)}</td>
+      <td class="num">${m.rendite_gesamt_pct != null ? m.rendite_gesamt_pct.toFixed(1) + " %" : "—"}</td>
+      <td class="num">${m.cagr_pct != null ? m.cagr_pct.toFixed(1) + " %" : "—"}</td>
+      <td class="num">${m.vola_pa_pct != null ? m.vola_pa_pct.toFixed(1) + " %" : "—"}</td>
+      <td class="num">${m.max_drawdown_pct != null ? m.max_drawdown_pct.toFixed(1) + " %" : "—"}</td>
+      <td class="num">${m.sharpe != null ? m.sharpe.toFixed(2) : "—"}</td>
+      <td class="num">${m.sortino != null ? m.sortino.toFixed(2) : "—"}</td>
+      <td class="num">${m.positive_tage_pct != null ? m.positive_tage_pct.toFixed(0) + " %" : "—"}</td>
+      <td class="num">${m.von ? fmtDate(m.von) + "–" + fmtDate(m.bis) : "—"}</td>`;
+    tb.append(tr);
+  });
+  t.append(tb);
+  root.append(el("h2", null, "Kennzahlen (Gesamtzeitraum)"));
+  root.append(t);
+
+  // Einzelprodukt-Volatilität als Realitätsabgleich
+  if (R.einzelprodukt_vola) {
+    const rows = Object.entries(R.einzelprodukt_vola)
+      .filter(([, d]) => d && d.median_pa_pct != null);
+    if (rows.length) {
+      const t2 = el("table");
+      t2.innerHTML = `<thead><tr><th>Universum</th><th class="num">Median</th>
+        <th class="num">25 %</th><th class="num">75 %</th><th class="num">90 %</th>
+        <th class="num">Produkte</th></tr></thead>`;
+      const b2 = el("tbody");
+      rows.forEach(([n, d]) => {
+        const tr = el("tr");
+        tr.innerHTML = `<td>${esc(L[n] || n)}</td>
+          <td class="num">${d.median_pa_pct.toFixed(1)} %</td>
+          <td class="num">${d.p25_pa_pct.toFixed(1)} %</td>
+          <td class="num">${d.p75_pa_pct.toFixed(1)} %</td>
+          <td class="num">${d.p90_pa_pct.toFixed(1)} %</td>
+          <td class="num">${d.n.toLocaleString("de-DE")}</td>`;
+        b2.append(tr);
+      });
+      t2.append(b2);
+      root.append(el("h2", null, "Einzelprodukt-Volatilität (letzte 12 Monate)"));
+      root.append(el("p", "note", "Verteilung der annualisierten Volatilität je "
+        + "Produkt. Diese Werte – nicht die Index-Volatilität – beschreiben das "
+        + "Risiko eines einzelnen Kaufs."));
+      root.append(t2);
+    }
+  }
+
+  // Korrelationsmatrix
+  if (R.korrelation && R.korrelation.names) {
+    const K = R.korrelation;
+    const t3 = el("table");
+    t3.innerHTML = "<thead><tr><th>Korrelation</th>"
+      + K.names.map(n => `<th class="num">${esc(L[n] || n)}</th>`).join("")
+      + "</tr></thead>";
+    const b3 = el("tbody");
+    K.names.forEach((a, i) => {
+      const tr = el("tr");
+      let html = `<td>${esc(L[a] || a)}</td>`;
+      K.matrix[i].forEach(v => {
+        const col = v == null ? "" :
+          (v > 0.5 ? "color:#ff8080" : v < -0.2 ? "color:#4cc38a" : "");
+        html += `<td class="num" style="${col}">${v == null ? "—" : v.toFixed(2)}</td>`;
+      });
+      tr.innerHTML = html;
+      b3.append(tr);
+    });
+    t3.append(b3);
+    root.append(el("h2", null, "Korrelation der Tagesrenditen"));
+    root.append(el("p", "note", "Werte nahe 0 bedeuten: die Klasse bewegt sich "
+      + "unabhängig von den klassischen Märkten (Diversifikationsnutzen). "
+      + "Grün = gegenläufig, rot = stark mitlaufend."));
+    root.append(t3);
+  }
+
+  // Normierter Vergleich
+  if (R.vergleich && R.vergleich.series) {
+    const map = {};
+    Object.entries(R.vergleich.series).forEach(([k, s]) => {
+      map[L[k] || k] = s;
+    });
+    const box = el("div");
+    root.append(el("h2", null, "Wertentwicklung im Vergleich (Basis 100)"));
+    root.append(box);
+    renderMultiChart(box, map, 1e9, { normalize: false });
+  }
+
+  const m = R.methodik || {};
+  root.append(el("p", "note", esc(m.warnung_glaettung || "")));
+  root.append(el("p", "note", esc(m.hinweis_preisart || "")));
+}
+
+/* -------------------------------------------------------------- Screening */
+function setupScreen() {
+  const root = $("#screen-root");
+  const S = window.SCREEN;
+  if (!root) return;
+  if (!S) {
+    root.append(el("p", "note", "Noch keine Screening-Daten – build_screening.py ausführen."));
+    return;
+  }
+  const SIG = { "Günstig & stabil": "up", "Stabile Basis": "", "Nahe Tief": "",
+                "Solide": "", "Neutral": "" };
+  ["sealed", "karten"].forEach(key => {
+    const block = S[key];
+    if (!block || !block.top || !block.top.length) return;
+    root.append(el("h2", null, key === "sealed" ? "Sealed-Produkte" : "Einzelkarten"));
+    root.append(el("p", "note",
+      `${block.n_bewertet.toLocaleString("de-DE")} Reihen bewertet, Stand ${fmtDate(S.as_of)}.`));
+    const t = el("table");
+    t.innerHTML = `<thead><tr><th class="num">#</th><th>Produkt</th><th>Set</th>
+      <th class="num">Preis</th><th class="num">Score</th><th class="num">Günstig</th>
+      <th class="num">Stabil</th><th class="num">Vola p. a.</th>
+      <th class="num">Trend p. a.</th><th class="num">Abschlag ATH</th>
+      <th>Signal</th><th>Risiken</th></tr></thead>`;
+    const tb = el("tbody");
+    block.top.filter(r => r.investierbar).slice(0, 60).forEach((r, i) => {
+      const tr = el("tr");
+      tr.innerHTML = `<td class="num">${i + 1}</td>
+        <td>${esc(r.name)}</td><td>${esc(r.set || "")}</td>
+        <td class="num">${fmtUsd(r.preis_usd)}</td>
+        <td class="num"><b>${r.score.toFixed(1)}</b></td>
+        <td class="num">${r.guenstigkeit.toFixed(0)}</td>
+        <td class="num">${r.stabilitaet.toFixed(0)}</td>
+        <td class="num">${r.vola_pa_pct != null ? r.vola_pa_pct.toFixed(0) + " %" : "—"}</td>
+        <td class="num">${r.trend_pa_pct != null ? r.trend_pa_pct.toFixed(0) + " %" : "—"}</td>
+        <td class="num">${r.abschlag_ath_pct != null ? r.abschlag_ath_pct.toFixed(0) + " %" : "—"}</td>
+        <td class="${SIG[r.signal] ? "pct up" : ""}">${esc(r.signal)}</td>
+        <td style="color:var(--muted);font-size:11.5px">${esc((r.risiken || []).join(", "))}</td>`;
+      tb.append(tr);
+    });
+    t.append(tb);
+    root.append(t);
+  });
+
+  // Backtest-Ergebnisse: die entscheidende Einordnung
+  if (S.backtest) {
+    root.append(el("h2", null, "Validierung: hat das Signal funktioniert?"));
+    Object.entries(S.backtest).forEach(([uni, bt]) => {
+      const fz = bt.fazit_90d || {};
+      root.append(el("h3", null, uni === "sealed" ? "Sealed" : "Karten"));
+      const t = el("table");
+      t.innerHTML = `<thead><tr><th>Signal</th><th>Beschreibung</th>
+        <th class="num">IC</th><th class="num">t</th>
+        <th class="num">Überschuss netto</th><th class="num">monoton</th>
+        <th class="num">Stichtage</th></tr></thead>`;
+      const tb = el("tbody");
+      (fz.rangliste || []).forEach(r => {
+        const tr = el("tr");
+        const cls = (r.ueberschuss_pp || 0) > 0 ? "pct up" : "pct down";
+        tr.innerHTML = `<td><b>${esc(r.signal)}</b></td>
+          <td style="color:var(--muted)">${esc(r.beschreibung || "")}</td>
+          <td class="num">${r.ic != null ? r.ic.toFixed(3) : "—"}</td>
+          <td class="num">${r.t != null ? r.t.toFixed(1) : "—"}</td>
+          <td class="num ${cls}">${r.ueberschuss_pp != null ? r.ueberschuss_pp.toFixed(1) + " pp" : "—"}</td>
+          <td class="num">${r.monoton ? "ja" : "nein"}</td>
+          <td class="num">${r.stichtage ?? "—"}</td>`;
+        tb.append(tr);
+      });
+      t.append(tb);
+      root.append(t);
+      root.append(el("p", "note", "<b>Fazit (90 Tage):</b> " + esc(fz.fazit || "")));
+      const st = bt.strategie && bt.strategie.ergebnis;
+      if (st) {
+        root.append(el("p", "note",
+          `Strategie „Top ${bt.strategie.parameter.top_n}, `
+          + `${bt.strategie.parameter.haltedauer_tage} Tage halten“ netto nach `
+          + `${bt.strategie.parameter.round_trip_gebuehr_pct} % Gebühren: `
+          + `<b>${st.strategie_netto_pct.toFixed(1)} %</b> gegen `
+          + `${st.markt_pct.toFixed(1)} % gleichgewichteten Markt `
+          + `(${st.ueberschuss_pp.toFixed(1)} pp).`));
+      }
+      ((bt.event_study || {}).hinweise || []).forEach(h =>
+        root.append(el("p", "note", esc(h))));
+    });
+  }
+  const m = S.methodik || {};
+  root.append(el("p", "note", esc(m.guenstigkeit ? "Günstigkeit: " + m.guenstigkeit : "")));
+  root.append(el("p", "note", esc(m.stabilitaet ? "Stabilität: " + m.stabilitaet : "")));
+  root.append(el("p", "note", esc(m.hinweis || "")));
+}
+
 /* ------------------------------------------------------------------ Start */
 renderIndexView($('[data-idx="cards"]'), window.IDX_CARDS, "cards");
 renderIndexView($('[data-idx="sealed"]'), window.IDX_SEALED, "sealed");
@@ -863,4 +1066,6 @@ setupPcView("PC_CARDS", "pccards-body", "pccards-search", "pccards-count", "card
 setupPcView("PC_SEALED", "pcsealed-body", "pcsealed-search", "pcsealed-count", "sealed", "pcsealed-chips");
 setupCs2All();
 setupMarkets();
+setupRisk();
+setupScreen();
 setupNews();

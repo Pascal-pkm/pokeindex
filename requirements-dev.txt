@@ -1,0 +1,2 @@
+# Nur für Entwicklung/CI
+ruff>=0.6,<1

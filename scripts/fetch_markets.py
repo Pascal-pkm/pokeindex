@@ -1,97 +1,102 @@
 # -*- coding: utf-8 -*-
-"""
-Tägliche Marktdaten (Aktien-Indizes, Gold, Silber, Bitcoin) über die
-öffentliche Yahoo-Finance-Chart-API (ohne API-Key).
+"""Tägliche Marktdaten (Aktienindizes, Gold, Silber, Bitcoin).
 
-Die Rohschlusskurse werden je Symbol gesammelt (data/markets_raw.csv.gz).
-Die Anzeige-Niveaus entstehen später in build_indices.py durch
-Renditen-Verkettung an die importierte Historie 2013-2026 – dadurch sind
-Quellen-/Niveauunterschiede (z. B. MSCI World via URTH-ETF) unschädlich.
+Zwei Quellen statt einer: Yahoo-Chart-API und Stooq-CSV (pokedata/sources/
+markets.py). Die alte Fassung hing allein an der inoffiziellen Yahoo-API mit
+`range=1mo` – nach einem Ausfall von mehr als einem Monat entstand eine
+unwiederbringliche Lücke. Jetzt wird der Abfragezeitraum aus dem letzten
+gespeicherten Datum abgeleitet und bei Ausfall die zweite Quelle genutzt.
+
+Gold/Silber kommen bevorzugt als Spot-Reihen (Stooq XAUUSD/XAGUSD); Front-
+Futures erzeugen Roll-Sprünge in Renditereihen.
+
+Die Rohschlusskurse werden je Symbol gesammelt (data/markets_raw.csv.gz); die
+Anzeige-Niveaus entstehen in build_indices.py durch Renditen-Verkettung an die
+importierte Historie 2013-2026.
 
 Aufruf:  python scripts/fetch_markets.py
 """
+from __future__ import annotations
+
 import csv
 import gzip
-import io
 import os
 import sys
-import time
 
-import requests
+from common import DATA_DIR
 
-from common import ROOT, USER_AGENT
+from pokedata.atomicio import write_gzip_csv
+from pokedata.sources import markets as msrc
 
-MARKETS_RAW = os.path.join(ROOT, "data", "markets_raw.csv.gz")
-YAHOO = "https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=1mo&interval=1d"
-
-# Reihenname (wie in der Historie-CSV) -> Yahoo-Symbol
-SYMBOLS = {
-    "SP500": "^GSPC",
-    "DAX": "^GDAXI",
-    "NASDAQ100": "^NDX",
-    "EUROSTOXX50": "^STOXX50E",
-    "MSCIWORLD": "URTH",       # iShares-MSCI-World-ETF als Renditeproxy
-    "GOLD": "GC=F",
-    "SILVER": "SI=F",
-    "BITCOIN": "BTC-USD",
-}
+MARKETS_RAW = os.path.join(DATA_DIR, "markets_raw.csv.gz")
+MARKETS_HIST = os.path.join(DATA_DIR, "markets_hist.csv")
+KEEP_DAYS = 400        # Rest steckt in markets_hist.csv
 
 
-def read_raw():
+def read_raw() -> dict:
     rows = {}
     if os.path.isfile(MARKETS_RAW):
         with gzip.open(MARKETS_RAW, "rt", encoding="utf-8", newline="") as f:
             for r in csv.DictReader(f):
-                rows[(r["series"], r["date"])] = float(r["close"])
+                try:
+                    rows[(r["series"], r["date"])] = float(r["close"])
+                except (TypeError, ValueError):
+                    continue
     return rows
 
 
-def write_raw(rows):
-    os.makedirs(os.path.dirname(MARKETS_RAW), exist_ok=True)
-    buf = io.StringIO()
-    w = csv.writer(buf)
-    w.writerow(["series", "date", "close"])
-    for (series, date) in sorted(rows):
-        w.writerow([series, date, f"{rows[(series, date)]:.6f}"])
-    with gzip.open(MARKETS_RAW, "wt", encoding="utf-8", newline="") as f:
-        f.write(buf.getvalue())
+def hist_last_dates() -> dict:
+    """Letztes Datum je Reihe in der importierten Historie."""
+    out = {}
+    if not os.path.isfile(MARKETS_HIST):
+        return out
+    with open(MARKETS_HIST, encoding="utf-8", newline="") as f:
+        rd = csv.DictReader(f)
+        names = [c for c in (rd.fieldnames or []) if c != "Date"]
+        for r in rd:
+            for n in names:
+                if r.get(n):
+                    out[n] = r["Date"]
+    return out
 
 
-def main():
-    s = requests.Session()
-    s.headers.update({"User-Agent": USER_AGENT})
+def main() -> int:
     rows = read_raw()
+    hist_end = hist_last_dates()
     added = 0
-    for series, sym in SYMBOLS.items():
+    failures = []
+    for series in msrc.SYMBOLS:
+        have = [d for (s, d) in rows if s == series]
+        last = max(have) if have else hist_end.get(series)
         try:
-            r = s.get(YAHOO.format(sym=sym.replace("^", "%5E")), timeout=60)
-            r.raise_for_status()
-            res = r.json()["chart"]["result"][0]
-            ts = res.get("timestamp") or []
-            closes = ((res.get("indicators") or {}).get("adjclose")
-                      or [{}])[0].get("adjclose") or \
-                     ((res.get("indicators") or {}).get("quote")
-                      or [{}])[0].get("close") or []
-            for t, c in zip(ts, closes):
-                if c is None:
-                    continue
-                d = time.strftime("%Y-%m-%d", time.gmtime(t))
-                if (series, d) not in rows:
-                    rows[(series, d)] = float(c)
-                    added += 1
-        except Exception as e:
-            print(f"  {series} ({sym}): FEHLER {e} – nächster Lauf holt nach")
-        time.sleep(1)
-    # Nur die letzten ~400 Tage je Reihe behalten (Rest steckt in der Historie)
+            data, src = msrc.fetch_series(series, last)
+        except Exception as exc:                          # noqa: BLE001
+            failures.append(f"{series}: {exc}")
+            print(f"  {series}: FEHLER {exc} – nächster Lauf holt nach")
+            continue
+        new = 0
+        for d, c in data.items():
+            if (series, d) not in rows:
+                rows[(series, d)] = c
+                new += 1
+        added += new
+        print(f"  {series}: {new} neue Kurse (Quelle {src}, "
+              f"letzter {max(data) if data else '-'})")
+
     by_series = {}
     for (series, d), c in rows.items():
         by_series.setdefault(series, []).append((d, c))
     trimmed = {}
     for series, lst in by_series.items():
-        for d, c in sorted(lst)[-400:]:
+        for d, c in sorted(lst)[-KEEP_DAYS:]:
             trimmed[(series, d)] = c
-    write_raw(trimmed)
+
+    write_gzip_csv(MARKETS_RAW, ["series", "date", "close"],
+                   [[s, d, f"{trimmed[(s, d)]:.6f}"] for (s, d) in sorted(trimmed)])
     print(f"Märkte: {added} neue Schlusskurse gespeichert.")
+    if len(failures) == len(msrc.SYMBOLS):
+        print("FEHLER: keine einzige Reihe konnte aktualisiert werden.")
+        return 1
     return 0
 
 

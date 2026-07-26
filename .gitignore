@@ -2,3 +2,15 @@ __pycache__/
 *.pyc
 nohup.out
 .DS_Store
+.pytest_cache/
+.ruff_cache/
+
+# Lokale Portfolio-Auswertungen dürfen NIE in das öffentliche Repository:
+# sie enthalten eigene Kaufpreise, Mengen und Handelsplätze. Sie werden
+# standardmäßig eine Ebene höher (im Projektordner) abgelegt; diese Regeln
+# sind das Sicherheitsnetz, falls der Ausgabepfad einmal umgestellt wird.
+portfolio.json
+portfolio_map.csv
+portfolio_prices_manual.csv
+Portfolio_Bericht.html
+Portfolio_Analyse.xlsx

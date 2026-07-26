@@ -20,6 +20,8 @@
     <button data-view="pccards">Alle Karten</button>
     <button data-view="pcsealed">Alle Sealed</button>
     <button data-view="cs2all">Alle CS2-Items</button>
+    <button data-view="risk">Risiko</button>
+    <button data-view="screen">Potenziale</button>
     <button data-view="method">Methodik</button>
     <button data-view="news">Newsletter</button>
   </nav>
@@ -39,6 +41,29 @@
       fortgeschrieben. Reihen lassen sich ein-/ausblenden; alle Reihen werden zum Start des gewählten
       Zeitraums auf 100 normiert – so sind auch die Sammler-Indizes direkt vergleichbar.</p>
     <div id="markets-root"></div>
+  </section>
+
+  <section class="view" id="view-risk">
+    <div class="kicker">Risiko &amp; Diversifikation · alle Anlageklassen</div>
+    <h1>Risikokennzahlen</h1>
+    <p class="note">Rendite ohne Risiko ist keine Aussage. Volatilität, maximaler
+      Rückgang und Korrelation zu klassischen Anlagen entscheiden darüber, ob eine
+      Sammlerklasse im Portfolio etwas beiträgt. <b>Wichtig:</b> die Index-Volatilität
+      ist durch Mittelung über 500 Positionen und Preis-Fortschreibung strukturell zu
+      niedrig – die realistische Größe für einzelne Käufe steht darunter als
+      „Einzelprodukt-Volatilität“.</p>
+    <div id="risk-root"></div>
+  </section>
+
+  <section class="view" id="view-screen">
+    <div class="kicker">Long-only-Screening · tagesaktuell, mit Backtest</div>
+    <h1>Potenzial-Kandidaten</h1>
+    <p class="note">Gesucht werden Produkte, die relativ zur eigenen Historie günstig
+      sind oder lange auf stabilem Niveau konsolidieren. Die Rangfolge ist ein
+      Ausgangspunkt für eigene Recherche, kein Kaufsignal – die Backtest-Kennzahlen
+      unten zeigen, wie gut (oder schlecht) das Signal in der Vergangenheit
+      funktioniert hat.</p>
+    <div id="screen-root"></div>
   </section>
 
   <section class="view" id="view-cs2all">
@@ -185,6 +210,8 @@
 <script src="data/idx_CS2.js"></script>
 <script src="data/cs2_steam_list.js"></script>
 <script src="data/markets.js"></script>
+<script src="data/risk.js"></script>
+<script src="data/screen.js"></script>
 <script src="data/pc_cards.js"></script>
 <script src="data/pc_sealed.js"></script>
 <script src="data/newsletters.js"></script>

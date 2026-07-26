@@ -1,6 +1,6 @@
 name: Historie-Backfill (bis Feb 2024)
 
-# Läuft alle 6 Stunden, bis die komplette Preishistorie seit 2024-02-08
+# Läuft dreimal täglich, bis die komplette Preishistorie seit 2024-02-08
 # nachgeladen ist; danach beendet sich jeder Lauf sofort ("nichts zu tun").
 # Kann im Actions-Tab auch manuell gestartet werden.
 
@@ -26,10 +26,14 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.12.7"
+          cache: pip
 
       - name: Abhängigkeiten installieren
-        run: pip install -r requirements.txt
+        # requirements-optional.txt enthält py7zr/brotli. In Actions (Python
+        # 3.12.7) existieren dafür Wheels; lokal auf sehr neuen Python-Versionen
+        # nicht, deshalb sind sie in einer eigenen Datei.
+        run: pip install -r requirements.txt -r requirements-optional.txt
 
       - name: Archivtage nachladen
         run: python scripts/backfill_archive.py --days 150
@@ -37,12 +41,19 @@ jobs:
       - name: Indizes neu berechnen
         run: python scripts/build_indices.py
 
+      - name: Risikokennzahlen aktualisieren
+        run: python scripts/build_risk.py
+
+      - name: Daten validieren (bricht bei Fehlern ab)
+        run: python scripts/validate_data.py --strict
+
       - name: Änderungen committen
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data site/data
           git commit -m "Backfill $(date -u +%FT%H:%M)" || echo "nichts zu committen"
+          git pull --rebase --autostash origin main || true
           git push
 
       - name: Website-Artefakt hochladen
@@ -52,3 +63,12 @@ jobs:
 
       - name: Auf GitHub Pages veröffentlichen
         uses: actions/deploy-pages@v4
+
+      - name: Fehlermeldung per E-Mail
+        if: failure()
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NEWSLETTER_TO: ${{ secrets.NEWSLETTER_TO }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python scripts/notify_failure.py "Historie-Backfill fehlgeschlagen"

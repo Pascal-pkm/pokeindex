@@ -1,0 +1,33 @@
+{
+ "geprueft": "2026-07-26T15:38:45+00:00",
+ "referenzdatum": "2026-07-26",
+ "errors": [
+  "Karten-Tagesdaten sind 9 Tage alt (erlaubt: 3) – läuft der tägliche Workflow?",
+  "CS2-Daten sind 8 Tage alt",
+  "SPK500: Stand 2026-07-17 ist 9 Tage alt",
+  "SPKS: Stand 2026-07-17 ist 9 Tage alt",
+  "CS2500: Stand 2026-07-18 ist 8 Tage alt"
+ ],
+ "warnings": [
+  "Marktreihe SP500: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe DAX: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe NASDAQ100: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe EUROSTOXX50: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe MSCIWORLD: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe GOLD: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe SILVER: letzter Kurs 2026-07-17 (9 Tage alt)",
+  "Marktreihe BITCOIN: letzter Kurs 2026-07-18 (8 Tage alt)"
+ ],
+ "info": {
+  "Karten-Tagesreihe": "891 Tage, 2024-02-08 bis 2026-07-17, 0 Lücken",
+  "Karten-Datenstand": "2026-07-17 (9 Tage alt)",
+  "Preise 2026-07-17": "6361 Zeilen, 6361 Produkte",
+  "Tagesdatei 2026-07-17": "6361 Zeilen (Median Vortage 6275, 1.01x)",
+  "Stammdaten": "6361 Produkte",
+  "CS2-Tagesreihe": "1 Tage, 2026-07-18 bis 2026-07-18, 0 Lücken",
+  "CS2-Datenstand": "2026-07-18 (8 Tage alt)",
+  "SPK500": "Stand 2026-07-17, Level 1603.64, 500 Mitglieder, Carry-Anteil 0.006",
+  "SPKS": "Stand 2026-07-17, Level 2603.67, 500 Mitglieder, Carry-Anteil 0.002",
+  "CS2500": "Stand 2026-07-18, Level 1382.23, 500 Mitglieder, Carry-Anteil 0.0"
+ }
+}

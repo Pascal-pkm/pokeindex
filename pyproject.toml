@@ -1,0 +1,23 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["site", "data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "C4", "SIM"]
+ignore = [
+    "E501",    # Zeilenlänge wird über line-length gesteuert
+    "B008",    # Funktionsaufrufe in Defaults (bewusst bei IndexRules())
+    "SIM108",  # Ternary statt if/else nicht immer lesbarer
+    "UP009",   # utf-8-Kopfzeile: Projektkonvention, in allen Dateien vorhanden
+    "UP017",   # dt.timezone.utc bleibt (lesbarer als datetime.UTC)
+    "B905",    # zip(): Längen sind hier konstruktionsbedingt gleich
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402", "F401"]
+"scripts/*" = ["E402"]     # sys.path-Bootstrap muss vor den Imports stehen
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

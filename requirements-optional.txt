@@ -1,0 +1,13 @@
+# Optionale Pakete – die Pipeline läuft auch ohne sie, mit Einschränkungen.
+#
+# py7zr   entpackt die .7z-Preisarchive für scripts/backfill_archive.py.
+#         Braucht pyppmd, das auf sehr neuen Python-Versionen (z. B. 3.14) noch
+#         kein Wheel hat und dann einen C-Compiler verlangt. Der Backfill läuft
+#         ohnehin in GitHub Actions (Python 3.12.7, Wheels vorhanden).
+# brotli  erlaubt Brotli-komprimierte Antworten der Skinport-API. Ohne das Paket
+#         wird nur gzip angefordert – funktional identisch, minimal mehr Traffic.
+#
+# Installation (nur wenn benötigt und ein Compiler vorhanden ist):
+#   pip install -r requirements-optional.txt
+py7zr>=0.21,<1
+brotli>=1.1,<2

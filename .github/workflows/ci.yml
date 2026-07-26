@@ -1,0 +1,46 @@
+name: CI (Tests + Linting)
+
+# Läuft bei jedem Push und Pull Request auf die Code-Pfade. Verhindert, dass
+# eine kaputte Änderung erst im nächtlichen Datenlauf auffällt.
+
+on:
+  push:
+    paths:
+      - "pokedata/**"
+      - "scripts/**"
+      - "tests/**"
+      - "requirements*.txt"
+      - ".github/workflows/ci.yml"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+          cache: pip
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install -r requirements.txt -r requirements-optional.txt
+          pip install -r requirements-dev.txt
+
+      - name: Linting (ruff)
+        run: ruff check pokedata scripts tests
+
+      - name: Tests
+        run: python -m pytest tests -q
+
+      - name: Pipeline-Rauchtest (ohne Netz)
+        # Prüft, dass Index-, Risiko- und Screening-Lauf auf den im Repository
+        # liegenden Daten durchlaufen und plausible Artefakte erzeugen.
+        run: |
+          python scripts/build_indices.py --strict
+          python scripts/build_risk.py
+          python scripts/build_screening.py
+          python scripts/validate_data.py

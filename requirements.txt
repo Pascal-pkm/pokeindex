@@ -1,4 +1,13 @@
-requests>=2.31
-py7zr>=0.21
-brotli>=1.1
-matplotlib>=3.8
+# Kern-Abhängigkeiten: reine Python-Pakete bzw. solche mit Wheels für jede
+# Version. Diese Datei muss auf JEDER Python-Version ohne C-Compiler
+# installierbar sein (auch auf sehr neuen wie 3.14).
+requests>=2.31,<3
+matplotlib>=3.8,<4      # Newsletter-Chart
+openpyxl>=3.1,<4        # Order-Book-Import und Excel-Bericht (lokal)
+pytest>=8.0,<10         # Selbsttest
+
+# Optionale Pakete stehen in requirements-optional.txt:
+#   py7zr  – nur für den Archiv-Backfill (läuft in GitHub Actions)
+#   brotli – beschleunigt den Skinport-Abruf, ist aber nicht erforderlich
+# Beide brauchen auf brandneuen Python-Versionen einen C-Compiler, weil noch
+# keine passenden Wheels existieren. Deshalb sind sie hier NICHT enthalten.

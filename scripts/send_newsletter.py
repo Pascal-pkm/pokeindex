@@ -5,17 +5,17 @@ kurze Eyebrow-Kategorie, eine zugespitzte Schlagzeile, knapper Fließtext mit
 einer fett gesetzten Kernaussage, EIN Chart mit Quellenangabe, dezente Tabellen
 ohne Kästchen-Optik. Zwei Ausgaben:
 
-  --mode daily   taeglich: Tagesveraenderung aller Indizes, ein 30-Tage-Chart,
+  --mode daily   täglich: Tagesveränderung aller Indizes, ein 30-Tage-Chart,
                  sehr kompakt (soll in <30 Sekunden lesbar sein)
-  --mode weekly  Sonntags-Briefing: Wochenrueckblick je Anlageklasse, Top-
-                 Movers, Maerkte-Vergleich, 180-Tage-Chart, ausfuehrlicher
+  --mode weekly  Sonntags-Briefing: Wochenrückblick je Anlageklasse, Top-
+                 Movers, Märkte-Vergleich, 180-Tage-Chart, ausführlicher
 
-Versand per Gmail-SMTP. Benoetigte Umgebungsvariablen (GitHub-Secrets):
+Versand per Gmail-SMTP. Benötigte Umgebungsvariablen (GitHub-Secrets):
   GMAIL_ADDRESS       Absender-Gmail-Adresse
   GMAIL_APP_PASSWORD  Gmail-App-Passwort (nicht das normale Passwort!)
-  NEWSLETTER_TO       Empfaenger, Komma-getrennt (optional, Standard = Absender)
+  NEWSLETTER_TO       Empfänger, Komma-getrennt (optional, Standard = Absender)
 
-Jede Ausgabe wird zusaetzlich unter site/newsletter/JJJJ-MM-TT-{daily,weekly}.html
+Jede Ausgabe wird zusätzlich unter site/newsletter/JJJJ-MM-TT-{daily,weekly}.html
 archiviert (Chart als eingebettetes Base64-Bild) und in site/data/newsletters.js
 gelistet (Archiv auf der Website).
 
@@ -38,23 +38,40 @@ from email.mime.text import MIMEText
 
 from common import CARD_INDEX, ROOT, SEALED_INDEX, SITE_DATA
 
+from pokedata.atomicio import read_js_var, write_text
+
 NL_DIR = os.path.join(ROOT, "site", "newsletter")
 CS2_INDEX = "CS2500"
-IDX_FILES = {"SPK500": ("window.IDX_CARDS=", "idx_SPK500.js"),
-             "SPKS": ("window.IDX_SEALED=", "idx_SPKS.js"),
-             "CS2500": ("window.IDX_CS2=", "idx_CS2.js")}
+IDX_FILES = {"SPK500": "idx_SPK500.js", "SPKS": "idx_SPKS.js",
+             "CS2500": "idx_CS2.js"}
+# Portfolio-Datei liegt bewusst AUSSERHALB des Repositories (private Daten).
+PORTFOLIO_JSON = os.path.join(os.path.dirname(ROOT), "portfolio.json")
 
 
 def load_full_series(idx_name):
-    """Volle Historie direkt aus site/data/idx_*.js laden (summary.json haelt
-    fuer 'series_tail' nur die letzten 30 Punkte vor, das reicht nicht fuer
+    """Volle Historie direkt aus site/data/idx_*.js laden (summary.json hält
+    für 'series_tail' nur die letzten 30 Punkte vor, das reicht nicht für
     den 180-Tage-Chart im Wochenbriefing)."""
-    prefix, fn = IDX_FILES[idx_name]
-    path = os.path.join(SITE_DATA, fn)
-    with open(path, encoding="utf-8") as f:
-        txt = f.read()
-    data = json.loads(txt[len(prefix):].rstrip().rstrip(";"))
-    return data["series"]
+    path = os.path.join(SITE_DATA, IDX_FILES[idx_name])
+    return read_js_var(path)["series"]
+
+
+def load_portfolio():
+    """Portfolio-Ergebnis, falls lokal vorhanden (nur bei lokalem Lauf)."""
+    if not os.path.isfile(PORTFOLIO_JSON):
+        return None
+    try:
+        with open(PORTFOLIO_JSON, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return None
+    stand = (data.get("summary") or {}).get("stand")
+    if not stand:
+        return None
+    age = (dt.date.today() - dt.date.fromisoformat(stand)).days
+    if age > 14:            # veraltete Bewertung nicht als aktuell verschicken
+        return None
+    return data
 
 
 MARKET_NAMES = {"SP500": "S&P 500", "DAX": "DAX", "NASDAQ100": "NASDAQ 100",
@@ -64,8 +81,8 @@ IDX_LABELS = {"SPK500": "Kartenindex (SPK500)", "SPKS": "Sealed-Index (SPKS)",
               "CS2500": "CS2-Skin-Index (CS2500)"}
 
 # --------------------------------------------------------------- Optik/Stil
-INK = "#15181d"        # Fliesstext, fast schwarz
-SUB = "#6b7280"        # gedaempftes Grau fuer Meta-Text
+INK = "#15181d"        # Fließtext, fast schwarz
+SUB = "#6b7280"        # gedämpftes Grau für Meta-Text
 RULE = "#e7e5e0"       # helle Trennlinie
 PAPER = "#fdfcfa"      # leicht warmes Off-White als Hintergrund
 SPARK = "#b45309"      # warmes Amber als Akzentfarbe (Eyebrow, Chart-Linie)
@@ -84,29 +101,29 @@ def fmt_date_de(iso):
 def richtung(chg, schwellen=(3, 0.8, 0.15)):
     hi, mid, lo = schwellen
     if chg is None:
-        return "unveraendert"
+        return "unverändert"
     if chg >= hi:
-        return "kraeftig gestiegen"
+        return "kräftig gestiegen"
     if chg >= mid:
-        return "spuerbar gestiegen"
+        return "spürbar gestiegen"
     if chg > lo:
         return "leicht gestiegen"
     if chg > -lo:
-        return "praktisch unveraendert"
+        return "praktisch unverändert"
     if chg > -mid:
         return "leicht gefallen"
     if chg > -hi:
-        return "spuerbar gefallen"
+        return "spürbar gefallen"
     return "deutlich gefallen"
 
 
 # --------------------------------------------------------------- Chart-PNG
 def render_chart_png(series, days=None, color=SPARK, w=1120, h=380):
-    """series: [[date, level], ...]. PNG-Bytes fuer Inline-Einbettung."""
+    """series: [[date, level], ...]. PNG-Bytes für Inline-Einbettung."""
     import matplotlib
     matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
     import matplotlib.dates as mdates
+    import matplotlib.pyplot as plt
 
     pts = series[-days:] if days else series
     if len(pts) < 2:
@@ -182,7 +199,7 @@ def chart_block(cid_or_src, caption, source_note):
 def scoreboard(rows):
     """rows: [(name, level_txt, chg_val_or_None, extra_txt_or_None), ...]"""
     trs = ""
-    for name, level_txt, chg, extra in rows:
+    for name, level_txt, chg, _extra in rows:
         trs += (f'<tr>'
                 f'<td style="padding:10px 0;border-bottom:1px solid {RULE};font:600 14.5px {F_BODY};color:{INK}">{html.escape(name)}</td>'
                 f'<td style="padding:10px 10px;border-bottom:1px solid {RULE};font:14.5px {F_BODY};color:{INK};text-align:right;white-space:nowrap">{level_txt}</td>'
@@ -209,6 +226,48 @@ def mover_table(title, rows, key):
             f'<table style="width:100%;border-collapse:collapse">{trs}</table></div>')
 
 
+def portfolio_block(data, mode="daily"):
+    """Privater Bestandsblock – nur wenn portfolio.json lokal vorliegt."""
+    if not data:
+        return ""
+    s = data["summary"]
+    rows = [
+        ("Einstand", f"{s['kosten_eur']:,.2f} €", None),
+        ("Marktwert (brutto)", f"{s['marktwert_eur']:,.2f} €", s["pl_pct"]),
+        (f"Netto nach Gebühren ({s.get('verkaufsgebuehr_pct', 0):.0f} %)",
+         f"{s['marktwert_netto_eur']:,.2f} €", s["pl_netto_pct"]),
+    ]
+    trs = ""
+    for name, val, chg in rows:
+        trs += (f'<tr><td style="padding:9px 0;border-bottom:1px solid {RULE};'
+                f'font:600 14px {F_BODY};color:{INK}">{html.escape(name)}</td>'
+                f'<td style="padding:9px 10px;border-bottom:1px solid {RULE};'
+                f'font:14px {F_BODY};color:{INK};text-align:right;'
+                f'white-space:nowrap">{val}</td>'
+                f'<td style="padding:9px 0;border-bottom:1px solid {RULE};'
+                f'text-align:right;white-space:nowrap">{pct_span(chg)}</td></tr>')
+    bench = (data.get("benchmark") or {}).get("performance_pct") or {}
+    vgl = ""
+    if bench:
+        teile = [f"{k} {v:+.2f} %" for k, v in
+                 sorted(bench.items(), key=lambda kv: -kv[1])[:4]]
+        vgl = (f'<div style="font:12.5px/1.6 {F_BODY};color:{SUB};margin:4px 0 0">'
+               f'Zeitgewichtet seit erstem Kauf: {" · ".join(html.escape(t) for t in teile)}'
+               f'</div>')
+    warn = ""
+    if s.get("proxy_anteil_pct"):
+        warn = (f'<div style="font:italic 11.5px/1.5 {F_BODY};color:{SUB};'
+                f'margin:8px 0 0">Marktwerte zu {s["proxy_anteil_pct"]:.0f} % '
+                f'aus englischen TCGplayer-Preisen genähert (Bestand ist '
+                f'deutschsprachig); Stand {s["stand"]}.</div>')
+    return (f'<div style="margin:0 0 22px">'
+            f'<div style="font:700 11.5px/1.4 {F_BODY};letter-spacing:.05em;'
+            f'text-transform:uppercase;color:{SUB};margin:0 0 8px">'
+            f'Eigener Bestand</div>'
+            f'<table style="width:100%;border-collapse:collapse">{trs}</table>'
+            f'{vgl}{warn}</div>')
+
+
 def markets_table(markets, key="d1", label="Tag"):
     rows = ""
     for k, name in MARKET_NAMES.items():
@@ -225,7 +284,7 @@ def markets_table(markets, key="d1", label="Tag"):
         return ""
     return (f'<div style="margin:0 0 22px">'
             f'<div style="font:700 11.5px/1.4 {F_BODY};letter-spacing:.05em;text-transform:uppercase;'
-            f'color:{SUB};margin:0 0 8px">Traditionelle Maerkte ({label})</div>'
+            f'color:{SUB};margin:0 0 8px">Traditionelle Märkte ({label})</div>'
             f'<table style="width:100%;border-collapse:collapse">{rows}</table></div>')
 
 
@@ -265,7 +324,7 @@ def week_stats(block):
 
 
 def lead_story(stat_map):
-    """Waehlt den Index mit der groessten |Veraenderung| als Aufmacher-Story."""
+    """Wählt den Index mit der größten |Veränderung| als Aufmacher-Story."""
     named = {IDX_LABELS.get(k, k): v for k, v in stat_map.items() if v and v.get("chg") is not None}
     if not named:
         return None, None
@@ -284,8 +343,14 @@ def build_daily(summary, heute):
     stat_map = {"SPK500": c_stat, "SPKS": s_stat, "CS2500": cs_stat}
 
     lead_name, lead = lead_story(stat_map)
+    lead_key = "SPK500"
+    if lead is not None:
+        for _k, _v in stat_map.items():
+            if _v is lead:
+                lead_key = _k
+                break
     if lead is None:
-        eyebrow_txt, hl = "Tagesueberblick", "Ruhiger Handelstag ohne nennenswerte Ausschlaege"
+        eyebrow_txt, hl = "Tagesüberblick", "Ruhiger Handelstag ohne nennenswerte Ausschläge"
     else:
         chg = lead["chg"]
         short = lead_name.split(" (")[0]
@@ -298,12 +363,12 @@ def build_daily(summary, heute):
         elif chg > 0:
             hl = f"{short} steigt um {chg:.1f} %"
         elif chg > -3:
-            hl = f"{short} faellt um {abs(chg):.1f} %"
+            hl = f"{short} fällt um {abs(chg):.1f} %"
         else:
             hl = f"{short} bricht um {abs(chg):.1f} % ein"
-        eyebrow_txt = "Tagesueberblick"
+        eyebrow_txt = "Tagesüberblick"
 
-    saetze = [f"Der Kartenindex (SPK500) schliesst bei <b>{c_stat['level']:,.2f}</b> Punkten "
+    saetze = [f"Der Kartenindex (SPK500) schließt bei <b>{c_stat['level']:,.2f}</b> Punkten "
               f"({pct_span(c_stat['chg'])}), der Sealed-Index (SPKS) bei <b>{s_stat['level']:,.2f}</b> "
               f"({pct_span(s_stat['chg'])})"]
     if cs_stat:
@@ -314,13 +379,13 @@ def build_daily(summary, heute):
     adv, dec = c_stat.get("adv") or 0, c_stat.get("dec") or 0
     if adv + dec > 0:
         if adv > dec * 1.5:
-            breadth = f"{adv} Gewinnern standen nur {dec} Verlierer gegenueber – die Marktbreite war klar positiv."
+            breadth = f"{adv} Gewinnern standen nur {dec} Verlierer gegenüber – die Marktbreite war klar positiv."
         elif dec > adv * 1.5:
-            breadth = f"{dec} Verlierern standen nur {adv} Gewinner gegenueber – die Marktbreite war negativ."
+            breadth = f"{dec} Verlierern standen nur {adv} Gewinner gegenüber – die Marktbreite war negativ."
         else:
             breadth = f"{adv} Gewinner und {dec} Verlierer hielten sich die Waage."
     else:
-        breadth = "Keine ausreichende Marktbreite fuer eine Aussage."
+        breadth = "Keine ausreichende Marktbreite für eine Aussage."
     bottom_line = f"<b>{breadth}</b>"
 
     sp = markets.get("SP500")
@@ -346,14 +411,19 @@ def build_daily(summary, heute):
             scoreboard(score_rows),
             para(body_p1),
             para(bottom_line),
-            chart_block(chart_src, "SPK500 – letzte 30 Tage", "Quelle: TCGplayer Market Price via tcgcsv.com"),
+            chart_block(chart_src, f"{lead_key} – letzte 30 Tage",
+                        "Quelle: TCGplayer Market Price via tcgcsv.com"),
         ]
+        if pf_block:
+            parts.append(hr())
+            parts.append(pf_block)
         if vgl:
             parts.append(para(vgl, size=13.5))
         parts.append(footer_html(cards["asof"]))
         return wrap("".join(parts))
 
-    chart_series = load_full_series("SPK500")
+    pf_block = portfolio_block(load_portfolio(), "daily")
+    chart_series = load_full_series(lead_key)
     subject = f"{hl} · SPK500 {c_stat['level']:,.0f}"
     text_fallback = (f"{hl}\n\nSPK500 {c_stat['level']:,.2f} ({c_stat['chg']}%)\n"
                       f"SPKS {s_stat['level']:,.2f} ({s_stat['chg']}%)\n"
@@ -376,14 +446,14 @@ def build_weekly(summary, heute):
 
     lead_name, lead = lead_story(stat_map)
     if lead is None:
-        hl = "Ruhige Woche an den Sammlermaerkten"
+        hl = "Ruhige Woche an den Sammlermärkten"
     else:
         chg = lead["chg"]
         short = lead_name.split(" (")[0]
         if abs(chg) < 0.3:
-            hl = f"{short}: seitwaertige Woche"
+            hl = f"{short}: seitwärtige Woche"
         elif chg >= 5:
-            hl = f"{short} legt kraeftig zu – {chg:+.1f} % in dieser Woche"
+            hl = f"{short} legt kräftig zu – {chg:+.1f} % in dieser Woche"
         elif chg > 0:
             hl = f"{short} gewinnt {chg:.1f} % hinzu"
         elif chg > -5:
@@ -396,7 +466,7 @@ def build_weekly(summary, heute):
 
     saetze = [f"Der Kartenindex ist diese Woche {richtung(c_stat['chg'])}"
               f"{chg_paren(c_stat['chg'])} "
-              f"und schliesst bei <b>{c_stat['level']:,.2f}</b> Punkten "
+              f"und schließt bei <b>{c_stat['level']:,.2f}</b> Punkten "
               f"(Wochenspanne {c_stat['lo']:,.0f}\u2013{c_stat['hi']:,.0f})."]
     o = cards["overview"]
     if o.get("ath") and c_stat["level"] >= o["ath"] * 0.995:
@@ -451,6 +521,9 @@ def build_weekly(summary, heute):
             parts.append(para(vgl, size=13.5))
         parts.append(chart_block(chart_src, "SPK500 – letzte 180 Tage",
                                   "Quelle: TCGplayer Market Price via tcgcsv.com"))
+        if pf_block:
+            parts.append(hr())
+            parts.append(pf_block)
         parts.append(hr())
         parts.append(mover_table("Karten – Top-Wochengewinner", cards.get("weekly_up"), "wchg"))
         parts.append(mover_table("Karten – Top-Wochenverlierer", cards.get("weekly_dn"), "wchg"))
@@ -460,9 +533,10 @@ def build_weekly(summary, heute):
             parts.append(mover_table("CS2 – Top-Wochengewinner", cs2.get("weekly_up"), "wchg"))
             parts.append(mover_table("CS2 – Top-Wochenverlierer", cs2.get("weekly_dn"), "wchg"))
         parts.append(markets_table(markets, key="w1", label="Woche"))
-        parts.append(footer_html(cards["asof"], "Wochenaenderungen nur zwischen bestaetigten Preisen."))
+        parts.append(footer_html(cards["asof"], "Wochenänderungen nur zwischen bestätigten Preisen."))
         return wrap("".join(parts))
 
+    pf_block = portfolio_block(load_portfolio(), "weekly")
     chart_series = load_full_series("SPK500")
     subject = f"{hl} · SPK500 {c_stat['level']:,.0f}"
     text_fallback = f"{hl}\n\nSPK500 {c_stat['level']:,.2f}\nSPKS {s_stat['level']:,.2f}\n"
@@ -495,8 +569,8 @@ def load_newsletter_listing():
 
 def save_newsletter_listing(listing):
     lst_path = os.path.join(SITE_DATA, "newsletters.js")
-    with open(lst_path, "w", encoding="utf-8") as f:
-        f.write("window.NEWSLETTERS=" + json.dumps(listing, ensure_ascii=False) + ";")
+    write_text(lst_path,
+               "window.NEWSLETTERS=" + json.dumps(listing, ensure_ascii=False) + ";")
 
 
 def main():
@@ -509,7 +583,7 @@ def main():
     with open(os.path.join(SITE_DATA, "summary.json"), encoding="utf-8") as f:
         summary = json.load(f)
     if not summary.get(CARD_INDEX) or not summary.get(SEALED_INDEX):
-        print("summary.json unvollstaendig – zuerst build_indices.py ausfuehren.")
+        print("summary.json unvollständig – zuerst build_indices.py ausführen.")
         return 1
 
     heute = dt.date.today().isoformat()
@@ -522,9 +596,9 @@ def main():
 
     os.makedirs(NL_DIR, exist_ok=True)
     arch = os.path.join(NL_DIR, f"{heute}-{args.mode}.html")
-    with open(arch, "w", encoding="utf-8") as f:
-        f.write(f"<!doctype html><meta charset='utf-8'><title>{html.escape(out['subject'])}</title>"
-                f"{archive_html}")
+    write_text(arch,
+               f"<!doctype html><meta charset='utf-8'>"
+               f"<title>{html.escape(out['subject'])}</title>{archive_html}")
 
     listing = load_newsletter_listing()
     if not any(item["d"] == heute and item["t"] == args.mode for item in listing):
@@ -546,7 +620,7 @@ def main():
         print("GMAIL_ADDRESS / GMAIL_APP_PASSWORD nicht gesetzt.")
         return 1
     if not empfaenger:
-        print("Kein gueltiger Empfaenger (NEWSLETTER_TO leer und kein Absender).")
+        print("Kein gültiger Empfänger (NEWSLETTER_TO leer und kein Absender).")
         return 1
 
     cid = "chart1"
@@ -570,7 +644,7 @@ def main():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as srv:
         srv.login(absender, passwort)
         srv.sendmail(absender, [absender] + empfaenger, msg.as_string())
-    print(f"Newsletter ({args.mode}) an {len(empfaenger)} Empfaenger versendet.")
+    print(f"Newsletter ({args.mode}) an {len(empfaenger)} Empfänger versendet.")
     return 0
 
 

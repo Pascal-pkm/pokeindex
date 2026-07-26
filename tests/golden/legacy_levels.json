@@ -1,0 +1,15 @@
+{
+ "asof": "2026-07-17",
+ "card_index": "SPK500",
+ "sealed_index": "SPKS",
+ "levels": {
+  "SPK500": 1596.24,
+  "SPKS": 2603.67
+ },
+ "baskets": {
+  "SPK500": 241594,
+  "SPKS": 565216
+ },
+ "quelle": "site/data/idx_*.js vor der Konsolidierung (build 2026-07-18T13:48:57Z)",
+ "zweck": "Beweis, dass pokedata/indexlib.py mit LEGACY_RULES die frühere Berechnung bitgenau reproduziert. Bei bewussten Methodikänderungen bleibt diese Referenz unverändert - sie prüft die Legacy-Regelfassung, nicht die aktuelle."
+}
