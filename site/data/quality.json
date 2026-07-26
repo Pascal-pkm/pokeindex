@@ -1,5 +1,5 @@
 {
- "geprueft": "2026-07-26T16:18:43+00:00",
+ "geprueft": "2026-07-26T16:29:10+00:00",
  "referenzdatum": "2026-07-26",
  "errors": [],
  "warnings": [
@@ -8,8 +8,8 @@
  "info": {
   "Karten-Tagesreihe": "899 Tage, 2024-02-08 bis 2026-07-25, 0 Lücken",
   "Karten-Datenstand": "2026-07-25 (1 Tage alt)",
-  "Preise 2026-07-25": "6409 Zeilen, 6409 Produkte",
-  "Tagesdatei 2026-07-25": "6409 Zeilen (Median Vortage 6389, 1.00x)",
+  "Preise 2026-07-25": "6448 Zeilen, 6448 Produkte",
+  "Tagesdatei 2026-07-25": "6448 Zeilen (Median Vortage 6389, 1.01x)",
   "Stammdaten": "6503 Produkte",
   "CS2-Tagesreihe": "7 Tage, 2026-07-18 bis 2026-07-25, 1 Lücken",
   "CS2-Datenstand": "2026-07-25 (1 Tage alt)",

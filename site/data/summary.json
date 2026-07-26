@@ -1,5 +1,5 @@
 {
- "built": "2026-07-26T16:18:18+00:00",
+ "built": "2026-07-26T16:28:43+00:00",
  "method_version": "2026-07-26",
  "rules": {
   "size": 500,
@@ -616,7 +616,7 @@
     "wchg": 15.66,
     "car": 0,
     "new": 0,
-    "cat": "tin",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/616290/pokemon-swsh-crown-zenith-crown-zenith-tin-case"
    },
    {
@@ -630,7 +630,7 @@
     "wchg": 13.49,
     "car": 0,
     "new": 0,
-    "cat": "booster_box",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/630447/pokemon-sv-black-bolt-unova-mini-tin-display-case"
    },
    {
@@ -660,7 +660,7 @@
     "wchg": -19.42,
     "car": 0,
     "new": 0,
-    "cat": "etb",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/692948/pokemon-me05-pitch-black-pitch-black-elite-trainer-box-case"
    },
    {
@@ -674,7 +674,7 @@
     "wchg": -15.46,
     "car": 0,
     "new": 0,
-    "cat": "bundle",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/692943/pokemon-me05-pitch-black-pitch-black-booster-bundle-case"
    },
    {
@@ -688,7 +688,7 @@
     "wchg": -14.2,
     "car": 0,
     "new": 0,
-    "cat": "booster_box",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/692941/pokemon-me05-pitch-black-pitch-black-booster-box-case"
    },
    {
@@ -716,7 +716,7 @@
     "wchg": -11.73,
     "car": 0,
     "new": 0,
-    "cat": "booster_box",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/672395/pokemon-me03-perfect-order-perfect-order-booster-box-case"
    }
   ],
@@ -732,7 +732,7 @@
     "wchg": 7.92,
     "car": 0,
     "new": 0,
-    "cat": "etb",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/454247/pokemon-swsh-crown-zenith-crown-zenith-pokemon-center-elite-trainer-box-plus-case"
    },
    {
@@ -746,7 +746,7 @@
     "wchg": 13.49,
     "car": 0,
     "new": 0,
-    "cat": "booster_box",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/630447/pokemon-sv-black-bolt-unova-mini-tin-display-case"
    },
    {
@@ -804,7 +804,7 @@
     "wchg": -15.46,
     "car": 0,
     "new": 0,
-    "cat": "bundle",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/692943/pokemon-me05-pitch-black-pitch-black-booster-bundle-case"
    },
    {
@@ -832,7 +832,7 @@
     "wchg": -19.42,
     "car": 0,
     "new": 0,
-    "cat": "etb",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/692948/pokemon-me05-pitch-black-pitch-black-elite-trainer-box-case"
    },
    {
@@ -860,7 +860,7 @@
     "wchg": -11.73,
     "car": 0,
     "new": 0,
-    "cat": "booster_box",
+    "cat": "case",
     "u": "https://www.tcgplayer.com/product/672395/pokemon-me03-perfect-order-perfect-order-booster-box-case"
    }
   ],
@@ -1493,10 +1493,10 @@
    "w1": -0.61
   },
   "DAX": {
-   "level": 28178.57,
-   "asof": "2026-07-23",
-   "d1": -1.56,
-   "w1": -0.61
+   "level": 28560.77,
+   "asof": "2026-07-24",
+   "d1": 1.36,
+   "w1": 1.08
   },
   "NASDAQ100": {
    "level": 27196.72,
@@ -1505,10 +1505,10 @@
    "w1": -1.62
   },
   "EUROSTOXX50": {
-   "level": 7019.72,
-   "asof": "2026-07-23",
-   "d1": -1.69,
-   "w1": -1.17
+   "level": 7099.71,
+   "asof": "2026-07-24",
+   "d1": 1.14,
+   "w1": 0.8
   },
   "MSCIWORLD": {
    "level": 199.67,
@@ -1529,10 +1529,10 @@
    "w1": 4.38
   },
   "BITCOIN": {
-   "level": 64646.25,
-   "asof": "2026-07-25",
-   "d1": -0.02,
-   "w1": 0.23
+   "level": 65288.92,
+   "asof": "2026-07-26",
+   "d1": 0.99,
+   "w1": 0.07
   }
  }
 }
