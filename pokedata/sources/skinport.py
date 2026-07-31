@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import datetime as dt
 import email.utils
+import time
 
 import requests
 
@@ -38,12 +39,34 @@ def _accept_encoding() -> str:
         return "gzip"
 
 
-def fetch_items(timeout: int = 120) -> tuple[list, str]:
-    """(items, datenstand_iso)."""
-    r = requests.get(API, headers={"User-Agent": USER_AGENT,
-                                   "Accept-Encoding": _accept_encoding()},
-                     timeout=timeout)
-    r.raise_for_status()
+def fetch_items(timeout: int = 120, tries: int = 4) -> tuple[list, str]:
+    """(items, datenstand_iso) – mit Wiederholungen.
+
+    Die Skinport-API ist zeitweise nicht erreichbar oder antwortet mit 429/5xx
+    (Rate-Limit: 8 Anfragen je 5 Minuten). Ein einzelner Fehlversuch hat die
+    CS2-Reihe früher für einen ganzen Tag ausfallen lassen – bei täglicher
+    Erhebung entsteht daraus sofort eine Lücke. Deshalb mehrere Versuche mit
+    wachsender Wartezeit.
+    """
+    r = None
+    for versuch in range(tries):
+        try:
+            r = requests.get(API, headers={"User-Agent": USER_AGENT,
+                                           "Accept-Encoding": _accept_encoding()},
+                             timeout=timeout)
+            if r.status_code == 429 or r.status_code >= 500:
+                raise RuntimeError(f"HTTP {r.status_code}")
+            r.raise_for_status()
+            break
+        except Exception as exc:                          # noqa: BLE001
+            if versuch == tries - 1:
+                raise RuntimeError(
+                    f"Skinport nicht erreichbar nach {tries} Versuchen: {exc}"
+                ) from exc
+            wartezeit = 20 * (versuch + 1)
+            print(f"  Skinport-Abruf fehlgeschlagen ({exc}) – "
+                  f"warte {wartezeit}s und versuche erneut ...")
+            time.sleep(wartezeit)
     data = r.json()
     if not isinstance(data, list) or not data:
         raise RuntimeError("Unerwartete Skinport-Antwort (keine Liste)")

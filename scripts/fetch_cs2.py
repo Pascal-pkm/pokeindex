@@ -47,7 +47,16 @@ def read_items():
 
 
 def main() -> int:
-    data, datum = skinport.fetch_items()
+    try:
+        data, datum = skinport.fetch_items()
+    except Exception as exc:                              # noqa: BLE001
+        # Der Schritt läuft im Workflow mit continue-on-error: der Ausfall wird
+        # sichtbar, blockiert aber weder Indizes noch Deploy. Die Validierung
+        # meldet die entstehende Lücke anschließend als Warnung.
+        print(f"FEHLER: {exc}")
+        print("CS2-Tag wird übersprungen. Die Kartendaten sind davon nicht "
+              "betroffen; die Lücke erscheint als Warnung in der Validierung.")
+        return 1
     normalized = skinport.normalize(data)
     if not normalized:
         print("FEHLER: keine verwertbaren Items in der Skinport-Antwort")

@@ -32,7 +32,37 @@ from common import (
 from pokedata import quality
 from pokedata.atomicio import read_js_var, write_json
 
+# Höchstalter je Datenquelle. WICHTIG ist die Abstufung dahinter:
+#
+#   KERN      Karten/Sealed (tcgcsv) und die daraus gebauten Indizes SPK500 und
+#             SPKS. Sind die kaputt, darf nichts veröffentlicht werden.
+#   NEBEN     CS2 (Skinport) und die Marktreihen. Fällt eine dieser Quellen
+#             zeitweise aus, ist das ärgerlich, aber kein Grund, die intakten
+#             Pokémon-Daten nicht zu veröffentlichen.
+#
+# Die erste Fassung behandelte alles gleich streng – ein Skinport-Ausfall
+# blockierte damit den gesamten Deploy inklusive einwandfreier Kartendaten.
 MAX_AGE_DAYS = {"karten": 3, "cs2": 3, "markets": 6, "index": 3}
+
+# Ab diesem Alter gilt auch eine Nebenquelle als echter Fehler: dann ist nicht
+# mehr von einem vorübergehenden Ausfall auszugehen.
+AUX_HARD_AGE_DAYS = 30
+
+AUX_INDICES = {CS2_INDEX}
+
+
+def melde_alter(rep, name: str, age: int, grenze: int, kern: bool,
+                zusatz: str = "") -> None:
+    """Altersmeldung mit korrekter Schwere (Kern = Fehler, Neben = Warnung)."""
+    if age <= grenze:
+        return
+    text = f"{name}: Datenstand {age} Tage alt (erlaubt: {grenze})"
+    if zusatz:
+        text += f" – {zusatz}"
+    if kern or age > AUX_HARD_AGE_DAYS:
+        rep.error(text)
+    else:
+        rep.warn(text + " – Nebenquelle, Veröffentlichung läuft weiter")
 
 
 def main() -> int:
@@ -50,10 +80,8 @@ def main() -> int:
     if dates:
         age = (today - dt.date.fromisoformat(dates[-1])).days
         rep.info["Karten-Datenstand"] = f"{dates[-1]} ({age} Tage alt)"
-        if age > MAX_AGE_DAYS["karten"]:
-            rep.error(f"Karten-Tagesdaten sind {age} Tage alt "
-                      f"(erlaubt: {MAX_AGE_DAYS['karten']}) – läuft der "
-                      f"tägliche Workflow?")
+        melde_alter(rep, "Karten-Tagesdaten", age, MAX_AGE_DAYS["karten"],
+                    kern=True, zusatz="läuft der tägliche Workflow?")
         counts = {}
         for d in dates[-15:]:
             try:
@@ -87,8 +115,8 @@ def main() -> int:
         if cdates:
             age = (today - dt.date.fromisoformat(cdates[-1])).days
             rep.info["CS2-Datenstand"] = f"{cdates[-1]} ({age} Tage alt)"
-            if age > MAX_AGE_DAYS["cs2"]:
-                rep.error(f"CS2-Daten sind {age} Tage alt")
+            melde_alter(rep, "CS2-Daten", age, MAX_AGE_DAYS["cs2"], kern=False,
+                        zusatz="Skinport-Abruf prüfen")
             with gzip.open(os.path.join(cs2_dir, f"{cdates[-1]}.csv.gz"), "rt") as f:
                 n = sum(1 for _ in f) - 1
             if n < 1000:
@@ -120,8 +148,8 @@ def main() -> int:
             continue
         quality.check_index_result(data, rep, name)
         age = (today - dt.date.fromisoformat(data["asof"])).days
-        if age > MAX_AGE_DAYS["index"]:
-            rep.error(f"{name}: Stand {data['asof']} ist {age} Tage alt")
+        melde_alter(rep, name, age, MAX_AGE_DAYS["index"],
+                    kern=(name not in AUX_INDICES))
         # Reihe muss monoton in der Zeit und lückenfrei interpretierbar sein
         ds = [d for d, _v in data["series"]]
         if ds != sorted(ds):
@@ -140,7 +168,12 @@ def main() -> int:
     print(f"\n{len(rep.errors)} Fehler, {len(rep.warnings)} Warnungen")
     if rep.failed and args.strict:
         print("STRICT: Abbruch – kein Deploy mit diesem Datenstand.")
+        print("Nur KERN-Probleme (Karten/Sealed und ihre Indizes) brechen ab; "
+              "eine ausgefallene Nebenquelle erzeugt nur eine Warnung.")
         return 1
+    if rep.warnings:
+        print("Veröffentlichung läuft weiter – die Warnungen stehen in "
+              "site/data/quality.json und auf der Website.")
     return 0
 
 
