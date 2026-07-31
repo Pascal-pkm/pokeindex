@@ -46,7 +46,12 @@ jobs:
 
       - name: CS2-Preise abziehen (Skinport)
         continue-on-error: true             # eine Klasse darf den Lauf nicht kippen
-        run: python scripts/fetch_cs2.py
+        run: |
+          # Vorab-Diagnose: Skinport lehnt Anfragen ohne Brotli mit HTTP 406 ab.
+          # Steht die Zeile im Log, ist die häufigste Ursache sofort erkennbar.
+          python -c "import brotli, sys; print(f'brotli {brotli.__version__ if hasattr(brotli,\"__version__\") else \"ok\"} verfuegbar')" \
+            || echo "WARNUNG: brotli fehlt -> Skinport antwortet mit HTTP 406"
+          python scripts/fetch_cs2.py
 
       - name: Marktdaten abziehen (Yahoo/Stooq)
         continue-on-error: true

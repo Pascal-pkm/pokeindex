@@ -24,19 +24,33 @@ USER_AGENT = "PokeIndex-Privat/2.0 (privates Forschungsprojekt)"
 PRICE_KIND = "ask"          # median der Listings, kein Verkaufspreis
 
 
-def _accept_encoding() -> str:
-    """Brotli nur anfordern, wenn es entpackt werden kann.
-
-    Die Skinport-API antwortet gern Brotli-komprimiert. Ist das Paket `brotli`
-    nicht installiert (auf sehr neuen Python-Versionen fehlt dafür noch ein
-    Wheel), kann requests die Antwort nicht lesen. Dann wird nur gzip
-    angefordert – funktional identisch, geringfügig mehr Datenvolumen.
-    """
+def brotli_verfuegbar() -> bool:
     try:
         import brotli  # noqa: F401
-        return "br, gzip"
+        return True
     except ImportError:
-        return "gzip"
+        return False
+
+
+def _pruefe_brotli() -> None:
+    """Brotli ist bei Skinport PFLICHT, nicht optional.
+
+    Nachgemessen am 26.07.2026 gegen die Live-API:
+        Accept-Encoding: gzip        -> HTTP 406 Not Acceptable
+        Accept-Encoding: br          -> HTTP 200, 25.115 Items
+        Accept-Encoding: br, gzip    -> HTTP 200, 25.115 Items
+    Ein Rückfall auf gzip (so war es hier kurzzeitig implementiert) führt also
+    NICHT zu mehr Datenvolumen, sondern zu einem garantierten Fehlschlag.
+    Deshalb hier ein klarer Abbruch statt einer kryptischen 406-Meldung.
+    """
+    if brotli_verfuegbar():
+        return
+    raise RuntimeError(
+        "Das Paket 'brotli' fehlt. Die Skinport-API lehnt Anfragen ohne "
+        "Brotli-Unterstützung mit HTTP 406 ab.\n"
+        "  Installieren:  pip install brotli\n"
+        "  Schlägt das auf sehr neuen Python-Versionen fehl (kein Wheel), "
+        "läuft der CS2-Abruf nur über GitHub Actions (Python 3.12.7).")
 
 
 def fetch_items(timeout: int = 120, tries: int = 4) -> tuple[list, str]:
@@ -48,14 +62,21 @@ def fetch_items(timeout: int = 120, tries: int = 4) -> tuple[list, str]:
     Erhebung entsteht daraus sofort eine Lücke. Deshalb mehrere Versuche mit
     wachsender Wartezeit.
     """
+    _pruefe_brotli()
     r = None
     for versuch in range(tries):
         try:
             r = requests.get(API, headers={"User-Agent": USER_AGENT,
-                                           "Accept-Encoding": _accept_encoding()},
+                                           "Accept-Encoding": "br",
+                                           "Accept": "application/json"},
                              timeout=timeout)
+            if r.status_code == 406:
+                raise RuntimeError(
+                    "HTTP 406 – Skinport verlangt Brotli-Kompression. "
+                    "Ist 'brotli' wirklich installiert?")
             if r.status_code == 429 or r.status_code >= 500:
                 raise RuntimeError(f"HTTP {r.status_code}")
+            # (429 = Rate-Limit: Skinport erlaubt 8 Anfragen je 5 Minuten)
             r.raise_for_status()
             break
         except Exception as exc:                          # noqa: BLE001
@@ -63,7 +84,10 @@ def fetch_items(timeout: int = 120, tries: int = 4) -> tuple[list, str]:
                 raise RuntimeError(
                     f"Skinport nicht erreichbar nach {tries} Versuchen: {exc}"
                 ) from exc
-            wartezeit = 20 * (versuch + 1)
+            # Rate-Limit braucht eine echte Pause (Fenster: 5 Minuten),
+            # ein Netz-/Serverfehler nur einen kurzen Moment.
+            ist_ratelimit = "429" in str(exc)
+            wartezeit = (90 * (versuch + 1)) if ist_ratelimit else (15 * (versuch + 1))
             print(f"  Skinport-Abruf fehlgeschlagen ({exc}) – "
                   f"warte {wartezeit}s und versuche erneut ...")
             time.sleep(wartezeit)

@@ -434,6 +434,47 @@ def test_pack_factor_skaliert_bewertung():
     assert val.positions[0]["preis_stueck_eur"] == pytest.approx(100.0)
 
 
+# ------------------------------------------------------------------ Skinport
+def test_skinport_verlangt_brotli(monkeypatch):
+    """Skinport antwortet ohne Brotli mit HTTP 406.
+
+    Nachgemessen gegen die Live-API (26.07.2026):
+        Accept-Encoding: gzip -> 406 · Accept-Encoding: br -> 200 (25.115 Items)
+    Eine frühere Fassung fiel bei fehlendem brotli-Paket auf gzip zurück und
+    erzeugte damit einen garantierten Fehlschlag. Dieser Test hält fest, dass
+    das Fehlen des Pakets sofort und verständlich gemeldet wird.
+    """
+    from pokedata.sources import skinport as sp
+    monkeypatch.setattr(sp, "brotli_verfuegbar", lambda: False)
+    with pytest.raises(RuntimeError, match="brotli"):
+        sp._pruefe_brotli()
+
+
+def test_skinport_fordert_immer_brotli_an():
+    """Der Anfrage-Header darf nie auf gzip zurückfallen."""
+    import inspect
+
+    from pokedata.sources import skinport as sp
+    quelltext = inspect.getsource(sp.fetch_items)
+    assert '"Accept-Encoding": "br"' in quelltext
+    assert '"gzip"' not in quelltext
+
+
+def test_skinport_normalize_filtert_unbrauchbares():
+    from pokedata.sources import skinport as sp
+    roh = [
+        {"market_hash_name": "AK-47 | Redline", "median_price": 12.5,
+         "quantity": 40, "created_at": 1600000000},
+        {"market_hash_name": "Kaputt", "median_price": None, "min_price": None},
+        {"market_hash_name": None, "median_price": 5.0},
+        {"market_hash_name": "Negativ", "median_price": -1},
+        {"market_hash_name": "Nur min", "min_price": 3.25, "quantity": 2},
+    ]
+    out = sp.normalize(roh)
+    assert [o[0] for o in out] == ["AK-47 | Redline", "Nur min"]
+    assert out[0][1] == 1250 and out[1][1] == 325
+
+
 # ------------------------------------------------------------------ Atomic IO
 def test_atomic_js_roundtrip(tmp_path):
     p = str(tmp_path / "x.js")
