@@ -1,0 +1,73 @@
+name: CS2-Preise (mehrere Versuche täglich)
+
+# Warum ein eigener Workflow?
+#
+# Skinport limitiert pro IP-Adresse (8 Anfragen je 5 Minuten). Wird das
+# überschritten, sperrt Cloudflare laut Header `Retry-After` für rund 40
+# Minuten. GitHub-Runner teilen sich IP-Bereiche mit sehr vielen anderen
+# Nutzern – die Sperre kann also greifen, obwohl dieses Projekt nur eine
+# einzige Anfrage pro Tag stellt.
+#
+# Im Tageslauf hatte CS2 damit genau EINEN Versuch; ging der daneben, fehlte
+# der Tag endgültig (Skinport liefert keine Historie nach). Dieser Workflow
+# probiert es über den Tag verteilt mehrfach. Sobald ein Tag erfolgreich
+# geschrieben wurde, beenden sich weitere Läufe sofort wieder.
+
+on:
+  schedule:
+    - cron: "40 5,11,17,23 * * *"    # alle 6 Stunden, versetzt zum Tageslauf
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-update                # gleiche Gruppe: kein paralleler Push
+  cancel-in-progress: false
+
+jobs:
+  cs2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+          cache: pip
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt -r requirements-optional.txt
+
+      - name: Prüfen, ob der heutige CS2-Tag schon vorliegt
+        id: pruefung
+        run: |
+          HEUTE=$(date -u +%F)
+          if [ -f "data/cs2_daily/${HEUTE}.csv.gz" ]; then
+            echo "vorhanden=ja" >> "$GITHUB_OUTPUT"
+            echo "CS2-Tag $HEUTE liegt bereits vor – nichts zu tun."
+          else
+            echo "vorhanden=nein" >> "$GITHUB_OUTPUT"
+            echo "CS2-Tag $HEUTE fehlt – wird abgerufen."
+          fi
+
+      - name: CS2-Preise abziehen (Skinport)
+        if: steps.pruefung.outputs.vorhanden == 'nein'
+        # Bei Fehlschlag gibt das Skript eine vollständige Diagnose aus
+        # (Brotli, HTTP-Status, Retry-After). Der nächste Lauf versucht es erneut.
+        run: python scripts/fetch_cs2.py
+
+      - name: Indizes und Risiko neu berechnen
+        if: steps.pruefung.outputs.vorhanden == 'nein' && success()
+        run: |
+          python scripts/build_indices.py
+          python scripts/build_risk.py
+
+      - name: Änderungen committen
+        if: steps.pruefung.outputs.vorhanden == 'nein' && success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/cs2_daily data/cs2_items.csv.gz site/data
+          git commit -m "CS2-Update $(date -u +%F)" || { echo "nichts zu committen"; exit 0; }
+          bash .github/push_mit_wiederholung.sh

@@ -47,6 +47,10 @@ def read_items():
 
 
 def main() -> int:
+    if "--diagnose" in sys.argv:
+        print("Skinport-Diagnose:")
+        print(skinport.diagnose())
+        return 0
     try:
         data, datum = skinport.fetch_items()
     except Exception as exc:                              # noqa: BLE001
@@ -56,6 +60,10 @@ def main() -> int:
         print(f"FEHLER: {exc}")
         print("CS2-Tag wird übersprungen. Die Kartendaten sind davon nicht "
               "betroffen; die Lücke erscheint als Warnung in der Validierung.")
+        # Diagnose direkt mit ausgeben: sonst steht im Actions-Log nur
+        # "exit code 1" und die Ursache bleibt im Dunkeln.
+        print("\nDiagnose:")
+        print(skinport.diagnose())
         return 1
     normalized = skinport.normalize(data)
     if not normalized:
