@@ -1,22 +1,22 @@
 {
- "geprueft": "2026-08-03T19:12:26+00:00",
- "referenzdatum": "2026-08-03",
+ "geprueft": "2026-08-04T00:19:02+00:00",
+ "referenzdatum": "2026-08-04",
  "errors": [],
  "warnings": [
   "CS2-Tagesreihe: 1 fehlende Tage (erste: 2026-07-24)",
-  "CS2-Daten: Datenstand 9 Tage alt (erlaubt: 3) – Skinport-Abruf prüfen – Nebenquelle, Veröffentlichung läuft weiter",
-  "CS2500: Datenstand 9 Tage alt (erlaubt: 3) – Nebenquelle, Veröffentlichung läuft weiter"
+  "CS2-Daten: Datenstand 10 Tage alt (erlaubt: 3) – Skinport-Abruf prüfen – Nebenquelle, Veröffentlichung läuft weiter",
+  "CS2500: Datenstand 10 Tage alt (erlaubt: 3) – Nebenquelle, Veröffentlichung läuft weiter"
  ],
  "info": {
-  "Karten-Tagesreihe": "907 Tage, 2024-02-08 bis 2026-08-02, 0 Lücken",
-  "Karten-Datenstand": "2026-08-02 (1 Tage alt)",
-  "Preise 2026-08-02": "6480 Zeilen, 6480 Produkte",
-  "Tagesdatei 2026-08-02": "6480 Zeilen (Median Vortage 6448, 1.00x)",
-  "Stammdaten": "6595 Produkte",
+  "Karten-Tagesreihe": "908 Tage, 2024-02-08 bis 2026-08-03, 0 Lücken",
+  "Karten-Datenstand": "2026-08-03 (1 Tage alt)",
+  "Preise 2026-08-03": "6485 Zeilen, 6485 Produkte",
+  "Tagesdatei 2026-08-03": "6485 Zeilen (Median Vortage 6451, 1.01x)",
+  "Stammdaten": "6611 Produkte",
   "CS2-Tagesreihe": "7 Tage, 2026-07-18 bis 2026-07-25, 1 Lücken",
-  "CS2-Datenstand": "2026-07-25 (9 Tage alt)",
-  "SPK500": "Stand 2026-08-02, Level 1621.59, 500 Mitglieder, Carry-Anteil 0.04",
-  "SPKS": "Stand 2026-08-02, Level 2612.04, 500 Mitglieder, Carry-Anteil 0.042",
+  "CS2-Datenstand": "2026-07-25 (10 Tage alt)",
+  "SPK500": "Stand 2026-08-03, Level 1617.74, 500 Mitglieder, Carry-Anteil 0.038",
+  "SPKS": "Stand 2026-08-03, Level 2611.16, 500 Mitglieder, Carry-Anteil 0.046",
   "CS2500": "Stand 2026-07-25, Level 1363.31, 500 Mitglieder, Carry-Anteil 0.026"
  }
 }
