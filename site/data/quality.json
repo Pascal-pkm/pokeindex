@@ -1,5 +1,5 @@
 {
- "geprueft": "2026-08-12T17:43:16+00:00",
+ "geprueft": "2026-08-12T22:29:10+00:00",
  "referenzdatum": "2026-08-12",
  "errors": [],
  "warnings": [
@@ -8,15 +8,15 @@
   "CS2500: Datenstand 18 Tage alt (erlaubt: 3) – Nebenquelle, Veröffentlichung läuft weiter"
  ],
  "info": {
-  "Karten-Tagesreihe": "916 Tage, 2024-02-08 bis 2026-08-11, 0 Lücken",
-  "Karten-Datenstand": "2026-08-11 (1 Tage alt)",
-  "Preise 2026-08-11": "6564 Zeilen, 6564 Produkte",
-  "Tagesdatei 2026-08-11": "6564 Zeilen (Median Vortage 6509, 1.01x)",
-  "Stammdaten": "6716 Produkte",
+  "Karten-Tagesreihe": "917 Tage, 2024-02-08 bis 2026-08-12, 0 Lücken",
+  "Karten-Datenstand": "2026-08-12 (0 Tage alt)",
+  "Preise 2026-08-12": "6562 Zeilen, 6562 Produkte",
+  "Tagesdatei 2026-08-12": "6562 Zeilen (Median Vortage 6515, 1.01x)",
+  "Stammdaten": "6723 Produkte",
   "CS2-Tagesreihe": "7 Tage, 2026-07-18 bis 2026-07-25, 1 Lücken",
   "CS2-Datenstand": "2026-07-25 (18 Tage alt)",
-  "SPK500": "Stand 2026-08-11, Level 1618.41, 500 Mitglieder, Carry-Anteil 0.044",
-  "SPKS": "Stand 2026-08-11, Level 2613.44, 500 Mitglieder, Carry-Anteil 0.054",
+  "SPK500": "Stand 2026-08-12, Level 1619.45, 500 Mitglieder, Carry-Anteil 0.044",
+  "SPKS": "Stand 2026-08-12, Level 2615.56, 500 Mitglieder, Carry-Anteil 0.056",
   "CS2500": "Stand 2026-07-25, Level 1363.31, 500 Mitglieder, Carry-Anteil 0.026"
  }
 }
