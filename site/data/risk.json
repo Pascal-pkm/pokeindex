@@ -1,5 +1,5 @@
 {
- "built": "2026-08-15T14:57:01+00:00",
+ "built": "2026-08-15T21:04:57+00:00",
  "method_version": "2026-07-26",
  "rf_pa": 0.02,
  "labels": {
@@ -23,16 +23,16 @@
     "30 Tage": {
      "label": "Karten (SPK500)",
      "n": 31,
-     "von": "2026-07-15",
-     "bis": "2026-08-14",
-     "level": 1619.87,
-     "rendite_gesamt_pct": 1.19,
+     "von": "2026-07-16",
+     "bis": "2026-08-15",
+     "level": 1619.91,
+     "rendite_gesamt_pct": 1.14,
      "cagr_pct": null,
-     "rendite_pa_pct": 14.38,
+     "rendite_pa_pct": 13.76,
      "vola_pa_pct": 1.73,
      "downside_vola_pa_pct": 1.81,
-     "sharpe": 7.166,
-     "sortino": 6.841,
+     "sharpe": 6.789,
+     "sortino": 6.496,
      "max_drawdown_pct": -0.39,
      "dd_peak": "2026-08-02",
      "dd_trough": "2026-08-04",
@@ -48,20 +48,20 @@
     "90 Tage": {
      "label": "Karten (SPK500)",
      "n": 91,
-     "von": "2026-05-16",
-     "bis": "2026-08-14",
-     "level": 1619.87,
-     "rendite_gesamt_pct": 6.26,
+     "von": "2026-05-17",
+     "bis": "2026-08-15",
+     "level": 1619.91,
+     "rendite_gesamt_pct": 6.34,
      "cagr_pct": null,
-     "rendite_pa_pct": 24.66,
-     "vola_pa_pct": 2.68,
-     "downside_vola_pa_pct": 1.26,
-     "sharpe": 8.456,
-     "sortino": 17.95,
+     "rendite_pa_pct": 24.99,
+     "vola_pa_pct": 2.67,
+     "downside_vola_pa_pct": 1.29,
+     "sharpe": 8.62,
+     "sortino": 17.835,
      "max_drawdown_pct": -0.39,
      "dd_peak": "2026-08-02",
      "dd_trough": "2026-08-04",
-     "positive_tage_pct": 74.4,
+     "positive_tage_pct": 75.6,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -73,16 +73,16 @@
     "1 Jahr": {
      "label": "Karten (SPK500)",
      "n": 366,
-     "von": "2025-08-14",
-     "bis": "2026-08-14",
-     "level": 1619.87,
-     "rendite_gesamt_pct": 23.88,
-     "cagr_pct": 23.88,
-     "rendite_pa_pct": 23.88,
+     "von": "2025-08-15",
+     "bis": "2026-08-15",
+     "level": 1619.91,
+     "rendite_gesamt_pct": 23.83,
+     "cagr_pct": 23.83,
+     "rendite_pa_pct": 23.83,
      "vola_pa_pct": 2.56,
      "downside_vola_pa_pct": 2.09,
-     "sharpe": 8.543,
-     "sortino": 10.484,
+     "sharpe": 8.522,
+     "sortino": 10.46,
      "max_drawdown_pct": -1.45,
      "dd_peak": "2025-12-16",
      "dd_trough": "2026-01-14",
@@ -97,17 +97,17 @@
     },
     "Gesamt": {
      "label": "Karten (SPK500)",
-     "n": 919,
+     "n": 920,
      "von": "2024-02-08",
-     "bis": "2026-08-14",
-     "level": 1619.87,
+     "bis": "2026-08-15",
+     "level": 1619.91,
      "rendite_gesamt_pct": 61.99,
-     "cagr_pct": 21.14,
-     "rendite_pa_pct": 21.14,
+     "cagr_pct": 21.12,
+     "rendite_pa_pct": 21.12,
      "vola_pa_pct": 2.05,
      "downside_vola_pa_pct": 1.6,
-     "sharpe": 9.346,
-     "sortino": 11.928,
+     "sharpe": 9.34,
+     "sortino": 11.915,
      "max_drawdown_pct": -1.45,
      "dd_peak": "2025-12-16",
      "dd_trough": "2026-01-14",
@@ -128,20 +128,20 @@
     "30 Tage": {
      "label": "Sealed (SPKS)",
      "n": 31,
-     "von": "2026-07-15",
-     "bis": "2026-08-14",
-     "level": 2613.93,
-     "rendite_gesamt_pct": 0.42,
+     "von": "2026-07-16",
+     "bis": "2026-08-15",
+     "level": 2612.56,
+     "rendite_gesamt_pct": 0.35,
      "cagr_pct": null,
-     "rendite_pa_pct": 5.09,
-     "vola_pa_pct": 0.94,
-     "downside_vola_pa_pct": 0.4,
-     "sharpe": 3.282,
-     "sortino": 7.7,
+     "rendite_pa_pct": 4.25,
+     "vola_pa_pct": 0.97,
+     "downside_vola_pa_pct": 0.41,
+     "sharpe": 2.317,
+     "sortino": 5.444,
      "max_drawdown_pct": -0.13,
      "dd_peak": "2026-07-30",
      "dd_trough": "2026-08-06",
-     "positive_tage_pct": 53.3,
+     "positive_tage_pct": 50.0,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -153,20 +153,20 @@
     "90 Tage": {
      "label": "Sealed (SPKS)",
      "n": 91,
-     "von": "2026-05-16",
-     "bis": "2026-08-14",
-     "level": 2613.93,
-     "rendite_gesamt_pct": 4.03,
+     "von": "2026-05-17",
+     "bis": "2026-08-15",
+     "level": 2612.56,
+     "rendite_gesamt_pct": 3.89,
      "cagr_pct": null,
-     "rendite_pa_pct": 16.04,
-     "vola_pa_pct": 0.98,
-     "downside_vola_pa_pct": 0.4,
-     "sharpe": 14.354,
-     "sortino": 34.86,
+     "rendite_pa_pct": 15.5,
+     "vola_pa_pct": 0.99,
+     "downside_vola_pa_pct": 0.41,
+     "sharpe": 13.576,
+     "sortino": 32.805,
      "max_drawdown_pct": -0.13,
      "dd_peak": "2026-07-30",
      "dd_trough": "2026-08-06",
-     "positive_tage_pct": 81.1,
+     "positive_tage_pct": 80.0,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -178,20 +178,20 @@
     "1 Jahr": {
      "label": "Sealed (SPKS)",
      "n": 366,
-     "von": "2025-08-14",
-     "bis": "2026-08-14",
-     "level": 2613.93,
-     "rendite_gesamt_pct": 44.72,
-     "cagr_pct": 44.72,
-     "rendite_pa_pct": 44.72,
+     "von": "2025-08-15",
+     "bis": "2026-08-15",
+     "level": 2612.56,
+     "rendite_gesamt_pct": 44.43,
+     "cagr_pct": 44.43,
+     "rendite_pa_pct": 44.43,
      "vola_pa_pct": 2.02,
-     "downside_vola_pa_pct": 0.34,
-     "sharpe": 21.16,
-     "sortino": 125.992,
+     "downside_vola_pa_pct": 0.35,
+     "sharpe": 20.963,
+     "sortino": 121.289,
      "max_drawdown_pct": -0.13,
      "dd_peak": "2026-07-30",
      "dd_trough": "2026-08-06",
-     "positive_tage_pct": 91.5,
+     "positive_tage_pct": 91.2,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -202,21 +202,21 @@
     },
     "Gesamt": {
      "label": "Sealed (SPKS)",
-     "n": 919,
+     "n": 920,
      "von": "2024-02-08",
-     "bis": "2026-08-14",
-     "level": 2613.93,
-     "rendite_gesamt_pct": 161.39,
-     "cagr_pct": 46.53,
-     "rendite_pa_pct": 46.53,
+     "bis": "2026-08-15",
+     "level": 2612.56,
+     "rendite_gesamt_pct": 161.26,
+     "cagr_pct": 46.44,
+     "rendite_pa_pct": 46.44,
      "vola_pa_pct": 2.02,
-     "downside_vola_pa_pct": 0.3,
-     "sharpe": 22.076,
-     "sortino": 149.585,
+     "downside_vola_pa_pct": 0.31,
+     "sharpe": 22.017,
+     "sortino": 145.252,
      "max_drawdown_pct": -0.3,
      "dd_peak": "2024-02-08",
      "dd_trough": "2024-02-26",
-     "positive_tage_pct": 92.4,
+     "positive_tage_pct": 92.3,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -1178,20 +1178,20 @@
     "30 Tage": {
      "label": "Bitcoin",
      "n": 31,
-     "von": "2026-07-15",
-     "bis": "2026-08-14",
-     "level": 63361.72,
-     "rendite_gesamt_pct": -2.94,
+     "von": "2026-07-16",
+     "bis": "2026-08-15",
+     "level": 63586.11,
+     "rendite_gesamt_pct": -1.19,
      "cagr_pct": null,
-     "rendite_pa_pct": -34.22,
-     "vola_pa_pct": 20.68,
-     "downside_vola_pa_pct": 15.42,
-     "sharpe": -1.752,
-     "sortino": -2.35,
+     "rendite_pa_pct": -12.56,
+     "vola_pa_pct": 20.16,
+     "downside_vola_pa_pct": 15.69,
+     "sharpe": -0.722,
+     "sortino": -0.928,
      "max_drawdown_pct": -5.46,
      "dd_peak": "2026-07-21",
      "dd_trough": "2026-08-01",
-     "positive_tage_pct": 46.7,
+     "positive_tage_pct": 50.0,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -1202,21 +1202,21 @@
     },
     "90 Tage": {
      "label": "Bitcoin",
-     "n": 77,
+     "n": 78,
      "von": "2026-05-18",
-     "bis": "2026-08-14",
-     "level": 63361.72,
-     "rendite_gesamt_pct": -17.66,
+     "bis": "2026-08-15",
+     "level": 63586.11,
+     "rendite_gesamt_pct": -17.37,
      "cagr_pct": null,
-     "rendite_pa_pct": -87.19,
-     "vola_pa_pct": 33.43,
+     "rendite_pa_pct": -84.38,
+     "vola_pa_pct": 33.23,
      "downside_vola_pa_pct": 25.86,
-     "sharpe": -2.668,
-     "sortino": -3.449,
+     "sharpe": -2.599,
+     "sortino": -3.34,
      "max_drawdown_pct": -23.81,
      "dd_peak": "2026-05-21",
      "dd_trough": "2026-06-30",
-     "positive_tage_pct": 43.4,
+     "positive_tage_pct": 44.2,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -1228,20 +1228,20 @@
     "1 Jahr": {
      "label": "Bitcoin",
      "n": 271,
-     "von": "2025-08-14",
-     "bis": "2026-08-14",
-     "level": 63361.72,
-     "rendite_gesamt_pct": -46.47,
-     "cagr_pct": -46.47,
-     "rendite_pa_pct": -46.47,
+     "von": "2025-08-15",
+     "bis": "2026-08-15",
+     "level": 63586.11,
+     "rendite_gesamt_pct": -45.84,
+     "cagr_pct": -45.84,
+     "rendite_pa_pct": -45.84,
      "vola_pa_pct": 44.98,
-     "downside_vola_pa_pct": 32.76,
-     "sharpe": -1.078,
-     "sortino": -1.48,
+     "downside_vola_pa_pct": 32.84,
+     "sharpe": -1.064,
+     "sortino": -1.457,
      "max_drawdown_pct": -52.65,
      "dd_peak": "2025-10-06",
      "dd_trough": "2026-06-30",
-     "positive_tage_pct": 45.9,
+     "positive_tage_pct": 46.3,
      "abstaende": {
       "median_tage": 1,
       "min_tage": 1,
@@ -1252,14 +1252,14 @@
     },
     "Gesamt": {
      "label": "Bitcoin",
-     "n": 3526,
+     "n": 3527,
      "von": "2013-01-03",
-     "bis": "2026-08-14",
-     "level": 63361.72,
-     "rendite_gesamt_pct": 472043.96,
-     "cagr_pct": 86.11,
-     "rendite_pa_pct": 86.11,
-     "vola_pa_pct": 78.69,
+     "bis": "2026-08-15",
+     "level": 63586.11,
+     "rendite_gesamt_pct": 473716.02,
+     "cagr_pct": 86.14,
+     "rendite_pa_pct": 86.14,
+     "vola_pa_pct": 78.68,
      "downside_vola_pa_pct": 60.1,
      "sharpe": 1.069,
      "sortino": 1.4,
@@ -1465,7 +1465,7 @@
   ],
   "overlap": [
    [
-    3526,
+    3527,
     102,
     104,
     3509,
@@ -1475,8 +1475,8 @@
     3507,
     3510,
     3507,
-    661,
-    661
+    662,
+    662
    ],
    [
     102,
@@ -1605,7 +1605,21 @@
     643
    ],
    [
-    661,
+    662,
+    35,
+    35,
+    646,
+    646,
+    646,
+    643,
+    643,
+    646,
+    643,
+    920,
+    919
+   ],
+   [
+    662,
     35,
     35,
     646,
@@ -1616,21 +1630,7 @@
     646,
     643,
     919,
-    918
-   ],
-   [
-    661,
-    35,
-    35,
-    646,
-    646,
-    646,
-    643,
-    643,
-    646,
-    643,
-    918,
-    919
+    920
    ]
   ]
  },
@@ -2862,6 +2862,10 @@
     [
      "2026-08-12",
      2.74
+    ],
+    [
+     "2026-08-15",
+     2.67
     ]
    ],
    "korr_sp500_180d": [
@@ -4408,6 +4412,10 @@
     [
      "2026-08-12",
      0.95
+    ],
+    [
+     "2026-08-15",
+     0.99
     ]
    ],
    "korr_sp500_180d": [
@@ -4780,20 +4788,20 @@
  },
  "einzelprodukt_vola": {
   "SPK500": {
-   "n": 4176,
-   "median_pa_pct": 29.67,
+   "n": 4184,
+   "median_pa_pct": 29.79,
    "p25_pa_pct": 17.59,
-   "p75_pa_pct": 58.6,
-   "p90_pa_pct": 121.44,
-   "mittel_pa_pct": 59.49
+   "p75_pa_pct": 58.5,
+   "p90_pa_pct": 121.43,
+   "mittel_pa_pct": 59.44
   },
   "SPKS": {
    "n": 1821,
    "median_pa_pct": 16.16,
    "p25_pa_pct": 11.7,
-   "p75_pa_pct": 25.49,
+   "p75_pa_pct": 25.57,
    "p90_pa_pct": 41.12,
-   "mittel_pa_pct": 23.21
+   "mittel_pa_pct": 23.2
   }
  },
  "vergleich": {
@@ -8475,6 +8483,10 @@
     [
      "2026-08-14",
      161.99
+    ],
+    [
+     "2026-08-15",
+     161.99
     ]
    ],
    "SPKS": [
@@ -12153,6 +12165,10 @@
     [
      "2026-08-14",
      261.39
+    ],
+    [
+     "2026-08-15",
+     261.26
     ]
    ],
    "CS2500": [
@@ -33181,12 +33197,16 @@
     [
      "2026-08-14",
      139.87
+    ],
+    [
+     "2026-08-15",
+     140.36
     ]
    ]
   },
   "performance_pct": {
    "SPK500": 61.99,
-   "SPKS": 161.39,
+   "SPKS": 161.26,
    "CS2500": 5.08,
    "CS2_EW": 142.17,
    "SP500": 53.58,
@@ -33196,7 +33216,7 @@
    "MSCIWORLD": 57.75,
    "GOLD": 117.1,
    "SILVER": 188.7,
-   "BITCOIN": 39.87
+   "BITCOIN": 40.36
   }
  },
  "methodik": {
