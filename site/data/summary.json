@@ -1,5 +1,5 @@
 {
- "built": "2026-08-17T15:00:32+00:00",
+ "built": "2026-08-17T21:47:07+00:00",
  "method_version": "2026-07-26",
  "rules": {
   "size": 500,
@@ -15,21 +15,17 @@
   "label": "spk-2026-07"
  },
  "SPK500": {
-  "asof": "2026-08-16",
+  "asof": "2026-08-17",
   "overview": {
-   "level": 1621.1,
-   "prev": 1619.91,
+   "level": 1621.13,
+   "prev": 1621.1,
    "ath": 1621.59,
    "atl": 994.98,
-   "basket": 261255,
-   "adv": 20,
-   "dec": 25
+   "basket": 265426,
+   "adv": 25,
+   "dec": 29
   },
   "series_tail": [
-   [
-    "2026-07-18",
-    1604.02
-   ],
    [
     "2026-07-19",
     1603.79
@@ -145,12 +141,30 @@
    [
     "2026-08-16",
     1621.1
+   ],
+   [
+    "2026-08-17",
+    1621.13
    ]
   ],
   "weekly_up": [
    {
+    "id": 90753,
+    "r": 233,
+    "n": "Zoroark",
+    "s": "Next Destinies",
+    "num": "102/99",
+    "p": 399.99,
+    "chg": 140.41,
+    "wchg": 140.41,
+    "car": 0,
+    "new": 1,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/90753/pokemon-next-destinies-zoroark"
+   },
+   {
     "id": 83496,
-    "r": 326,
+    "r": 329,
     "n": "Alakazam",
     "s": "Legendary Collection",
     "num": "001/110",
@@ -178,7 +192,7 @@
    },
    {
     "id": 88075,
-    "r": 16,
+    "r": 17,
     "n": "Pikachu",
     "s": "Legendary Collection",
     "num": "086/110",
@@ -191,52 +205,24 @@
     "u": "https://www.tcgplayer.com/product/88075/pokemon-legendary-collection-pikachu"
    },
    {
-    "id": 84587,
-    "r": 136,
-    "n": "Dark Dragonite",
-    "s": "EX Team Rocket Returns",
-    "num": "15/109",
-    "p": 525.0,
-    "chg": 0.0,
-    "wchg": 75.01,
+    "id": 239090,
+    "r": 444,
+    "n": "Gyarados - 32/97 (Prerelease)",
+    "s": "Nintendo Promos",
+    "num": "32/97",
+    "p": 262.5,
+    "chg": 75.0,
+    "wchg": 75.0,
     "car": 0,
-    "new": 0,
+    "new": 1,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/84587/pokemon-ex-team-rocket-returns-dark-dragonite"
-   },
-   {
-    "id": 88111,
-    "r": 3,
-    "n": "Pikachu Star",
-    "s": "EX Holon Phantoms",
-    "num": "104/110",
-    "p": 3216.67,
-    "chg": 0.0,
-    "wchg": 54.83,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/88111/pokemon-ex-holon-phantoms-pikachu-star"
+    "u": "https://www.tcgplayer.com/product/239090/pokemon-nintendo-promos-gyarados-32-97-prerelease"
    }
   ],
   "weekly_dn": [
    {
-    "id": 89397,
-    "r": 119,
-    "n": "Snorlax Lv.X",
-    "s": "Rising Rivals",
-    "num": "111/111",
-    "p": 566.33,
-    "chg": 0.0,
-    "wchg": -28.98,
-    "car": 0,
-    "new": 0,
-    "cat": "",
-    "u": "https://www.tcgplayer.com/product/89397/pokemon-rising-rivals-snorlax-lvx"
-   },
-   {
     "id": 84196,
-    "r": 25,
+    "r": 26,
     "n": "Charizard",
     "s": "Legendary Collection",
     "num": "003/110",
@@ -250,7 +236,7 @@
    },
    {
     "id": 88531,
-    "r": 278,
+    "r": 282,
     "n": "Raikou (H26)",
     "s": "Skyridge",
     "num": "H26/H32",
@@ -278,7 +264,7 @@
    },
    {
     "id": 88647,
-    "r": 422,
+    "r": 426,
     "n": "Rayquaza ex (Delta Species)",
     "s": "EX Dragon Frontiers",
     "num": "97/101",
@@ -289,176 +275,186 @@
     "new": 0,
     "cat": "",
     "u": "https://www.tcgplayer.com/product/88647/pokemon-ex-dragon-frontiers-rayquaza-ex-delta-species"
+   },
+   {
+    "id": 676093,
+    "r": 275,
+    "n": "Team Rocket's Mewtwo ex - 281/217",
+    "s": "ME: Ascended Heroes",
+    "num": "281/217",
+    "p": 351.29,
+    "chg": -1.46,
+    "wchg": -8.51,
+    "car": 0,
+    "new": 0,
+    "cat": "",
+    "u": "https://www.tcgplayer.com/product/676093/pokemon-me-ascended-heroes-team-rockets-mewtwo-ex-281-217"
    }
   ],
   "gainers": [
    {
-    "id": 84653,
-    "r": 312,
-    "n": "Dark Slowbro",
-    "s": "Legendary Collection",
-    "num": "008/110",
-    "p": 329.99,
-    "chg": 36.31,
-    "wchg": 36.31,
+    "id": 90753,
+    "r": 233,
+    "n": "Zoroark",
+    "s": "Next Destinies",
+    "num": "102/99",
+    "p": 399.99,
+    "chg": 140.41,
+    "wchg": 140.41,
     "car": 0,
-    "new": 0,
+    "new": 1,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/84653/pokemon-legendary-collection-dark-slowbro"
+    "u": "https://www.tcgplayer.com/product/90753/pokemon-next-destinies-zoroark"
    },
    {
-    "id": 87912,
-    "r": 277,
-    "n": "Palkia (Shiny)",
-    "s": "Call of Legends",
-    "num": "SL8",
-    "p": 350.0,
-    "chg": 18.65,
-    "wchg": 18.65,
+    "id": 239090,
+    "r": 444,
+    "n": "Gyarados - 32/97 (Prerelease)",
+    "s": "Nintendo Promos",
+    "num": "32/97",
+    "p": 262.5,
+    "chg": 75.0,
+    "wchg": 75.0,
     "car": 0,
-    "new": 0,
+    "new": 1,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/87912/pokemon-call-of-legends-palkia-shiny"
+    "u": "https://www.tcgplayer.com/product/239090/pokemon-nintendo-promos-gyarados-32-97-prerelease"
    },
    {
-    "id": 85323,
+    "id": 86450,
     "r": 418,
-    "n": "Espeon (Prime)",
-    "s": "Undaunted",
-    "num": "81/90",
-    "p": 275.24,
-    "chg": 10.37,
-    "wchg": 10.37,
+    "n": "Kingdra (Delta Species)",
+    "s": "EX Holon Phantoms",
+    "num": "10/110",
+    "p": 276.06,
+    "chg": 22.41,
+    "wchg": 22.41,
     "car": 0,
-    "new": 0,
+    "new": 1,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/85323/pokemon-undaunted-espeon-prime"
+    "u": "https://www.tcgplayer.com/product/86450/pokemon-ex-holon-phantoms-kingdra-delta-species"
    },
    {
-    "id": 86396,
-    "r": 112,
-    "n": "Kabutops (150)",
-    "s": "Skyridge",
-    "num": "150/144",
-    "p": 590.48,
-    "chg": 10.32,
-    "wchg": 10.32,
+    "id": 98141,
+    "r": 193,
+    "n": "M Rayquaza EX (105 Full Art)",
+    "s": "XY - Roaring Skies",
+    "num": "105/108",
+    "p": 450.05,
+    "chg": 5.27,
+    "wchg": 5.27,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/86396/pokemon-skyridge-kabutops-150"
+    "u": "https://www.tcgplayer.com/product/98141/pokemon-xy-roaring-skies-m-rayquaza-ex-105-full-art"
    },
    {
-    "id": 83857,
-    "r": 77,
-    "n": "Black Kyurem EX (145 Full Art)",
-    "s": "Boundaries Crossed",
-    "num": "145/149",
-    "p": 749.47,
-    "chg": 7.12,
-    "wchg": 7.12,
+    "id": 46466,
+    "r": 140,
+    "n": "Mew",
+    "s": "Southern Islands",
+    "num": "01/18",
+    "p": 524.27,
+    "chg": 4.37,
+    "wchg": 8.61,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/83857/pokemon-boundaries-crossed-black-kyurem-ex-145-full-art"
+    "u": "https://www.tcgplayer.com/product/46466/pokemon-southern-islands-mew"
    }
   ],
   "losers": [
    {
-    "id": 263873,
-    "r": 334,
-    "n": "Charizard V (Alternate Full Art)",
-    "s": "SWSH09: Brilliant Stars",
-    "num": "154/172",
-    "p": 315.48,
-    "chg": -1.94,
-    "wchg": -2.47,
+    "id": 90115,
+    "r": 337,
+    "n": "Tyranitar (29)",
+    "s": "Expedition",
+    "num": "029/165",
+    "p": 317.0,
+    "chg": -3.24,
+    "wchg": -3.24,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/263873/pokemon-swsh09-brilliant-stars-charizard-v-alternate-full-art"
+    "u": "https://www.tcgplayer.com/product/90115/pokemon-expedition-tyranitar-29"
    },
    {
-    "id": 246728,
-    "r": 168,
-    "n": "Rayquaza V (Alternate Full Art)",
-    "s": "SWSH07: Evolving Skies",
-    "num": "194/203",
-    "p": 488.29,
-    "chg": -1.42,
-    "wchg": -3.11,
+    "id": 478100,
+    "r": 313,
+    "n": "Giratina VSTAR (Secret)",
+    "s": "SWSH: Crown Zenith: Galarian Gallery",
+    "num": "GG69/GG70",
+    "p": 330.64,
+    "chg": -3.21,
+    "wchg": -7.51,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/246728/pokemon-swsh07-evolving-skies-rayquaza-v-alternate-full-art"
+    "u": "https://www.tcgplayer.com/product/478100/pokemon-swsh-crown-zenith-galarian-gallery-giratina-vstar-secret"
    },
    {
-    "id": 662185,
-    "r": 350,
-    "n": "Mega Charizard X ex - 130/094",
-    "s": "ME02: Phantasmal Flames",
-    "num": "130/094",
-    "p": 300.02,
-    "chg": -1.2,
-    "wchg": -4.43,
+    "id": 517045,
+    "r": 265,
+    "n": "Charizard ex - 199/165",
+    "s": "SV: Scarlet & Violet 151",
+    "num": "199/165",
+    "p": 362.33,
+    "chg": -1.95,
+    "wchg": -2.42,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/662185/pokemon-me02-phantasmal-flames-mega-charizard-x-ex-130-094"
+    "u": "https://www.tcgplayer.com/product/517045/pokemon-sv-scarlet-and-violet-151-charizard-ex-199-165"
    },
    {
-    "id": 676106,
-    "r": 216,
-    "n": "Mega Charizard Y ex - 294/217",
+    "id": 676096,
+    "r": 39,
+    "n": "Mega Gengar ex - 284/217",
     "s": "ME: Ascended Heroes",
-    "num": "294/217",
-    "p": 414.11,
-    "chg": -1.14,
-    "wchg": -3.63,
+    "num": "284/217",
+    "p": 1066.24,
+    "chg": -1.51,
+    "wchg": -6.34,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/676106/pokemon-me-ascended-heroes-mega-charizard-y-ex-294-217"
+    "u": "https://www.tcgplayer.com/product/676096/pokemon-me-ascended-heroes-mega-gengar-ex-284-217"
    },
    {
-    "id": 633032,
-    "r": 480,
-    "n": "Cynthia's Garchomp ex - 232/182",
-    "s": "SV10: Destined Rivals",
-    "num": "232/182",
-    "p": 246.16,
-    "chg": -1.09,
-    "wchg": -3.01,
+    "id": 676093,
+    "r": 275,
+    "n": "Team Rocket's Mewtwo ex - 281/217",
+    "s": "ME: Ascended Heroes",
+    "num": "281/217",
+    "p": 351.29,
+    "chg": -1.46,
+    "wchg": -8.51,
     "car": 0,
     "new": 0,
     "cat": "",
-    "u": "https://www.tcgplayer.com/product/633032/pokemon-sv10-destined-rivals-cynthias-garchomp-ex-232-182"
+    "u": "https://www.tcgplayer.com/product/676093/pokemon-me-ascended-heroes-team-rockets-mewtwo-ex-281-217"
    }
   ],
   "diagnostics": {
-   "variant_pairs_dropped": 436,
+   "variant_pairs_dropped": 437,
    "days_without_breadth": 0,
    "pairs_min": 465,
    "pairs_max": 500,
-   "carried_share_last": 0.044
+   "carried_share_last": 0.048
   }
  },
  "SPKS": {
-  "asof": "2026-08-16",
+  "asof": "2026-08-17",
   "overview": {
-   "level": 2612.8,
-   "prev": 2612.56,
+   "level": 2614.24,
+   "prev": 2612.8,
    "ath": 2615.56,
    "atl": 997.04,
-   "basket": 628636,
-   "adv": 28,
-   "dec": 35
+   "basket": 629736,
+   "adv": 35,
+   "dec": 38
   },
   "series_tail": [
-   [
-    "2026-07-18",
-    2601.98
-   ],
    [
     "2026-07-19",
     2601.88
@@ -574,12 +570,16 @@
    [
     "2026-08-16",
     2612.8
+   ],
+   [
+    "2026-08-17",
+    2614.24
    ]
   ],
   "weekly_up": [
    {
     "id": 118795,
-    "r": 155,
+    "r": 156,
     "n": "Red & Blue Collection [Blastoise EX]",
     "s": "Generations",
     "num": "",
@@ -593,7 +593,7 @@
    },
    {
     "id": 121363,
-    "r": 342,
+    "r": 346,
     "n": "Mythical Pokemon Collection Box [Arceus]",
     "s": "Generations",
     "num": "",
@@ -607,17 +607,31 @@
    },
    {
     "id": 702501,
-    "r": 407,
+    "r": 409,
     "n": "Ascended Heroes Tin Case",
     "s": "ME: Ascended Heroes",
     "num": "",
     "p": 363.89,
-    "chg": 4.73,
+    "chg": 0.0,
     "wchg": 13.72,
     "car": 0,
     "new": 0,
     "cat": "case",
     "u": "https://www.tcgplayer.com/product/702501/pokemon-me-ascended-heroes-ascended-heroes-tin-case"
+   },
+   {
+    "id": 137524,
+    "r": 219,
+    "n": "Umbreon GX Premium Collection",
+    "s": "SM - Guardians Rising",
+    "num": "",
+    "p": 812.5,
+    "chg": 11.91,
+    "wchg": 11.91,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/137524/pokemon-sm-guardians-rising-umbreon-gx-premium-collection"
    },
    {
     "id": 630433,
@@ -632,20 +646,6 @@
     "new": 0,
     "cat": "booster_box",
     "u": "https://www.tcgplayer.com/product/630433/pokemon-sv-black-bolt-black-bolt-booster-bundle-display"
-   },
-   {
-    "id": 267044,
-    "r": 185,
-    "n": "Team Up Booster Pack Art Bundle [Set of 4]",
-    "s": "SM - Team Up",
-    "num": "",
-    "p": 1000.0,
-    "chg": 0.0,
-    "wchg": 9.09,
-    "car": 0,
-    "new": 0,
-    "cat": "bundle",
-    "u": "https://www.tcgplayer.com/product/267044/pokemon-sm-team-up-team-up-booster-pack-art-bundle-set-of-4"
    }
   ],
   "weekly_dn": [
@@ -656,7 +656,7 @@
     "s": "ME05: Pitch Black",
     "num": "",
     "p": 636.23,
-    "chg": -9.96,
+    "chg": 0.0,
     "wchg": -47.85,
     "car": 0,
     "new": 0,
@@ -665,41 +665,27 @@
    },
    {
     "id": 704186,
-    "r": 366,
+    "r": 382,
     "n": "30th Celebration Mini Tin Display",
     "s": "ME: 30th Celebration",
     "num": "",
-    "p": 401.68,
-    "chg": -4.25,
-    "wchg": -19.26,
+    "p": 391.53,
+    "chg": -2.53,
+    "wchg": -18.99,
     "car": 0,
     "new": 0,
     "cat": "booster_box",
     "u": "https://www.tcgplayer.com/product/704186/pokemon-me-30th-celebration-30th-celebration-mini-tin-display"
    },
    {
-    "id": 704191,
-    "r": 339,
-    "n": "30th Celebration Ultra-Premium Collection [Night]",
-    "s": "ME: 30th Celebration",
-    "num": "",
-    "p": 446.2,
-    "chg": 6.98,
-    "wchg": -16.4,
-    "car": 0,
-    "new": 0,
-    "cat": "collection_box",
-    "u": "https://www.tcgplayer.com/product/704191/pokemon-me-30th-celebration-30th-celebration-ultra-premium-collection-night"
-   },
-   {
     "id": 628398,
-    "r": 80,
+    "r": 100,
     "n": "Destined Rivals Elite Trainer Box Case",
     "s": "SV10: Destined Rivals",
     "num": "",
-    "p": 1906.92,
-    "chg": -7.64,
-    "wchg": -11.54,
+    "p": 1799.04,
+    "chg": -5.66,
+    "wchg": -15.37,
     "car": 0,
     "new": 0,
     "cat": "case",
@@ -707,161 +693,175 @@
    },
    {
     "id": 704144,
-    "r": 306,
+    "r": 320,
     "n": "30th Celebration Pokemon Center Elite Trainer Box",
     "s": "ME: 30th Celebration",
     "num": "",
-    "p": 505.92,
-    "chg": -3.46,
-    "wchg": -10.12,
+    "p": 485.8,
+    "chg": -3.98,
+    "wchg": -10.78,
     "car": 0,
     "new": 0,
     "cat": "etb",
     "u": "https://www.tcgplayer.com/product/704144/pokemon-me-30th-celebration-30th-celebration-pokemon-center-elite-trainer-box"
+   },
+   {
+    "id": 673439,
+    "r": 365,
+    "n": "First Partner Illustration Collection Case (Series 1)",
+    "s": "First Partner Collection 2026",
+    "num": "",
+    "p": 403.15,
+    "chg": -2.68,
+    "wchg": -10.44,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/673439/pokemon-first-partner-collection-2026-first-partner-illustration-collection-case-series-1"
    }
   ],
   "gainers": [
    {
-    "id": 501265,
-    "r": 56,
-    "n": "Obsidian Flames Elite Trainer Box Case",
-    "s": "SV03: Obsidian Flames",
-    "num": "",
-    "p": 2313.86,
-    "chg": 6.99,
-    "wchg": 6.99,
-    "car": 0,
-    "new": 0,
-    "cat": "case",
-    "u": "https://www.tcgplayer.com/product/501265/pokemon-sv03-obsidian-flames-obsidian-flames-elite-trainer-box-case"
-   },
-   {
     "id": 704191,
-    "r": 339,
+    "r": 304,
     "n": "30th Celebration Ultra-Premium Collection [Night]",
     "s": "ME: 30th Celebration",
     "num": "",
-    "p": 446.2,
-    "chg": 6.98,
-    "wchg": -16.4,
+    "p": 509.18,
+    "chg": 14.11,
+    "wchg": -4.53,
     "car": 0,
     "new": 0,
     "cat": "collection_box",
     "u": "https://www.tcgplayer.com/product/704191/pokemon-me-30th-celebration-30th-celebration-ultra-premium-collection-night"
    },
    {
-    "id": 702501,
-    "r": 407,
-    "n": "Ascended Heroes Tin Case",
-    "s": "ME: Ascended Heroes",
+    "id": 137524,
+    "r": 219,
+    "n": "Umbreon GX Premium Collection",
+    "s": "SM - Guardians Rising",
     "num": "",
-    "p": 363.89,
-    "chg": 4.73,
-    "wchg": 13.72,
+    "p": 812.5,
+    "chg": 11.91,
+    "wchg": 11.91,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/137524/pokemon-sm-guardians-rising-umbreon-gx-premium-collection"
+   },
+   {
+    "id": 649220,
+    "r": 330,
+    "n": "Unova Victini Illustration Collection Case",
+    "s": "SV: Black Bolt",
+    "num": "",
+    "p": 468.59,
+    "chg": 8.72,
+    "wchg": 8.72,
     "car": 0,
     "new": 0,
     "cat": "case",
-    "u": "https://www.tcgplayer.com/product/702501/pokemon-me-ascended-heroes-ascended-heroes-tin-case"
+    "u": "https://www.tcgplayer.com/product/649220/pokemon-sv-black-bolt-unova-victini-illustration-collection-case"
    },
    {
-    "id": 123447,
-    "r": 220,
-    "n": "XY Evolutions Elite Trainer Box [Mega Charizard Y]",
-    "s": "XY - Evolutions",
+    "id": 616290,
+    "r": 175,
+    "n": "Crown Zenith Tin Case",
+    "s": "SWSH: Crown Zenith",
     "num": "",
-    "p": 811.14,
-    "chg": 3.9,
-    "wchg": 5.64,
+    "p": 1028.14,
+    "chg": 5.49,
+    "wchg": 5.49,
+    "car": 0,
+    "new": 0,
+    "cat": "case",
+    "u": "https://www.tcgplayer.com/product/616290/pokemon-swsh-crown-zenith-crown-zenith-tin-case"
+   },
+   {
+    "id": 557076,
+    "r": 49,
+    "n": "Fusion Strike Pokemon Center Elite Trainer Box Case (Exclusive)",
+    "s": "SWSH08: Fusion Strike",
+    "num": "",
+    "p": 2475.72,
+    "chg": 5.1,
+    "wchg": 5.1,
     "car": 0,
     "new": 0,
     "cat": "etb",
-    "u": "https://www.tcgplayer.com/product/123447/pokemon-xy-evolutions-xy-evolutions-elite-trainer-box-mega-charizard-y"
-   },
-   {
-    "id": 98538,
-    "r": 427,
-    "n": "Next Destinies Booster Pack",
-    "s": "Next Destinies",
-    "num": "",
-    "p": 346.16,
-    "chg": 3.89,
-    "wchg": 3.89,
-    "car": 0,
-    "new": 0,
-    "cat": "pack_blister",
-    "u": "https://www.tcgplayer.com/product/98538/pokemon-next-destinies-next-destinies-booster-pack"
+    "u": "https://www.tcgplayer.com/product/557076/pokemon-swsh08-fusion-strike-fusion-strike-pokemon-center-elite-trainer-box-case-exclusive"
    }
   ],
   "losers": [
    {
-    "id": 693589,
-    "r": 253,
-    "n": "Pitch Black 3-Pack Blister Case",
-    "s": "ME05: Pitch Black",
-    "num": "",
-    "p": 636.23,
-    "chg": -9.96,
-    "wchg": -47.85,
-    "car": 0,
-    "new": 0,
-    "cat": "case",
-    "u": "https://www.tcgplayer.com/product/693589/pokemon-me05-pitch-black-pitch-black-3-pack-blister-case"
-   },
-   {
     "id": 628398,
-    "r": 80,
+    "r": 100,
     "n": "Destined Rivals Elite Trainer Box Case",
     "s": "SV10: Destined Rivals",
     "num": "",
-    "p": 1906.92,
-    "chg": -7.64,
-    "wchg": -11.54,
+    "p": 1799.04,
+    "chg": -5.66,
+    "wchg": -15.37,
     "car": 0,
     "new": 0,
     "cat": "case",
     "u": "https://www.tcgplayer.com/product/628398/pokemon-sv10-destined-rivals-destined-rivals-elite-trainer-box-case"
    },
    {
-    "id": 704190,
-    "r": 363,
-    "n": "30th Celebration Ultra-Premium Collection [Day]",
-    "s": "ME: 30th Celebration",
-    "num": "",
-    "p": 403.76,
-    "chg": -5.93,
-    "wchg": -9.92,
-    "car": 0,
-    "new": 0,
-    "cat": "collection_box",
-    "u": "https://www.tcgplayer.com/product/704190/pokemon-me-30th-celebration-30th-celebration-ultra-premium-collection-day"
-   },
-   {
-    "id": 704186,
-    "r": 366,
-    "n": "30th Celebration Mini Tin Display",
-    "s": "ME: 30th Celebration",
-    "num": "",
-    "p": 401.68,
-    "chg": -4.25,
-    "wchg": -19.26,
-    "car": 0,
-    "new": 0,
-    "cat": "booster_box",
-    "u": "https://www.tcgplayer.com/product/704186/pokemon-me-30th-celebration-30th-celebration-mini-tin-display"
-   },
-   {
     "id": 704144,
-    "r": 306,
+    "r": 320,
     "n": "30th Celebration Pokemon Center Elite Trainer Box",
     "s": "ME: 30th Celebration",
     "num": "",
-    "p": 505.92,
-    "chg": -3.46,
-    "wchg": -10.12,
+    "p": 485.8,
+    "chg": -3.98,
+    "wchg": -10.78,
     "car": 0,
     "new": 0,
     "cat": "etb",
     "u": "https://www.tcgplayer.com/product/704144/pokemon-me-30th-celebration-30th-celebration-pokemon-center-elite-trainer-box"
+   },
+   {
+    "id": 692956,
+    "r": 203,
+    "n": "Pitch Black Sleeved Booster Case",
+    "s": "ME05: Pitch Black",
+    "num": "",
+    "p": 923.34,
+    "chg": -2.92,
+    "wchg": -5.33,
+    "car": 0,
+    "new": 0,
+    "cat": "case",
+    "u": "https://www.tcgplayer.com/product/692956/pokemon-me05-pitch-black-pitch-black-sleeved-booster-case"
+   },
+   {
+    "id": 624678,
+    "r": 32,
+    "n": "Destined Rivals Booster Box Case",
+    "s": "SV10: Destined Rivals",
+    "num": "",
+    "p": 3221.73,
+    "chg": -2.76,
+    "wchg": -8.61,
+    "car": 0,
+    "new": 0,
+    "cat": "case",
+    "u": "https://www.tcgplayer.com/product/624678/pokemon-sv10-destined-rivals-destined-rivals-booster-box-case"
+   },
+   {
+    "id": 673439,
+    "r": 365,
+    "n": "First Partner Illustration Collection Case (Series 1)",
+    "s": "First Partner Collection 2026",
+    "num": "",
+    "p": 403.15,
+    "chg": -2.68,
+    "wchg": -10.44,
+    "car": 0,
+    "new": 0,
+    "cat": "collection_box",
+    "u": "https://www.tcgplayer.com/product/673439/pokemon-first-partner-collection-2026-first-partner-illustration-collection-case-series-1"
    }
   ],
   "diagnostics": {
@@ -869,7 +869,7 @@
    "days_without_breadth": 0,
    "pairs_min": 452,
    "pairs_max": 500,
-   "carried_share_last": 0.064
+   "carried_share_last": 0.056
   }
  },
  "CS2500": {
@@ -1487,52 +1487,52 @@
  },
  "MARKETS": {
   "SP500": {
-   "level": 7675.65,
-   "asof": "2026-08-14",
-   "d1": -0.17,
-   "w1": 0.36
+   "level": 7635.52,
+   "asof": "2026-08-17",
+   "d1": -0.52,
+   "w1": -0.1
   },
   "DAX": {
-   "level": 30087.08,
-   "asof": "2026-08-14",
-   "d1": 0.53,
-   "w1": 0.46
+   "level": 29971.36,
+   "asof": "2026-08-17",
+   "d1": -0.38,
+   "w1": 0.06
   },
   "NASDAQ100": {
-   "level": 29051.0,
-   "asof": "2026-08-14",
-   "d1": -0.13,
-   "w1": 1.09
+   "level": 29001.92,
+   "asof": "2026-08-17",
+   "d1": -0.17,
+   "w1": 1.26
   },
   "EUROSTOXX50": {
-   "level": 7392.08,
-   "asof": "2026-08-14",
-   "d1": -0.09,
-   "w1": 0.24
+   "level": 7381.75,
+   "asof": "2026-08-17",
+   "d1": -0.14,
+   "w1": -0.08
   },
   "MSCIWORLD": {
-   "level": 209.94,
-   "asof": "2026-08-14",
-   "d1": -0.14,
-   "w1": 0.35
+   "level": 209.16,
+   "asof": "2026-08-17",
+   "d1": -0.37,
+   "w1": 0.15
   },
   "GOLD": {
-   "level": 4411.96,
-   "asof": "2026-08-14",
-   "d1": 0.52,
-   "w1": 2.46
+   "level": 4452.87,
+   "asof": "2026-08-17",
+   "d1": 0.93,
+   "w1": 0.49
   },
   "SILVER": {
-   "level": 65.16,
-   "asof": "2026-08-14",
-   "d1": 0.41,
-   "w1": 3.72
+   "level": 66.25,
+   "asof": "2026-08-17",
+   "d1": 1.67,
+   "w1": -0.04
   },
   "BITCOIN": {
-   "level": 63551.12,
-   "asof": "2026-08-16",
-   "d1": -0.06,
-   "w1": -3.38
+   "level": 64893.75,
+   "asof": "2026-08-17",
+   "d1": 2.11,
+   "w1": 0.58
   }
  }
 }
